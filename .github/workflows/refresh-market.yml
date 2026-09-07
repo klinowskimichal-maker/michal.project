@@ -1,0 +1,36 @@
+name: Odśwież rynek łodzi
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-market:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Zainstaluj zależności
+        run: pip install requests beautifulsoup4
+      - name: Odśwież oferty
+        run: python scripts/refresh_market.py
+      - name: Zapisz zmiany
+        run: |
+          git config user.name "pskl-market-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add assets/data/market-live.json
+          if git diff --cached --quiet; then
+            echo "Brak zmian"
+          else
+            git commit -m "Automatyczne odświeżenie rynku łodzi"
+            git push
+          fi
