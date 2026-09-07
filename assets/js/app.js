@@ -147,14 +147,24 @@ function offerCard(o){
   const details=[o.length?`${Number(o.length).toFixed(2)} m`:null,o.engine||null,o.location||null].filter(Boolean);
   return `<article class="offer-card"><div class="offer-photo photo-shell"><div class="photo-fallback"><span>⚓</span><strong>${esc(o.title)}</strong><small>Zdjęcie chwilowo niedostępne</small></div><img data-photo src="${esc(img)}" alt="${esc(o.title)}" loading="lazy" referrerpolicy="no-referrer"><span class="offer-photo-note">${esc(o.imageNote||'Zdjęcie poglądowe')}</span></div><div class="offer-body"><p class="eyebrow">${esc(o.source)} · ${esc(o.country)}</p><h3>${esc(o.title)}</h3><div class="tags"><span>${esc(o.year||'Rok niepodany')}</span><span>${materialLabel(o.material)}</span>${o.verifiedAt?`<span>sprawdzono ${esc(o.verifiedAt)}</span>`:''}</div>${details.length?`<p class="offer-details">${details.map(esc).join(' · ')}</p>`:''}<strong class="price">${esc(o.price)}</strong><small>${esc(o.status)}</small>${o.link?`<a class="offer-link" href="${esc(o.link)}" target="_blank" rel="noopener">Otwórz ofertę ↗</a>`:''}</div></article>`;
 }
+let liveOffers=[];
+let liveUpdatedAt=null;
+function allOffers(){
+  const merged=[...offers,...liveOffers];
+  return [...new Map(merged.map(o=>[(o.link||`${norm(o.source)}|${norm(o.title)}|${o.price}`).toLowerCase(),o])).values()];
+}
 function renderOffers(){
-  const unique=[...new Map(offers.map(o=>[`${norm(o.source)}|${norm(o.title)}|${o.price}`,o])).values()];
+  const unique=allOffers();
   $('#offerCount').textContent=pluralOffers(unique.length);
   $('#offerCards').innerHTML=unique.map(offerCard).join('');
   wireImageFallbacks($('#offerCards'));
 }
 function populateCountries(){
-  [...new Set([...models.map(m=>m.country),...offers.map(o=>o.country)])].sort().forEach(c=>$('#country').insertAdjacentHTML('beforeend',`<option>${esc(c)}</option>`));
+  const select=$('#country');
+  const current=select.value;
+  select.innerHTML='<option value="">Wszystkie kraje</option>';
+  [...new Set([...models.map(m=>m.country),...allOffers().map(o=>o.country)])].filter(Boolean).sort().forEach(c=>select.insertAdjacentHTML('beforeend',`<option>${esc(c)}</option>`));
+  if([...select.options].some(o=>o.value===current))select.value=current;
 }
 
 const PORTALS=[
@@ -194,11 +204,28 @@ function renderLiveSearch(){
 }
 function searchLocal(){
   const q=norm($('#query').value),material=$('#material').value,country=$('#country').value;
-  const result=offers.filter(o=>(!material||o.material===material)&&(!country||o.country===country)&&(!q||norm(`${o.title} ${o.source} ${o.country} ${o.engine||''} ${o.location||''}`).includes(q)));
-  $('#searchSummary').textContent=`Baza ofert zweryfikowanych: ${pluralOffers(result.length)}. Ostatnie sprawdzenie: 07.09.2026.`;
+  const result=allOffers().filter(o=>(!material||o.material===material)&&(!country||o.country===country)&&(!q||norm(`${o.title} ${o.source} ${o.country} ${o.engine||''} ${o.location||''}`).includes(q)));
+  const auto=liveOffers.length?` Automatyczny indeks: ${liveOffers.length} ofert${liveUpdatedAt?`, aktualizacja ${new Date(liveUpdatedAt).toLocaleString('pl-PL')}`:''}.`:'';
+  $('#searchSummary').textContent=`Znaleziono w bazie: ${pluralOffers(result.length)}. Baza ręcznie zweryfikowana: 07.09.2026.${auto}`;
   $('#searchResults').innerHTML=result.length?result.map(offerCard).join(''):'<p class="empty">Brak zapisanych ofert spełniających filtry. Poniżej nadal można uruchomić wyszukiwanie na żywo w wybranych portalach.</p>';
   wireImageFallbacks($('#searchResults'));
 }
+
+async function loadLiveMarket(){
+  try{
+    const r=await fetch(`assets/data/market-live.json?t=${Date.now()}`,{cache:'no-store'});
+    if(!r.ok)return;
+    const data=await r.json();
+    liveOffers=Array.isArray(data.offers)?data.offers:[];
+    liveUpdatedAt=data.updatedAt||null;
+    renderOffers();
+    populateCountries();
+    searchLocal();
+  }catch(e){
+    console.warn('Automatyczny indeks rynku niedostępny',e);
+  }
+}
+
 function runSearch(){
   searchLocal();
   renderLiveSearch();
@@ -213,4 +240,5 @@ renderCountries();
 renderOffers();
 populateCountries();
 searchLocal();
+loadLiveMarket();
 route(location.hash.slice(1)||'home',false);
