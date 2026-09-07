@@ -1,54 +1,10 @@
 <!doctype html>
-<html lang="pl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#071b2c">
-  <title>PSKŁ — Katalog klasycznych łodzi</title>
-  <link rel="stylesheet" href="assets/css/app.css">
-</head>
-<body>
-<header class="topbar">
-  <a class="brand" href="#home" aria-label="PSKŁ — strona główna">
-    <span class="brand-mark">⚓</span>
-    <span><strong>PSKŁ</strong><small>EST. 2026 · SZCZECIN</small></span>
-  </a>
-  <button id="menuButton" class="menu-button" aria-label="Otwórz menu">☰</button>
-  <nav id="nav">
-    <a href="#home">Moja aplikacja</a><a href="#catalog">Katalog</a><a href="#offers">Oferty</a><a href="#search">Szukaj</a><a href="#book">Księga</a>
-  </nav>
-</header>
-<main>
-<section id="home" class="hero">
-  <p class="eyebrow">POLSKIE STOWARZYSZENIE KLASYCZNYCH I ZABYTKOWYCH ŁODZI</p>
-  <h1>Klasyczne łodzie.<br><span>Dziedzictwo, które żyje.</span></h1>
-  <p>Cyfrowy katalog klasycznych i zabytkowych łodzi, marek, modeli oraz ofert rynkowych.</p>
-  <div class="actions"><a class="button primary" href="#catalog">Otwórz katalog</a><a class="button" href="#search">Wyszukaj łódź</a></div>
-</section>
-<section id="catalog" class="section">
-  <div class="section-heading"><div><p class="eyebrow">KATALOG</p><h2>Modele według krajów</h2></div><span id="catalogCount" class="counter"></span></div>
-  <div id="countryCards" class="country-grid"></div>
-  <div id="modelList" class="model-list"></div>
-</section>
-<section id="offers" class="section alternate">
-  <div class="section-heading"><div><p class="eyebrow">RYNEK</p><h2>Znalezione oferty</h2></div><span id="offerCount" class="counter"></span></div>
-  <div id="offerCards" class="offer-grid"></div>
-</section>
-<section id="search" class="section">
-  <p class="eyebrow">WYSZUKIWANIE</p><h2>Wyszukiwarka klasycznych łodzi</h2>
-  <div class="filters">
-    <label>Fraza<input id="query" placeholder="np. Riva, Snekke, Chris-Craft"></label>
-    <label>Materiał<select id="material"><option value="">Każdy</option><option value="wood">Drewno</option><option value="fiberglass">Laminat</option></select></label>
-    <label>Kraj<select id="country"><option value="">Wszystkie kraje</option></select></label>
-  </div>
-  <p id="searchSummary" class="search-summary"></p><div id="searchResults" class="offer-grid"></div>
-</section>
-<section id="book" class="section alternate book-section">
-  <p class="eyebrow">KSIĘGA ZAŁOŻYCIELSKA</p><h2>Dokumentacja PSKŁ</h2>
-  <p>Księga będzie przechowywana jako niezależny plik PDF w repozytorium, dzięki czemu przycisk otwierania nie będzie zależał od kodu strony.</p>
-  <a id="bookLink" class="button primary disabled" aria-disabled="true">PDF — do dodania</a>
-</section>
-</main>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#071b2c"><title>PSKŁ — Katalog klasycznych łodzi</title><link rel="stylesheet" href="assets/css/app.css"></head><body>
+<header class="topbar"><a class="brand" href="#home" aria-label="PSKŁ — strona główna"><span class="brand-mark">⚓</span><span><strong>PSKŁ</strong><small>EST. 2026 · SZCZECIN</small></span></a><button id="menuButton" class="menu-button" aria-label="Otwórz menu">☰</button><nav id="nav"><a href="#home">Moja aplikacja</a><a href="#catalog">Katalog</a><a href="#offers">Oferty</a><a href="#search">Szukaj</a><a href="#book">Księga</a></nav></header>
+<main><section id="home" class="hero"><p class="eyebrow">POLSKIE STOWARZYSZENIE KLASYCZNYCH I ZABYTKOWYCH ŁODZI</p><h1>Klasyczne łodzie.<br><span>Dziedzictwo, które żyje.</span></h1><p>Cyfrowy katalog klasycznych i zabytkowych łodzi, marek, modeli oraz ofert rynkowych.</p><div class="actions"><a class="button primary" href="#catalog">Otwórz katalog</a><a class="button" href="#search">Wyszukaj łódź</a></div></section>
+<section id="catalog" class="section"><div class="section-heading"><div><p class="eyebrow">KATALOG</p><h2>Modele według krajów</h2></div><span id="catalogCount" class="counter"></span></div><div id="countryCards" class="country-grid"></div><div id="modelList" class="model-list"></div></section>
+<section id="offers" class="section alternate"><div class="section-heading"><div><p class="eyebrow">RYNEK</p><h2>Znalezione oferty</h2></div><span id="offerCount" class="counter"></span></div><div id="offerCards" class="offer-grid"></div></section>
+<section id="search" class="section"><p class="eyebrow">WYSZUKIWANIE</p><h2>Wyszukiwarka klasycznych łodzi</h2><div class="filters"><label>Fraza<input id="query" placeholder="np. Riva, Snekke, Chris-Craft"></label><label>Materiał<select id="material"><option value="">Każdy</option><option value="wood">Drewno</option><option value="fiberglass">Laminat</option></select></label><label>Kraj<select id="country"><option value="">Wszystkie kraje</option></select></label></div><p id="searchSummary" class="search-summary"></p><div id="searchResults" class="offer-grid"></div></section>
+<section id="book" class="section alternate book-section"><p class="eyebrow">KSIĘGA ZAŁOŻYCIELSKA</p><h2>Dokumentacja PSKŁ</h2><p>Księga będzie przechowywana jako niezależny plik PDF w repozytorium, dzięki czemu przycisk otwierania nie będzie zależał od kodu strony.</p><a id="bookLink" class="button primary disabled" aria-disabled="true">PDF — do dodania</a></section></main>
 <footer><strong>PSKŁ · EST. 2026</strong><span>Chronimy dziedzictwo. Budujemy tradycję. Inspirujemy przyszłość.</span></footer>
-<script src="assets/js/data.js"></script><script src="assets/js/app.js"></script>
-</body></html>
+<script src="assets/js/data.js"></script><script src="assets/js/catalog-full.js"></script><script>if(window.PSKL_CATALOG)window.PSKL_DATA.models=window.PSKL_CATALOG;</script><script src="assets/js/app.js"></script></body></html>
