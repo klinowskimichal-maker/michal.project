@@ -3,67 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#071b2c">
+<meta name="theme-color" content="#061b2b">
 <title>PSKŁ — Katalog klasycznych łodzi</title>
-<link rel="stylesheet" href="assets/css/app.css">
+<meta name="description" content="Katalog klasycznych i zabytkowych łodzi, modele, historia, oferty rynkowe i Księga Założycielska PSKŁ.">
+<link rel="stylesheet" href="assets/css/app.css?v=3">
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="#home" aria-label="PSKŁ — strona główna">
+  <button class="brand route" data-route="home" aria-label="PSKŁ — strona główna">
     <span class="brand-mark">⚓</span>
     <span><strong>PSKŁ</strong><small>EST. 2026 · SZCZECIN</small></span>
-  </a>
+  </button>
   <button id="menuButton" class="menu-button" aria-label="Otwórz menu">☰</button>
   <nav id="nav" aria-label="Główne menu">
-    <a href="#home">Start</a>
-    <a href="#catalog">Katalog łodzi</a>
-    <a href="#offers">Oferty rynkowe</a>
-    <a href="#search">Wyszukiwanie</a>
-    <a href="#book">Księga</a>
+    <button class="route" data-route="home">Start</button>
+    <button class="route" data-route="catalog">Katalog łodzi</button>
+    <button class="route" data-route="offers">Oferty rynkowe</button>
+    <button class="route" data-route="search">Wyszukiwanie</button>
+    <button class="route" data-route="book">Księga</button>
   </nav>
 </header>
 
 <div class="optionbar" aria-label="Pasek opcji">
-  <a href="#catalog"><span>01</span>Katalog</a>
-  <a href="#offers"><span>02</span>Oferty</a>
-  <a href="#search"><span>03</span>Szukaj</a>
-  <a href="#book"><span>04</span>Księga PDF</a>
+  <button class="option route" data-route="catalog"><span>01</span><b>Katalog</b><small>marki i modele</small></button>
+  <button class="option route" data-route="offers"><span>02</span><b>Oferty</b><small>rynek</small></button>
+  <button class="option route" data-route="search"><span>03</span><b>Szukaj</b><small>filtry</small></button>
+  <button class="option route" data-route="book"><span>04</span><b>Księga</b><small>czytaj online</small></button>
 </div>
 
-<main>
-<section id="home" class="hero">
-  <p class="eyebrow">POLSKIE STOWARZYSZENIE KLASYCZNYCH I ZABYTKOWYCH ŁODZI</p>
-  <h1>Klasyczne łodzie.<br><span>Dziedzictwo, które żyje.</span></h1>
-  <p>Cyfrowy katalog klasycznych i zabytkowych łodzi, marek, modeli oraz ofert rynkowych.</p>
-  <div class="actions">
-    <a class="button primary" href="#catalog">Otwórz katalog</a>
-    <a class="button" href="#search">Wyszukaj łódź</a>
+<main id="app">
+<section id="home" class="view hero active" data-view="home">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">POLSKIE STOWARZYSZENIE KLASYCZNYCH I ZABYTKOWYCH ŁODZI</p>
+      <h1>Klasyczne łodzie.<br><span>Dziedzictwo, które żyje.</span></h1>
+      <p>Cyfrowy katalog klasycznych i zabytkowych łodzi: historia modeli, konstrukcja, lata produkcji oraz wybrane oferty rynkowe.</p>
+      <div class="actions">
+        <button class="button primary route" data-route="catalog">Otwórz katalog</button>
+        <button class="button route" data-route="search">Wyszukaj łódź</button>
+      </div>
+    </div>
+    <div class="hero-card" aria-label="Motyw klasycznej łodzi">
+      <div class="hero-boat">⚓</div>
+      <strong>ANTIQUE · CLASSIC · WOODEN</strong>
+      <span>Tradycja szkutnicza 1900–1970 i dalej</span>
+    </div>
   </div>
 </section>
 
-<section id="catalog" class="section">
+<section id="catalog" class="view section" data-view="catalog">
   <div class="section-heading">
     <div><p class="eyebrow">01 · KATALOG</p><h2>Modele według krajów</h2></div>
     <span id="catalogCount" class="counter"></span>
   </div>
-  <p class="section-intro">Wybierz kraj, aby otworzyć uporządkowany spis marek i modeli wraz z latami produkcji, konstrukcją i krótką historią.</p>
+  <p class="section-intro">Wybierz kraj. Poniżej pojawi się osobny spis marek i modeli, a następnie opisy z latami produkcji, konstrukcją i historią.</p>
   <div id="countryCards" class="country-grid"></div>
+  <div class="showcase-wrap">
+    <div class="mini-heading"><span>PRZYKŁADOWE MODELE</span><small>zdjęcia poglądowe</small></div>
+    <div id="modelShowcase" class="showcase-grid"></div>
+  </div>
   <div id="modelList" class="model-list"></div>
 </section>
 
-<section id="offers" class="section alternate">
+<section id="offers" class="view section alternate" data-view="offers">
   <div class="section-heading">
     <div><p class="eyebrow">02 · RYNEK</p><h2>Znalezione oferty</h2></div>
     <span id="offerCount" class="counter"></span>
   </div>
-  <p class="section-intro">Oferty zostały oddzielone od katalogu modeli, aby łatwiej porównywać jednostki dostępne na rynku.</p>
+  <p class="section-intro">Oferty są osobnym działem i nie mieszają się z katalogiem modeli. Każda pozycja ma wyraźnie oznaczony materiał kadłuba.</p>
   <div id="offerCards" class="offer-grid"></div>
 </section>
 
-<section id="search" class="section">
+<section id="search" class="view section" data-view="search">
   <p class="eyebrow">03 · WYSZUKIWANIE</p>
   <h2>Wyszukiwarka klasycznych łodzi</h2>
-  <p class="section-intro">Filtry działają łącznie — można zawęzić wyniki jednocześnie według frazy, materiału i kraju.</p>
+  <p class="section-intro">Filtry działają łącznie. Po wybraniu „Drewno” pokazywane są wyłącznie oferty oznaczone jako drewniane.</p>
   <div class="filters">
     <label>Fraza<input id="query" placeholder="np. Riva, Snekke, Chris-Craft"></label>
     <label>Materiał<select id="material"><option value="">Każdy</option><option value="wood">Drewno</option><option value="fiberglass">Laminat</option></select></label>
@@ -73,13 +87,19 @@
   <div id="searchResults" class="offer-grid"></div>
 </section>
 
-<section id="book" class="section alternate book-section">
-  <p class="eyebrow">04 · KSIĘGA ZAŁOŻYCIELSKA</p>
-  <h2>Księga Założycielska — Wydanie I</h2>
-  <p>Dokument Stowarzyszenia w wersji PDF. Po dodaniu pliku do katalogu <strong>docs</strong> przycisk poniżej otworzy Księgę w nowej karcie.</p>
-  <div class="book-actions">
-    <a id="bookLink" class="button primary" href="docs/ksiega-zalozycielska-wydanie-i.pdf" target="_blank" rel="noopener">Otwórz Księgę PDF</a>
-    <a class="button" href="docs/ksiega-zalozycielska-wydanie-i.pdf" download>Pobierz PDF</a>
+<section id="book" class="view section alternate book-section" data-view="book">
+  <div class="book-cover">
+    <div class="book-emblem">⚓</div>
+    <p class="eyebrow">04 · KSIĘGA ZAŁOŻYCIELSKA</p>
+    <h2>Księga Założycielska — Wydanie I</h2>
+    <p>Księga została przekonwertowana do wersji internetowej, dzięki czemu otwiera się bez pobierania pliku i działa również na telefonie. Układ zachowuje podział na 34 strony.</p>
+    <div class="book-actions">
+      <a class="button primary" href="book.html" target="_blank" rel="noopener">Czytaj Księgę online</a>
+      <a class="button" href="book.html#page-1" target="_blank" rel="noopener">Otwórz od strony 1</a>
+    </div>
+  </div>
+  <div class="book-features">
+    <span>34 strony</span><span>wersja mobilna</span><span>bez problemu z PDF</span><span>granat · miedź · biel</span>
   </div>
 </section>
 </main>
@@ -91,6 +111,6 @@
 <script src="assets/js/data.js"></script>
 <script src="assets/js/catalog-full.js"></script>
 <script>if(window.PSKL_CATALOG)window.PSKL_DATA.models=window.PSKL_CATALOG;</script>
-<script src="assets/js/app.js"></script>
+<script src="assets/js/app.js?v=3"></script>
 </body>
 </html>
