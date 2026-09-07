@@ -6,6 +6,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 const materialLabel = m => m === 'wood' ? 'Drewno' : m === 'fiberglass' ? 'Laminat' : 'Inny';
 function pluralModels(n){if(n===1)return '1 model';if(n>=2&&n<=4)return `${n} modele`;return `${n} modeli`;}
 function pluralOffers(n){if(n===1)return '1 oferta';if(n>=2&&n<=4)return `${n} oferty`;return `${n} ofert`;}
+const slug=s=>norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 
 const IMG={
   riva:[
@@ -17,14 +18,30 @@ const IMG={
     'https://i.pinimg.com/736x/33/6d/9f/336d9f12cfaba4fd030e98089d1eba53.jpg'
   ],
   snekke:[
-    'https://images.boatsgroup.com/resize/1/23/94/2021-wood-traditional-coastal-motorboat-power-9882394-20250724030731064-1_XLARGE.jpg'
+    'https://baatplassen.no/i/uploads/monthly_2023_08/359_221750599.jpg.9a575e960c14bb7a6d47c344a3fb72cb.jpg'
+  ],
+  arendal:[
+    'https://baatplassen.no/i/uploads/monthly_2020_12/Skjermbilde_2020-12-21_kl._09_39_49.png.9fb73a96cb6079cd630390a8a8206ff5.png',
+    'https://images.finncdn.no/dynamic/default/item/41963799/d8a0269a-d510-4314-831b-d2a415e20f62'
+  ],
+  faerder:[
+    'https://smallboatsmonthly.com/wp-content/uploads/2015/02/Vesla-FS9-HvasserPS.jpg'
   ],
   storebro:[
     'https://classic-yachts.com/wp-content/uploads/2024/05/20240527_141627.jpg',
     'https://images.boatsgroup.com/resize/1/91/99/1968-storebro-34-power-9519199-20250417142953929-1_XLARGE.jpg'
   ],
-  boesch:[
-    'https://itboat.ams3.digitaloceanspaces.com/itboat/da8e/01e34t9dthx8hxc608hv3vgayy.jpg'
+  boesch510:[
+    'https://www.best-boats24.net/haendler/malibu/boote/111333/1.gr.jpg',
+    'https://images.boatsgroup.com/resize/1/78/24/1971-boesch-510-saint-tropez-power-10097824-20260302064843079-0.jpg'
+  ],
+  boesch580:[
+    'https://images.botenwebmanager.nl/b6c10cc7-c525-44f0-8cef-cd4af9244b3b_500.jpg',
+    'https://images.boats.com/resize/1/12/40/1967-boesch-580-power-10071240-20260202080300969-1.jpg'
+  ],
+  boesch590:[
+    'https://ea2xbj72fxx.exactdn.com/wp-content/uploads/2022/08/BOESCH-590-ACAPULCO0014-scaled.jpg',
+    'https://ea2xbj72fxx.exactdn.com/wp-content/uploads/2022/08/BOESCH-590-ACAPULCO0011-scaled.jpg?strip=all'
   ],
   century:['https://cdn.themarket.co.uk/f4659e77-5b9e-4619-9ed3-cc02ae2ba784/c8bf8ea9-2e87-4a0d-bfb6-dbfa711c3a5d.jpg?height=650&optimizer=image&width=900'],
   fairey:['https://images.sandemanyachtcompany.co.uk/uploads/boats/1170x600_163_119669699359c380e1b742f.JPG'],
@@ -36,26 +53,38 @@ const IMG={
 
 function galleryForModel(m){
   const t=norm(`${m.brand} ${m.model}`);
-  if(t.includes('riva')) return {images:IMG.riva,note:'Zdjęcia referencyjne Riva / Aquarama'};
-  if(t.includes('chris-craft')||t.includes('chris craft')) return {images:IMG.chris,note:'Zdjęcia referencyjne klasycznych Chris-Craft'};
-  if(t.includes('snekke')||t.includes('arendal')) return {images:IMG.snekke,note:'Zdjęcie referencyjne tradycyjnej łodzi typu snekke'};
-  if(t.includes('storebro')||t.includes('storö')||t.includes('storo')||t.includes('solö')||t.includes('solo')) return {images:IMG.storebro,note:'Zdjęcia referencyjne klasycznych Storebro'};
-  if(t.includes('boesch')) return {images:IMG.boesch,note:'Zdjęcie referencyjne klasycznego Boesch'};
-  if(t.includes('century')) return {images:IMG.century,note:'Zdjęcie referencyjne klasycznego Century'};
-  if(t.includes('fairey')) return {images:IMG.fairey,note:'Zdjęcie referencyjne klasycznego Fairey'};
-  if(t.includes('lyman')) return {images:IMG.lyman,note:'Zdjęcie referencyjne klasycznego Lyman'};
-  if(t.includes('gar wood')||t.includes('hacker')) return {images:IMG.garwood,note:'Zdjęcie referencyjne amerykańskiego mahoniowego runaboutu'};
-  if(t.includes('greavette')) return {images:IMG.greavette,note:'Zdjęcie referencyjne klasycznego Greavette'};
-  if(t.includes('shepherd')) return {images:IMG.shepherd,note:'Zdjęcie referencyjne klasycznego Shepherd'};
-  if(t.includes('pettersson')) return {images:IMG.storebro,note:'Zdjęcie referencyjne skandynawskiej klasycznej łodzi motorowej'};
-  return {images:IMG.riva,note:'Zdjęcie referencyjne klasycznej łodzi drewnianej'};
+  if(t.includes('boesch')&&t.includes('510')) return {images:IMG.boesch510,note:'Boesch 510 / St. Tropez'};
+  if(t.includes('boesch')&&t.includes('580')) return {images:IMG.boesch580,note:'Boesch 580'};
+  if(t.includes('boesch')&&t.includes('590')) return {images:IMG.boesch590,note:'Boesch 590 Acapulco'};
+  if(t.includes('faerder')||t.includes('færder')) return {images:IMG.faerder,note:'Færdersnekke — tradycyjna odmiana z Oslofjordu'};
+  if(t.includes('arendal')) return {images:IMG.arendal,note:'Arendalsnekke — zdjęcia referencyjne'};
+  if(t.includes('snekke')) return {images:IMG.snekke,note:'Tradycyjna norweska snekke'};
+  if(t.includes('riva')) return {images:IMG.riva,note:'Riva — zdjęcia referencyjne'};
+  if(t.includes('chris-craft')||t.includes('chris craft')) return {images:IMG.chris,note:'Klasyczne Chris-Craft'};
+  if(t.includes('storebro')||t.includes('storö')||t.includes('storo')||t.includes('solö')||t.includes('solo')) return {images:IMG.storebro,note:'Klasyczne Storebro'};
+  if(t.includes('century')) return {images:IMG.century,note:'Klasyczne Century'};
+  if(t.includes('fairey')) return {images:IMG.fairey,note:'Klasyczne Fairey'};
+  if(t.includes('lyman')) return {images:IMG.lyman,note:'Klasyczny Lyman'};
+  if(t.includes('gar wood')||t.includes('hacker')) return {images:IMG.garwood,note:'Amerykański mahoniowy runabout'};
+  if(t.includes('greavette')) return {images:IMG.greavette,note:'Klasyczny Greavette'};
+  if(t.includes('shepherd')) return {images:IMG.shepherd,note:'Klasyczny Shepherd'};
+  if(t.includes('pettersson')) return {images:IMG.storebro,note:'Skandynawska klasyczna łódź motorowa'};
+  return {images:IMG.riva,note:'Klasyczna łódź drewniana'};
 }
+
 function imageForOffer(o){
   if(o.image) return o.image;
   const t=norm(o.title);
+  if(t.includes('boesch 510')) return IMG.boesch510[0];
+  if(t.includes('boesch 580')) return IMG.boesch580[0];
+  if(t.includes('boesch 590')) return IMG.boesch590[0];
   if(t.includes('snekke')||t.includes('arendal')) return IMG.snekke[0];
   if(t.includes('storebro')||t.includes('storo')||t.includes('sol')) return IMG.storebro[0];
+  if(t.includes('century')) return IMG.century[0];
+  if(t.includes('shepherd')) return IMG.shepherd[0];
+  if(t.includes('lyman')) return IMG.lyman[0];
   if(t.includes('chris')) return IMG.chris[0];
+  if(t.includes('riva')) return IMG.riva[0];
   return IMG.riva[0];
 }
 function wireImageFallbacks(root=document){
@@ -94,7 +123,7 @@ function renderModelList(country){
   const list=models.filter(m=>m.country===country);
   $('#countryCards').style.display='grid';
   $('#catalogIntro').style.display='block';
-  $('#modelList').innerHTML=`<div class="model-list-screen"><div class="model-list-heading"><h3 class="model-country-title"><span class="flag">${list[0]?.flag||''}</span>${esc(country)}</h3><span>${pluralModels(list.length)}</span></div><p class="model-help">Wybierz model. Zdjęcia są dostępne dopiero po wejściu w konkretny model.</p><div class="model-select-grid">${list.map((m,i)=>`<button class="model-select-card" data-model-index="${i}"><span><small>${esc(m.brand)}</small><strong>${esc(m.model)}</strong></span><em>${esc(m.years)}</em><b>Zdjęcia i historia →</b></button>`).join('')}</div></div>`;
+  $('#modelList').innerHTML=`<div class="model-list-screen"><div class="model-list-heading"><h3 class="model-country-title"><span class="flag">${list[0]?.flag||''}</span>${esc(country)}</h3><span>${pluralModels(list.length)}</span></div><p class="model-help">Wybierz model lub typ. Zdjęcia i historia są dostępne po wejściu w pozycję.</p><div class="model-select-grid">${list.map((m,i)=>`<button class="model-select-card" data-model-index="${i}"><span><small>${esc(m.brand)}</small><strong>${esc(m.model)}</strong></span><em>${esc(m.years)}</em><b>Zdjęcia i historia →</b></button>`).join('')}</div></div>`;
   $$('[data-model-index]').forEach(b=>b.onclick=()=>renderModelDetail(list[Number(b.dataset.modelIndex)]));
 }
 function renderModelDetail(m){
@@ -102,11 +131,11 @@ function renderModelDetail(m){
   $('#countryCards').style.display='none';
   $('#catalogIntro').style.display='none';
   const thumbs=gallery.images.map((src,i)=>`<button class="model-thumb${i===0?' active':''}" data-gallery-src="${esc(src)}" aria-label="Zdjęcie ${i+1}"><img data-photo src="${esc(src)}" alt="${esc(m.brand)} ${esc(m.model)} — zdjęcie ${i+1}" referrerpolicy="no-referrer"></button>`).join('');
-  $('#modelList').innerHTML=`<article class="model-detail"><button class="model-back" id="modelBack">← Wstecz do listy modeli</button><div class="model-detail-grid"><div class="model-gallery"><div class="model-main-photo photo-shell"><div class="photo-fallback"><span>⚓</span><strong>${esc(m.brand)} ${esc(m.model)}</strong><small>Zdjęcie chwilowo niedostępne</small></div><img id="modelMainImage" data-photo src="${esc(gallery.images[0])}" alt="${esc(m.brand)} ${esc(m.model)}" loading="eager" referrerpolicy="no-referrer"></div>${gallery.images.length>1?`<div class="model-thumbs">${thumbs}</div>`:''}<small class="photo-note">${esc(gallery.note)}. Materiał ma charakter poglądowy i nie przedstawia konkretnego egzemplarza z katalogu.</small></div><div class="model-detail-copy"><p class="eyebrow">${m.flag} ${esc(m.country)} · ${esc(m.brand)}</p><h2>${esc(m.model)}</h2><dl><div><dt>Produkcja</dt><dd>${esc(m.years)}</dd></div><div><dt>Konstrukcja</dt><dd>${esc(m.construction)}</dd></div>${m.length?`<div><dt>Długość</dt><dd>${esc(m.length)} m</dd></div>`:''}</dl><h3>Historia i cechy modelu</h3><p>${esc(m.history)}</p></div></div></article>`;
+  $('#modelList').innerHTML=`<article class="model-detail"><button class="model-back" id="modelBack">← Wstecz do listy modeli</button><div class="model-detail-grid"><div class="model-gallery"><div class="model-main-photo photo-shell"><div class="photo-fallback"><span>⚓</span><strong>${esc(m.brand)} ${esc(m.model)}</strong><small>Zdjęcie chwilowo niedostępne</small></div><img id="modelMainImage" data-photo src="${esc(gallery.images[0])}" alt="${esc(m.brand)} ${esc(m.model)}" loading="eager" referrerpolicy="no-referrer"></div>${gallery.images.length>1?`<div class="model-thumbs">${thumbs}</div>`:''}<small class="photo-note">${esc(gallery.note)}. Materiał referencyjny — nie przedstawia konkretnego egzemplarza, chyba że opis mówi inaczej.</small></div><div class="model-detail-copy"><p class="eyebrow">${m.flag} ${esc(m.country)} · ${esc(m.brand)}</p><h2>${esc(m.model)}</h2><dl><div><dt>${esc(m.periodLabel||'Produkcja')}</dt><dd>${esc(m.years)}</dd></div><div><dt>Konstrukcja</dt><dd>${esc(m.construction)}</dd></div>${m.length?`<div><dt>Długość</dt><dd>${esc(m.length)} m</dd></div>`:''}</dl><h3>Historia i cechy</h3><p>${esc(m.history)}</p>${m.source?`<p class="source-link"><a href="${esc(m.source)}" target="_blank" rel="noopener">Źródło historyczne ↗</a></p>`:''}</div></div></article>`;
   $('#modelBack').onclick=()=>{renderModelList(currentCountry);window.scrollTo({top:0,behavior:'smooth'});};
   $$('.model-thumb').forEach(btn=>btn.onclick=()=>{
     $$('.model-thumb').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
-    const main=$('#modelMainImage'); main.style.display='block'; main.parentElement.classList.remove('photo-missing'); main.src=btn.dataset.gallerySrc;
+    const main=$('#modelMainImage');main.style.display='block';main.parentElement.classList.remove('photo-missing');main.src=btn.dataset.gallerySrc;
     wireImageFallbacks(main.parentElement);
   });
   wireImageFallbacks($('#modelList'));
@@ -115,7 +144,8 @@ function renderModelDetail(m){
 
 function offerCard(o){
   const img=imageForOffer(o);
-  return `<article class="offer-card"><div class="offer-photo photo-shell"><div class="photo-fallback"><span>⚓</span><strong>${esc(o.title)}</strong><small>Zdjęcie chwilowo niedostępne</small></div><img data-photo src="${esc(img)}" alt="${esc(o.title)}" loading="lazy" referrerpolicy="no-referrer"><span class="offer-photo-note">${esc(o.imageNote||'Zdjęcie poglądowe')}</span></div><div class="offer-body"><p class="eyebrow">${esc(o.source)} · ${esc(o.country)}</p><h3>${esc(o.title)}</h3><div class="tags"><span>${esc(o.year||'Rok niepodany')}</span><span>${materialLabel(o.material)}</span></div><strong class="price">${esc(o.price)}</strong><small>${esc(o.status)}</small></div></article>`;
+  const details=[o.length?`${Number(o.length).toFixed(2)} m`:null,o.engine||null,o.location||null].filter(Boolean);
+  return `<article class="offer-card"><div class="offer-photo photo-shell"><div class="photo-fallback"><span>⚓</span><strong>${esc(o.title)}</strong><small>Zdjęcie chwilowo niedostępne</small></div><img data-photo src="${esc(img)}" alt="${esc(o.title)}" loading="lazy" referrerpolicy="no-referrer"><span class="offer-photo-note">${esc(o.imageNote||'Zdjęcie poglądowe')}</span></div><div class="offer-body"><p class="eyebrow">${esc(o.source)} · ${esc(o.country)}</p><h3>${esc(o.title)}</h3><div class="tags"><span>${esc(o.year||'Rok niepodany')}</span><span>${materialLabel(o.material)}</span>${o.verifiedAt?`<span>sprawdzono ${esc(o.verifiedAt)}</span>`:''}</div>${details.length?`<p class="offer-details">${details.map(esc).join(' · ')}</p>`:''}<strong class="price">${esc(o.price)}</strong><small>${esc(o.status)}</small>${o.link?`<a class="offer-link" href="${esc(o.link)}" target="_blank" rel="noopener">Otwórz ofertę ↗</a>`:''}</div></article>`;
 }
 function renderOffers(){
   const unique=[...new Map(offers.map(o=>[`${norm(o.source)}|${norm(o.title)}|${o.price}`,o])).values()];
@@ -126,13 +156,61 @@ function renderOffers(){
 function populateCountries(){
   [...new Set([...models.map(m=>m.country),...offers.map(o=>o.country)])].sort().forEach(c=>$('#country').insertAdjacentHTML('beforeend',`<option>${esc(c)}</option>`));
 }
-function search(){
+
+const PORTALS=[
+  {id:'olx',name:'OLX',market:'Polska',domain:'olx.pl',wood:'łódź drewniana motorowa',url:q=>`https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-${slug(q)}/`},
+  {id:'allegro',name:'Allegro',market:'Polska',domain:'allegro.pl',wood:'łódź motorowa drewniana',url:q=>`https://allegro.pl/listing?string=${encodeURIComponent(q)}`},
+  {id:'finn',name:'FINN.no',market:'Norwegia',domain:'finn.no',wood:'snekke trebåt',url:q=>`https://www.finn.no/mobility/search/boat?query=${encodeURIComponent(q)}`},
+  {id:'blocket',name:'Blocket',market:'Szwecja',domain:'blocket.se',wood:'träbåt',url:q=>`https://www.blocket.se/mobility/search/boat?q=${encodeURIComponent(q)}`},
+  {id:'boat24',name:'Boat24',market:'Europa',domain:'boat24.com',wood:'wooden classic powerboat',url:q=>`https://www.google.com/search?q=${encodeURIComponent(`site:boat24.com/en/powerboats ${q}`)}`},
+  {id:'yachtworld',name:'YachtWorld',market:'Świat',domain:'yachtworld.com',wood:'wood antique classic',url:q=>`https://www.yachtworld.com/boats-for-sale/keyword-${slug(q)}/`},
+  {id:'aba',name:'Antique Boat America',market:'USA / Kanada',domain:'antiqueboatamerica.com',wood:'wooden classic boat',url:q=>`https://www.google.com/search?q=${encodeURIComponent(`site:antiqueboatamerica.com/Boat ${q}`)}`},
+  {id:'cbc',name:'Classic Boat Collective',market:'USA / Kanada',domain:'classicboatcollective.com',wood:'wooden classic boat',url:q=>`https://www.google.com/search?q=${encodeURIComponent(`site:classicboatcollective.com/listing ${q}`)}`}
+];
+
+function renderPortalChecks(){
+  const box=$('#portalChecks');
+  if(!box)return;
+  box.innerHTML=PORTALS.map(p=>`<label class="portal-check"><input type="checkbox" value="${p.id}" checked><span><b>${p.name}</b><small>${p.market}</small></span></label>`).join('');
+}
+function buildPortalQuery(p){
+  const q=$('#query').value.trim();
+  const material=$('#material').value;
+  const country=$('#country').value;
+  const parts=[];
+  if(q) parts.push(q);
+  if(material==='wood') parts.push(p.wood);
+  if(material==='fiberglass') parts.push(p.id==='blocket'?'glasfiberbåt':p.id==='finn'?'glassfiber båt':'fiberglass boat');
+  if(country && !norm(p.market).includes(norm(country))) parts.push(country);
+  if(!parts.length) parts.push('classic boat');
+  return parts.join(' ');
+}
+function renderLiveSearch(){
+  const selected=new Set($$('#portalChecks input:checked').map(x=>x.value));
+  const chosen=PORTALS.filter(p=>selected.has(p.id));
+  const target=$('#liveSearchLinks');
+  if(!chosen.length){target.innerHTML='<p class="empty">Wybierz co najmniej jeden portal.</p>';return;}
+  target.innerHTML=`<div class="live-search-head"><div><strong>Aktualne wyszukiwanie w portalach</strong><small>Każdy przycisk otwiera bieżące wyniki w danym serwisie.</small></div><span>${chosen.length} portali</span></div><div class="portal-results">${chosen.map(p=>{const q=buildPortalQuery(p);return `<a class="portal-result" href="${esc(p.url(q))}" target="_blank" rel="noopener"><span><b>${p.name}</b><small>${esc(p.domain)} · ${esc(p.market)}</small></span><em>${esc(q)}</em><strong>Szukaj teraz ↗</strong></a>`}).join('')}</div>`;
+}
+function searchLocal(){
   const q=norm($('#query').value),material=$('#material').value,country=$('#country').value;
-  const result=offers.filter(o=>(!material||o.material===material)&&(!country||o.country===country)&&(!q||norm(`${o.title} ${o.source} ${o.country}`).includes(q)));
-  $('#searchSummary').textContent=`Znaleziono: ${pluralOffers(result.length)}`;
-  $('#searchResults').innerHTML=result.length?result.map(offerCard).join(''):'<p class="empty">Brak ofert spełniających wszystkie wybrane kryteria.</p>';
+  const result=offers.filter(o=>(!material||o.material===material)&&(!country||o.country===country)&&(!q||norm(`${o.title} ${o.source} ${o.country} ${o.engine||''} ${o.location||''}`).includes(q)));
+  $('#searchSummary').textContent=`Baza ofert zweryfikowanych: ${pluralOffers(result.length)}. Ostatnie sprawdzenie: 07.09.2026.`;
+  $('#searchResults').innerHTML=result.length?result.map(offerCard).join(''):'<p class="empty">Brak zapisanych ofert spełniających filtry. Poniżej nadal można uruchomić wyszukiwanie na żywo w wybranych portalach.</p>';
   wireImageFallbacks($('#searchResults'));
 }
-['query','material','country'].forEach(id=>document.addEventListener('input',e=>e.target.id===id&&search()));
+function runSearch(){
+  searchLocal();
+  renderLiveSearch();
+  $('#liveSearchPanel')?.classList.add('ready');
+  document.querySelector('#liveSearchPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+$('#searchNow')?.addEventListener('click',runSearch);
 $('#menuButton').onclick=()=>$('#nav').classList.toggle('open');
-renderCountries();renderOffers();populateCountries();search();route(location.hash.slice(1)||'home',false);
+renderPortalChecks();
+renderCountries();
+renderOffers();
+populateCountries();
+searchLocal();
+route(location.hash.slice(1)||'home',false);
