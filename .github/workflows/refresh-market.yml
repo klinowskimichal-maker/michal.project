@@ -2,6 +2,11 @@ name: Odśwież rynek łodzi
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/refresh_market.py'
+      - '.github/workflows/refresh-market.yml'
   schedule:
     - cron: '17 */6 * * *'
 
