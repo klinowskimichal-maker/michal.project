@@ -6,7 +6,7 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;',
 const materialLabel = m => m === 'wood' ? 'Drewno' : m === 'fiberglass' ? 'Laminat' : 'Inny';
 function pluralModels(n){if(n===1)return '1 model';if(n>=2&&n<=4)return `${n} modele`;return `${n} modeli`;}
 function pluralOffers(n){if(n===1)return '1 oferta';if(n>=2&&n<=4)return `${n} oferty`;return `${n} ofert`;}
-const slug=s=>norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const slug=s=>norm(s).replace(/ł/g,'l').replace(/ø/g,'o').replace(/æ/g,'ae').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 
 const IMG={
   riva:[
@@ -159,7 +159,7 @@ function populateCountries(){
 
 const PORTALS=[
   {id:'olx',name:'OLX',market:'Polska',domain:'olx.pl',wood:'łódź drewniana motorowa',url:q=>`https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-${slug(q)}/`},
-  {id:'allegro',name:'Allegro',market:'Polska',domain:'allegro.pl',wood:'łódź motorowa drewniana',url:q=>`https://allegro.pl/listing?string=${encodeURIComponent(q)}`},
+  {id:'allegro',name:'Allegro',market:'Polska',domain:'allegro.pl',wood:'łódź motorowa drewniana',url:q=>`https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=${encodeURIComponent(q)}`},
   {id:'finn',name:'FINN.no',market:'Norwegia',domain:'finn.no',wood:'snekke trebåt',url:q=>`https://www.finn.no/mobility/search/boat?query=${encodeURIComponent(q)}`},
   {id:'blocket',name:'Blocket',market:'Szwecja',domain:'blocket.se',wood:'träbåt',url:q=>`https://www.blocket.se/mobility/search/boat?q=${encodeURIComponent(q)}`},
   {id:'boat24',name:'Boat24',market:'Europa',domain:'boat24.com',wood:'wooden classic powerboat',url:q=>`https://www.google.com/search?q=${encodeURIComponent(`site:boat24.com/en/powerboats ${q}`)}`},
