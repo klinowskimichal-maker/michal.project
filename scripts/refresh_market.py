@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 OUT = Path(__file__).resolve().parents[1] / 'assets' / 'data' / 'market-live.json'
-UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.36 PSKL-Market-Index/1.1'
+UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.36 PSKL-Market-Index/1.2'
 SESSION = requests.Session()
 SESSION.headers.update({'User-Agent': UA, 'Accept-Language': 'pl,en;q=0.8,no;q=0.7,sv;q=0.6'})
 
@@ -47,7 +47,17 @@ PORTALS = [
 ]
 
 WOOD_WORDS = ('wood','wooden','mahogany','timber','drewn','mahon','trä','trebåt','trebat','klink','clinker','plank')
-CLASSIC_WORDS = ('riva','boesch','storebro','storö','storo','snekke','chris craft','chris-craft','century','lyman','gar wood','hacker','greavette','shepherd','fairey','pettersson')
+# Curated families/models whose classic construction is sufficiently specific to classify
+# without relying on generic search-page context. Broad brand words such as just "Riva"
+# or just "Snekke" are deliberately excluded.
+WOOD_MODEL_WORDS = (
+    'aquarama','super aquarama','tritone','ariston','riva junior','monte carlo superfast',
+    'chris craft barrel','chris-craft barrel','chris craft riviera','chris-craft riviera',
+    'chris craft continental','chris-craft continental','chris craft sportsman','chris-craft sportsman',
+    'lyman cruisette','lyman sportsman','lyman runabout','gar wood','hacker craft','hacker-craft',
+    'greavette','shepherd','fairey huntsman','fairey swordsman','pettersson',
+    'boesch 510','boesch 580','boesch 590','storebro solö','storebro solo','solö ruff','solo ruff'
+)
 
 
 def norm(s):
@@ -97,7 +107,6 @@ def image_from(anchor):
 
 
 def offer_signal(anchor):
-    """Text that belongs to the listing itself, not to the whole result page."""
     bits = [anchor.get_text(' ', strip=True), anchor.get('title'), anchor.get('aria-label')]
     img = anchor.find('img')
     if img:
@@ -123,19 +132,14 @@ def collect(portal, label, query):
             continue
         signal_low = signal.lower()
         wood_evidence = any(w in signal_low for w in WOOD_WORDS)
-        classic_evidence = any(w in signal_low for w in CLASSIC_WORDS)
+        model_evidence = any(w in signal_low for w in WOOD_MODEL_WORDS)
         signal_year = year_from(signal_low)
 
-        # Strict wood filter: the evidence must come from this listing itself.
-        # Classic wooden families are allowed when the listing names the family/model;
-        # modern (>1989) results need explicit wood wording.
-        if label == 'wood':
-            if not wood_evidence and not classic_evidence:
-                continue
-            if classic_evidence and not wood_evidence and signal_year and signal_year > 1989:
-                continue
+        # Strict material rule: query text and neighbouring search results never count.
+        # Accept only explicit material wording or a curated, specific wooden model/family.
+        if label == 'wood' and not (wood_evidence or model_evidence):
+            continue
 
-        # Wider nearby text is used only for price/details, never to decide material.
         parent = a.parent
         txt = signal
         for _ in range(2):
@@ -154,7 +158,7 @@ def collect(portal, label, query):
             'title': signal[:180],
             'year': signal_year or year_from(txt.lower()),
             'material': 'wood' if label == 'wood' else 'unknown',
-            'materialConfidence': 'tekst oferty' if wood_evidence else 'model klasyczny',
+            'materialConfidence': 'tekst oferty' if wood_evidence else 'konkretny model drewniany',
             'price': price_from(txt),
             'status': 'Automatyczny odczyt — otworzyć i potwierdzić',
             'verifiedAt': datetime.now(timezone.utc).date().isoformat(),
@@ -186,8 +190,7 @@ def main():
 
     dedup={}
     for x in all_items:
-        key=x['link'].rstrip('/').lower()
-        dedup[key]=x
+        dedup[x['link'].rstrip('/').lower()] = x
 
     payload={
         'updatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),
