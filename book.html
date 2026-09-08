@@ -1,8 +1,25 @@
-<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#061b2b"><title>Księga Założycielska — Wydanie I</title><style>html,body{margin:0;min-height:100%;background:#061b2b;color:#fff;font-family:Arial,sans-serif}.loading{min-height:100vh;display:grid;place-items:center;text-align:center;padding:30px}.loading strong{color:#d4a06e;font:700 22px Georgia,serif}.loading small{display:block;margin-top:10px;color:#bdc7cd;max-width:420px;line-height:1.5}.back{display:inline-block;margin-top:18px;color:#d4a06e;text-decoration:none}.spin{width:34px;height:34px;margin:0 auto 18px;border:3px solid #264657;border-top-color:#d4a06e;border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}</style></head><body><div class="loading" id="loading"><div><div class="spin"></div><strong>⚓ Księga Założycielska</strong><small>Otwieranie 34-stronicowego dokumentu PSKŁ…</small></div></div><script src="assets/js/bookv12-1.js?v=18"></script><script src="assets/js/bookv12-2.js?v=18"></script><script src="assets/js/bookv12-3.js?v=18"></script><script src="assets/js/bookv12-4.js?v=18"></script><script src="assets/js/bookv12-5.js?v=18"></script><script>
-function bytesFrom64(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
-async function nativeGunzip(u){if(!('DecompressionStream' in window))throw new Error('no native gzip');const ds=new DecompressionStream('gzip');return await new Response(new Blob([u]).stream().pipeThrough(ds)).text()}
-function loadPako(){return new Promise((res,rej)=>{if(window.pako)return res();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
-async function fallbackGunzip(u){await loadPako();return window.pako.ungzip(u,{to:'string'})}
-function prepare(html){html=html.replace(/<img[^>]+src=["']book\d+\.png["'][^>]*>/gi,'');html=html.replace('</head>',`<style>body{background:#d9d3ca!important;margin:0!important}div[id^="page"]{background:#fff!important;margin:18px auto!important;box-shadow:0 8px 28px rgba(0,0,0,.2);max-width:100%;overflow:hidden} @media(max-width:920px){div[id^="page"]{transform-origin:top left;zoom:min(1,calc(100vw / 910));margin:8px auto!important}}</style></head>`);return html}
-(async()=>{try{const payload=window.PSKL_BOOK_DATA||'';if(!payload)throw new Error('Brak danych Księgi');const u=bytesFrom64(payload);let html;try{html=await nativeGunzip(u)}catch(e){html=await fallbackGunzip(u)};html=prepare(html);document.open();document.write(html);document.close()}catch(e){console.error(e);document.getElementById('loading').innerHTML='<div><strong>Nie udało się otworzyć Księgi.</strong><small>Dokument jest poprawny, ale ta przeglądarka zablokowała mechanizm wyświetlania. Odśwież stronę lub otwórz ją w Chrome.</small><a class="back" href="index.html#book">← Powrót do PSKŁ</a></div>'}})();
-</script></body></html>
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#061b2b">
+<meta http-equiv="refresh" content="1;url=https://www.canva.com/d/I4cb7uW9TF60b6T/">
+<title>Księga Założycielska — Wydanie I</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#061b2b;color:#fff;font-family:Arial,sans-serif}body{display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);padding:34px 26px;border:1px solid #b98b60;border-radius:18px;background:linear-gradient(180deg,#0b3147,#061b2b);box-shadow:0 24px 70px rgba(0,0,0,.35);text-align:center}.anchor{font-size:46px}.eyebrow{margin:14px 0 7px;color:#d4a06e;font-weight:700;letter-spacing:.12em;font-size:12px}.card h1{margin:0;font:700 clamp(28px,6vw,44px)/1.08 Georgia,serif;color:#f1d0a5}.card p{margin:16px auto;max-width:480px;color:#c7d2d8;line-height:1.6}.button{display:inline-block;margin:8px 5px;padding:13px 18px;border:1px solid #d4a06e;border-radius:10px;background:#b8793f;color:#fff;text-decoration:none;font-weight:700}.button.secondary{background:transparent;color:#e7bd8e}.note{display:block;margin-top:16px;color:#8fa3ae;font-size:12px}
+</style>
+</head>
+<body>
+<main class="card">
+<div class="anchor">⚓</div>
+<p class="eyebrow">PSKŁ · EST. 2026 · SZCZECIN</p>
+<h1>Księga Założycielska</h1>
+<p>Wydanie I · 34 strony. Otwieranie publicznej, pełnej wersji Księgi z zachowaniem oryginalnych zdjęć, grafiki i układu.</p>
+<a class="button" href="https://www.canva.com/d/I4cb7uW9TF60b6T/">Otwórz Księgę</a>
+<a class="button secondary" href="index.html#book">Wróć do PSKŁ</a>
+<span class="note">Jeżeli przekierowanie nie nastąpi automatycznie, użyj przycisku „Otwórz Księgę”.</span>
+</main>
+<script>setTimeout(()=>{location.replace('https://www.canva.com/d/I4cb7uW9TF60b6T/')},350);</script>
+</body>
+</html>
