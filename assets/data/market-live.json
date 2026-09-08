@@ -1,189 +1,13 @@
 {
-  "updatedAt": "2026-09-08T00:41:18Z",
+  "updatedAt": "2026-09-08T05:34:00Z",
   "offers": [
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 17 Betalt plassering Bella Falcon 26 til høstpris. 2006 ∙ 26 fot ∙ Diesel ∙ Innenbords ∙ 30 knop ∙ 200 hk 290",
-      "year": 2006,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/475567304",
-      "image": "https://images.finncdn.no/dynamic/default/item/475567304/05ad19a0-3d70-486f-9005-dc64c95c56be",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "drewniana łódź motorowa klasyczna",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/472585535",
-      "image": "https://images.finncdn.no/dynamic/default/item/472585535/101cff5f-9161-4db8-b892-2bd57c4a1965",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/475862645",
-      "image": "https://images.finncdn.no/dynamic/default/item/475862645/370e0dbe-0e51-4a79-80a6-1290f7426e4f",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/475862979",
-      "image": "https://images.finncdn.no/dynamic/default/item/475862979/1738dff9-9de2-4482-8480-151c6f563451",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/475862797",
-      "image": "https://images.finncdn.no/dynamic/default/item/475862797/ed38b38a-e7e7-4bf6-b159-9a49722bdaf1",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/472586232",
-      "image": "https://images.finncdn.no/dynamic/default/item/472586232/e11e0296-69fe-423d-a334-1a4ab37540ee",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/475862456",
-      "image": "https://images.finncdn.no/dynamic/default/item/475862456/a5b10a8f-086c-404d-a713-cb18d18db20b",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/399027008",
-      "image": "https://images.finncdn.no/dynamic/default/5b/5b36a8cb-03a0-445f-b8b8-c0da5849a969",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 8 Betalt plassering Marex 330 Scandinavia 2022 – Topputstyrt, oppgradert og velholdt 2022 ∙ 35 fot ∙ Diesel ∙",
-      "year": 2022,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/475475985",
-      "image": "https://images.finncdn.no/dynamic/default/item/475475985/436688f4-819a-46f0-9961-072530ac647f",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "snekke trebåt",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 17 Betalt plassering Fram 23 fot 1984 ∙ 23 fot ∙ Diesel ∙ Innenbords ∙ 20 knop ∙ 77 hk 70 000 kr Verdal Priva",
-      "year": 1984,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/474258039",
-      "image": "https://images.finncdn.no/dynamic/default/item/474258039/dd114249-c4bb-4ccd-bffd-716b1dc5fbe6",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "live": true
-    },
-    {
-      "source": "FINN",
-      "country": "Norwegia",
-      "title": "Pil til venstre Pil til høyre Bilde 1 av 24 Betalt plassering Silver Star Cabin 650 M/Suzuki DF 150/ MYE utstyr / Fraktfritt Levert! 2007 ∙ 22 fot ∙ B",
-      "year": 2007,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://www.finn.no/mobility/item/475799596",
-      "image": "https://images.finncdn.no/dynamic/default/item/475799596/9a90b40f-a0a1-4d70-a58d-801be3bcaa54",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1976 27′ Riva Monte Carlo Superfast by Mark Krzyzanowski | May 3, 2025 1969 27′ Riva Super Aquarama by Mark Krzyzanowski | Apr 22, 2026 1959 26′ Riva ",
+      "title": "1976 27′ Riva Monte Carlo Superfast",
       "year": 1976,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -196,10 +20,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1976 27′ Riva Monte Carlo Superfast by Mark Krzyzanowski | May 3, 2025 1969 27′ Riva Super Aquarama by Mark Krzyzanowski | Apr 22, 2026 1959 26′ Riva ",
-      "year": 1976,
+      "title": "1969 27′ Riva Super Aquarama",
+      "year": 1969,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -212,10 +36,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1976 27′ Riva Monte Carlo Superfast by Mark Krzyzanowski | May 3, 2025 1969 27′ Riva Super Aquarama by Mark Krzyzanowski | Apr 22, 2026 1959 26′ Riva ",
-      "year": 1976,
+      "title": "1959 26′ Riva Tritone",
+      "year": 1959,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -228,10 +52,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1976 27′ Riva Monte Carlo Superfast by Mark Krzyzanowski | May 3, 2025 1969 27′ Riva Super Aquarama by Mark Krzyzanowski | Apr 22, 2026 1959 26′ Riva ",
-      "year": 1976,
+      "title": "1986 31′ Riva St Tropez",
+      "year": 1986,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -244,10 +68,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Spor",
+      "title": "1970 26′ Lyman Cruisette",
       "year": 1970,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -260,10 +84,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Spor",
-      "year": 1970,
+      "title": "1967 26′ Lyman Cruisette Hard Top",
+      "year": 1967,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -276,10 +100,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Spor",
-      "year": 1970,
+      "title": "1967 30′ Lyman Sportsman",
+      "year": 1967,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -292,26 +116,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Spor",
-      "year": 1970,
+      "title": "1939 19′ Chris Craft Barrel Back",
+      "year": 1939,
       "material": "wood",
-      "materialConfidence": "zapytanie/model",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://classicboatcollective.com/listing/1991-24-chris-craft-up-swept-triple-cockpit-runabout/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2025/03/jpg17.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Spor",
-      "year": 1970,
-      "material": "wood",
-      "materialConfidence": "zapytanie/model",
+      "materialConfidence": "model klasyczny",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -327,25 +135,25 @@
       "portal": "FINN",
       "query": "drewniana łódź motorowa klasyczna",
       "url": "https://www.finn.no/mobility/search/boat?query=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna",
-      "found": 8
+      "found": 0
     },
     {
       "portal": "FINN",
       "query": "snekke trebåt",
       "url": "https://www.finn.no/mobility/search/boat?query=snekke%20treb%C3%A5t",
-      "found": 8
+      "found": 0
     },
     {
       "portal": "FINN",
       "query": "Riva Boesch Storebro classic wooden boat",
       "url": "https://www.finn.no/mobility/search/boat?query=Riva%20Boesch%20Storebro%20classic%20wooden%20boat",
-      "found": 8
+      "found": 0
     },
     {
       "portal": "FINN",
       "query": "Chris Craft Century Lyman wooden classic boat",
       "url": "https://www.finn.no/mobility/search/boat?query=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat",
-      "found": 8
+      "found": 0
     },
     {
       "portal": "Blocket",
@@ -417,14 +225,14 @@
       "portal": "Classic Boat Collective",
       "query": "Chris Craft Century Lyman wooden classic boat",
       "url": "https://classicboatcollective.com/?s=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat",
-      "found": 5
+      "found": 4
     }
   ],
   "errors": [
     {
       "portal": "OLX",
       "query": "drewniana łódź motorowa klasyczna",
-      "error": "403 Client Error: Forbidden for url: https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-drewniana-odz-motorowa-klasyczna/"
+      "error": "403 Client Error: Forbidden for url: https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-drewniana-lodz-motorowa-klasyczna/"
     },
     {
       "portal": "OLX",
@@ -444,7 +252,7 @@
     {
       "portal": "Allegro",
       "query": "drewniana łódź motorowa klasyczna",
-      "error": "HTTPSConnectionPool(host='allegro.pl', port=443): Read timed out. (read timeout=25)"
+      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna"
     },
     {
       "portal": "Allegro",
@@ -484,7 +292,7 @@
     {
       "portal": "YachtWorld",
       "query": "drewniana łódź motorowa klasyczna",
-      "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-drewniana-odz-motorowa-klasyczna/"
+      "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-drewniana-lodz-motorowa-klasyczna/"
     },
     {
       "portal": "YachtWorld",
@@ -502,5 +310,5 @@
       "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-chris-craft-century-lyman-wooden-classic-boat/"
     }
   ],
-  "notice": "Automatyczny indeks pomocniczy. Każdą ofertę należy potwierdzić w portalu źródłowym."
+  "notice": "Automatyczny indeks pomocniczy z rygorystycznym filtrem materiału. Każdą ofertę należy potwierdzić w portalu źródłowym."
 }
