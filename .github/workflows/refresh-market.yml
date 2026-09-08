@@ -37,5 +37,6 @@ jobs:
             echo "Brak zmian"
           else
             git commit -m "Automatyczne odświeżenie rynku łodzi"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
