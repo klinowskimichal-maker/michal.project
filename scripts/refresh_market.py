@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 OUT = Path(__file__).resolve().parents[1] / 'assets' / 'data' / 'market-live.json'
-UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.36 PSKL-Market-Index/1.2'
+UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.36 PSKL-Market-Index/1.3'
 SESSION = requests.Session()
 SESSION.headers.update({'User-Agent': UA, 'Accept-Language': 'pl,en;q=0.8,no;q=0.7,sv;q=0.6'})
 
@@ -47,9 +47,6 @@ PORTALS = [
 ]
 
 WOOD_WORDS = ('wood','wooden','mahogany','timber','drewn','mahon','trä','trebåt','trebat','klink','clinker','plank')
-# Curated families/models whose classic construction is sufficiently specific to classify
-# without relying on generic search-page context. Broad brand words such as just "Riva"
-# or just "Snekke" are deliberately excluded.
 WOOD_MODEL_WORDS = (
     'aquarama','super aquarama','tritone','ariston','riva junior','monte carlo superfast',
     'chris craft barrel','chris-craft barrel','chris craft riviera','chris-craft riviera',
@@ -58,6 +55,15 @@ WOOD_MODEL_WORDS = (
     'greavette','shepherd','fairey huntsman','fairey swordsman','pettersson',
     'boesch 510','boesch 580','boesch 590','storebro solö','storebro solo','solö ruff','solo ruff'
 )
+ENGINE_WORDS = ('Volvo Penta','Volvo','MerCruiser','Chris-Craft','Crusader','Marstal','Ford','Hercules','Chrysler','Gray Marine','Gray','Parsons','GM','Yanmar','Perkins','Beta Marine')
+EQUIPMENT_WORDS = {
+    'trailer': ('trailer','przyczep'),
+    'cover': ('cover','pokrow'),
+    'documentation': ('documentation','documents','history','dokument','historia'),
+    'restored': ('restored','restoration','renovated','renovation','refit','odrestaurow','renowac'),
+    'original': ('original','oryginal','matching numbers','matching-number'),
+    'project': ('project boat','projekt','do renowacji','needs restoration','needs repair','wymaga napraw'),
+}
 
 
 def norm(s):
@@ -78,8 +84,8 @@ def year_from(text):
 
 def price_from(text):
     patterns = [
-        r'(?<!\d)(\d[\d\s.,]{2,})\s?(PLN|zł|NOK|SEK|EUR|€|USD|\$)',
-        r'(PLN|NOK|SEK|EUR|USD)\s?(\d[\d\s.,]{2,})',
+        r'(?<!\d)(\d[\d\s.,]{2,})\s?(PLN|zł|NOK|SEK|EUR|€|USD|\$|GBP|£|CAD)',
+        r'(PLN|NOK|SEK|EUR|USD|GBP|CAD)\s?(\d[\d\s.,]{2,})',
     ]
     for pat in patterns:
         m = re.search(pat, text, re.I)
@@ -89,6 +95,25 @@ def price_from(text):
                 return norm(f'{a} {b}')
             return norm(f'{b} {a}')
     return 'Cena w ogłoszeniu'
+
+
+def engine_from(text):
+    low = text.lower()
+    for brand in ENGINE_WORDS:
+        idx = low.find(brand.lower())
+        if idx >= 0:
+            frag = norm(text[idx:idx+100])
+            return frag[:100]
+    return ''
+
+
+def equipment_from(text):
+    low = text.lower()
+    found=[]
+    for label, words in EQUIPMENT_WORDS.items():
+        if any(w in low for w in words):
+            found.append(label)
+    return found
 
 
 def image_from(anchor):
@@ -135,8 +160,6 @@ def collect(portal, label, query):
         model_evidence = any(w in signal_low for w in WOOD_MODEL_WORDS)
         signal_year = year_from(signal_low)
 
-        # Strict material rule: query text and neighbouring search results never count.
-        # Accept only explicit material wording or a curated, specific wooden model/family.
         if label == 'wood' and not (wood_evidence or model_evidence):
             continue
 
@@ -160,6 +183,9 @@ def collect(portal, label, query):
             'material': 'wood' if label == 'wood' else 'unknown',
             'materialConfidence': 'tekst oferty' if wood_evidence else 'konkretny model drewniany',
             'price': price_from(txt),
+            'engine': engine_from(txt),
+            'equipment': equipment_from(txt),
+            'description': txt[:700],
             'status': 'Automatyczny odczyt — otworzyć i potwierdzić',
             'verifiedAt': datetime.now(timezone.utc).date().isoformat(),
             'link': href,
