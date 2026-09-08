@@ -1,0 +1,32 @@
+name: Zbuduj statyczną Księgę
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build_book_static.py'
+      - 'assets/js/bookv12-*.js'
+      - '.github/workflows/build-book-static.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Zbuduj gotowy plik Księgi
+        run: python scripts/build_book_static.py
+      - name: Zapisz gotową Księgę
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add book.html
+          if git diff --cached --quiet; then
+            echo "Brak zmian"
+          else
+            git commit -m "Build static 34-page Founder Charter"
+            git push
+          fi
