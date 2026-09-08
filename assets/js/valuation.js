@@ -2,37 +2,37 @@
 'use strict';
 const norm=s=>(s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-// Orientacyjne wewnętrzne widełki PSKŁ w EUR. Nie są profesjonalną wyceną ani bieżącym indeksem transakcyjnym.
-// Zakresy są celowo szerokie i służą wyłącznie lokalnemu doradcy do kwalifikacji ofert.
+// Wewnętrzne, orientacyjne widełki PSKŁ w EUR. Używa ich wyłącznie lokalny ekspert.
+// To heurystyka kwalifikacyjna, nie profesjonalna wycena ani indeks transakcyjny.
 const BANDS={
-  'riva aquarama':[150000,450000],'riva super aquarama':[220000,600000],'riva aquarama special':[300000,800000],
-  'riva ariston':[60000,180000],'riva olympic':[40000,120000],'riva junior':[25000,70000],'riva florida':[35000,100000],
-  'riva tritone':[120000,350000],'riva monte carlo superfast':[100000,300000],
-  'chris-craft barrel back':[50000,150000],'chris craft barrel back':[50000,150000],'chris-craft riviera':[25000,80000],
-  'chris-craft capri':[20000,70000],'chris-craft cobra':[35000,100000],'chris-craft u-22 sportsman':[20000,60000],
-  'chris-craft continental':[20000,55000],'century resorter':[15000,45000],'century coronado':[20000,60000],
-  'gar wood triple cockpit':[80000,300000],'hacker-craft triple cockpit':[100000,400000],
-  'lyman 18':[12000,35000],'lyman cruisette':[12000,45000],'lyman sportsman':[15000,55000],
-  'greavette streamliner':[30000,100000],'shepherd 22':[30000,90000],
-  'pettersson':[15000,60000],'storebro solö ruff':[15000,45000],'storebro solo ruff':[15000,45000],
-  'storebro royal cruiser i':[20000,70000],'storö i':[20000,70000],'storo i':[20000,70000],
-  'arendal snekke':[8000,30000],'sørlandssnekke':[5000,25000],'snekke':[5000,30000],'færdersnekke':[8000,30000],
-  'boesch 510':[30000,80000],'boesch 580':[50000,130000],'boesch 590':[60000,150000],
-  'fairey huntress':[30000,70000],'fairey huntsman':[40000,100000],'fairey swordsman':[60000,150000]
+  'riva aquarama':[450000,750000],'riva super aquarama':[500000,850000],'riva aquarama special':[650000,950000],
+  'riva ariston':[70000,190000],'riva olympic':[45000,130000],'riva junior':[25000,75000],'riva florida':[40000,110000],
+  'riva tritone':[120000,350000],'riva monte carlo superfast':[110000,320000],
+  'chris-craft barrel back':[35000,130000],'chris craft barrel back':[35000,130000],'chris-craft riviera':[25000,85000],
+  'chris-craft capri':[22000,60000],'chris-craft cobra':[60000,350000],'chris-craft u-22 sportsman':[18000,60000],
+  'chris-craft continental':[18000,60000],'century resorter':[8000,45000],'century coronado':[18000,65000],
+  'gar wood triple cockpit':[70000,300000],'hacker-craft triple cockpit':[90000,400000],
+  'lyman 18':[8000,30000],'lyman cruisette':[10000,45000],'lyman sportsman':[12000,50000],
+  'greavette streamliner':[25000,100000],'shepherd 22':[25000,90000],
+  'pettersson':[12000,60000],'storebro solö ruff':[12000,35000],'storebro solo ruff':[12000,35000],
+  'storebro royal cruiser i':[18000,65000],'storö i':[18000,65000],'storo i':[18000,65000],
+  'arendal snekke':[7000,28000],'sørlandssnekke':[5000,24000],'snekke':[5000,30000],'færdersnekke':[7000,28000],
+  'boesch 510':[25000,50000],'boesch 580':[45000,90000],'boesch 590':[55000,130000],
+  'fairey huntress':[28000,70000],'fairey huntsman':[35000,100000],'fairey swordsman':[55000,150000]
 };
 const FAMILY={
-  'riva':[60000,260000],'chris-craft':[18000,90000],'chris craft':[18000,90000],'century':[15000,55000],
-  'gar wood':[50000,220000],'hacker':[70000,280000],'lyman':[10000,45000],'greavette':[25000,90000],
-  'shepherd':[25000,80000],'storebro':[12000,60000],'boesch':[30000,130000],'fairey':[30000,120000],
-  'snekke':[5000,30000],'pettersson':[12000,55000]
+  'riva':[60000,300000],'chris-craft':[15000,90000],'chris craft':[15000,90000],'century':[8000,55000],
+  'gar wood':[50000,220000],'hacker':[70000,280000],'lyman':[8000,45000],'greavette':[22000,90000],
+  'shepherd':[22000,80000],'storebro':[10000,60000],'boesch':[25000,120000],'fairey':[28000,120000],
+  'snekke':[5000,30000],'pettersson':[10000,55000]
 };
-// Stałe kursy orientacyjne używane tylko przez lokalny algorytm. Nie są pokazywane jako kursy finansowe.
+// Stałe kursy orientacyjne służą wyłącznie do lokalnego porównania ceny.
 const FX={EUR:1,'€':1,USD:.86,'$':.86,GBP:1.15,'£':1.15,NOK:.086,SEK:.091,PLN:.235,'ZŁ':.235,CAD:.62};
 const models=()=>window.PSKL_DATA?.models||window.PSKL_CATALOG||[];
 function parsePrice(raw){
   const s=String(raw||'').replace(/\u00a0/g,' ').trim();
   if(!s||!/\d/.test(s)||/cena w ogłoszeniu|price on request|por|zapytaj/i.test(s))return null;
-  let cur=Object.keys(FX).find(c=>new RegExp(c.replace('$','\\$').replace('€','€').replace('£','£'),'i').test(s));
+  let cur=Object.keys(FX).find(c=>new RegExp(c.replace('$','\\$'),'i').test(s));
   if(!cur){if(/\bkr\b/i.test(s))cur='SEK';else return null;}
   const m=s.match(/\d[\d\s.,]*/);if(!m)return null;
   let num=m[0].replace(/\s/g,'');
@@ -68,7 +68,7 @@ function adjustedBand(o,m){let [low,high]=baseBand(o,m);let mult=1;const why=[];
 function evaluate(o){const m=findModel(o),band=adjustedBand(o,m),price=parsePrice(o?.price),reasons=[],risks=[];let score=52;
   if(m){score+=10;reasons.push(`dopasowano ${m.brand} ${m.model}`);score+=(Number(m.difficulty||3)-3)*4;score+=(Number(m.popularity||3)-3)*3}else risks.push('model nie został jednoznacznie dopasowany');
   if(o?.material==='wood'){score+=7;reasons.push('potwierdzone/zaklasyfikowane drewno')}else risks.push('materiał wymaga potwierdzenia');
-  if(band.engineState==='match'){score+=6;reasons.push('napęd zgodny z typową rodziną')}else if(band.engineState==='different'){score-=7;risks.push('napęd może być nieoryginalny') }else risks.push('brak pewnych danych silnika');
+  if(band.engineState==='match'){score+=6;reasons.push('napęd zgodny z typową rodziną')}else if(band.engineState==='different'){score-=7;risks.push('napęd może być nieoryginalny')}else risks.push('brak pewnych danych silnika');
   score+=band.signals.pos.length*2;score-=band.signals.neg.length*8;reasons.push(...band.signals.pos);risks.push(...band.signals.neg);
   let pricePosition='unknown',priceText='Cena nie została odczytana — brak oceny opłacalności cenowej.';
   if(price){if(price.eur<band.low*.78){pricePosition='very_low';score+=5;priceText='Cena jest wyraźnie poniżej wewnętrznego zakresu PSKŁ — może to być okazja, ale też sygnał ukrytych prac.'}
@@ -80,5 +80,5 @@ function evaluate(o){const m=findModel(o),band=adjustedBand(o,m),price=parsePric
   score=clamp(Math.round(score),20,95);const verdict=score>=82?'BARDZO CIEKAWA':score>=72?'WARTA UWAGI':score>=60?'CIEKAWA, ALE DO SPRAWDZENIA':score>=48?'TYLKO PO DOKŁADNEJ WERYFIKACJI':'RACZEJ ODPUSZCZAĆ';
   return{o,m,band,price,score,verdict,pricePosition,priceText,reasons:[...new Set(reasons)],risks:[...new Set(risks)]};
 }
-window.PSKL_VALUATION={evaluate,findModel,parsePrice,adjustedBand,version:'1.0-free'};
+window.PSKL_VALUATION={evaluate,findModel,parsePrice,adjustedBand,version:'1.1-free'};
 })();
