@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-08T05:34:00Z",
+  "updatedAt": "2026-09-08T05:36:07Z",
   "offers": [
     {
       "source": "Classic Boat Collective",
@@ -7,7 +7,7 @@
       "title": "1976 27′ Riva Monte Carlo Superfast",
       "year": 1976,
       "material": "wood",
-      "materialConfidence": "model klasyczny",
+      "materialConfidence": "konkretny model drewniany",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -23,7 +23,7 @@
       "title": "1969 27′ Riva Super Aquarama",
       "year": 1969,
       "material": "wood",
-      "materialConfidence": "model klasyczny",
+      "materialConfidence": "konkretny model drewniany",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -39,7 +39,7 @@
       "title": "1959 26′ Riva Tritone",
       "year": 1959,
       "material": "wood",
-      "materialConfidence": "model klasyczny",
+      "materialConfidence": "konkretny model drewniany",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -52,26 +52,10 @@
     {
       "source": "Classic Boat Collective",
       "country": "USA / Kanada",
-      "title": "1986 31′ Riva St Tropez",
-      "year": 1986,
-      "material": "wood",
-      "materialConfidence": "model klasyczny",
-      "price": "Cena w ogłoszeniu",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-08",
-      "link": "https://classicboatcollective.com/listing/1986-31-riva-st-tropez/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2024/10/DJ1.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
       "title": "1970 26′ Lyman Cruisette",
       "year": 1970,
       "material": "wood",
-      "materialConfidence": "model klasyczny",
+      "materialConfidence": "konkretny model drewniany",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -87,7 +71,7 @@
       "title": "1967 26′ Lyman Cruisette Hard Top",
       "year": 1967,
       "material": "wood",
-      "materialConfidence": "model klasyczny",
+      "materialConfidence": "konkretny model drewniany",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -103,7 +87,7 @@
       "title": "1967 30′ Lyman Sportsman",
       "year": 1967,
       "material": "wood",
-      "materialConfidence": "model klasyczny",
+      "materialConfidence": "konkretny model drewniany",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -119,7 +103,7 @@
       "title": "1939 19′ Chris Craft Barrel Back",
       "year": 1939,
       "material": "wood",
-      "materialConfidence": "model klasyczny",
+      "materialConfidence": "konkretny model drewniany",
       "price": "Cena w ogłoszeniu",
       "status": "Automatyczny odczyt — otworzyć i potwierdzić",
       "verifiedAt": "2026-09-08",
@@ -219,7 +203,7 @@
       "portal": "Classic Boat Collective",
       "query": "Riva Boesch Storebro classic wooden boat",
       "url": "https://classicboatcollective.com/?s=Riva%20Boesch%20Storebro%20classic%20wooden%20boat",
-      "found": 4
+      "found": 3
     },
     {
       "portal": "Classic Boat Collective",
@@ -257,7 +241,7 @@
     {
       "portal": "Allegro",
       "query": "snekke trebåt",
-      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=snekke%20treb%C3%A5t"
+      "error": "HTTPSConnectionPool(host='allegro.pl', port=443): Read timed out. (read timeout=25)"
     },
     {
       "portal": "Allegro",
