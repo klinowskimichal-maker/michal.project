@@ -97,18 +97,21 @@ function initSearchButton(){
   const old=$('#searchNow');if(!old)return;
   const fresh=old.cloneNode(true);old.replaceWith(fresh);
   fresh.addEventListener('click',()=>renderSearchResults(true));
-  ['#query','#material','#country'].forEach(sel=>$(sel)?.addEventListener('input',()=>{if(hasSearched)renderSearchResults(false)}));
+  $('#query')?.addEventListener('input',()=>{if(hasSearched)renderSearchResults(false)});
   ['#material','#country'].forEach(sel=>$(sel)?.addEventListener('change',()=>{if(hasSearched)renderSearchResults(false)}));
 }
-function cleanLegacySearch(){
-  $$('.portal-block,.live-search-panel').forEach(x=>x.remove());
+function resetSearchPrompt(){
   const box=$('#searchResults');if(box)box.innerHTML='';
   const s=$('#searchSummary');if(s)s.textContent='Ustaw kryteria i naciśnij „SZUKAJ”.';
 }
+function cleanLegacySearch(){
+  $$('.portal-block,.live-search-panel').forEach(x=>x.remove());
+  resetSearchPrompt();
+}
 function observeMarketRefresh(){
-  const box=$('#offerCards');if(box)new MutationObserver(()=>{if(!paintingOffers)requestAnimationFrame(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);});}).observe(box,{childList:true});
-  setTimeout(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);},1200);
-  setTimeout(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);},3200);
+  const box=$('#offerCards');if(box)new MutationObserver(()=>{if(!paintingOffers)requestAnimationFrame(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();});}).observe(box,{childList:true});
+  setTimeout(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();},1200);
+  setTimeout(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();},3200);
 }
 cleanLegacySearch();initSearchButton();renderOffersWorkspace();observeMarketRefresh();
 window.PSKL_TRACKED_OFFERS={list:currentTracked,add:addTracked,remove:removeTracked,render:renderOffersWorkspace};
