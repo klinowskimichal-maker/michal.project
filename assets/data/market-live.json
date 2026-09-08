@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-08T08:49:11Z",
+  "updatedAt": "2026-09-08T12:38:12Z",
   "offers": [
     {
       "source": "Classic Boat Collective",
@@ -262,7 +262,7 @@
     {
       "portal": "Allegro",
       "query": "snekke trebåt",
-      "error": "HTTPSConnectionPool(host='allegro.pl', port=443): Read timed out. (read timeout=25)"
+      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=snekke%20treb%C3%A5t"
     },
     {
       "portal": "Allegro",
