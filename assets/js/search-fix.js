@@ -2,6 +2,13 @@
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const norm=s=>(s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const slug=s=>norm(s).replace(/ł/g,'l').replace(/ø/g,'o').replace(/æ/g,'ae').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+/* Filtr Drewno ma obejmować cały rynek drewnianych łodzi, bez faworyzowania snekke ani jednej marki. */
+try{
+  const broadWood={finn:'trebåt',blocket:'träbåt',boat24:'wooden boat',yachtworld:'wooden boat',aba:'wooden boat',cbc:'wooden boat'};
+  PORTALS.forEach(p=>{if(broadWood[p.id])p.wood=broadWood[p.id];});
+}catch(e){}
+
 function localMatches(){const offers=window.PSKL_DATA?.offers||[];const q=norm($('#query')?.value),material=$('#material')?.value||'',country=$('#country')?.value||'';return offers.filter(o=>(!material||o.material===material)&&(!country||o.country===country)&&(!q||norm(`${o.title} ${o.source} ${o.country} ${o.engine||''} ${o.location||''}`).includes(q)));}
 function termFor(name){
   const q=$('#query')?.value.trim()||'';
@@ -36,7 +43,7 @@ function patchLinks(){
   });
   const n=localMatches().length;const summary=$('#searchSummary');if(summary)summary.innerHTML=`<strong>Wcześniej zapisane oferty w bazie PSKŁ: ${n}</strong> · Ta liczba nie opisuje całego rynku. Pełne bieżące wyniki są otwierane bezpośrednio w wybranych portalach powyżej.`;
 }
-function arrange(){const panel=$('#liveSearchPanel'),button=$('#searchNow'),summary=$('#searchSummary');if(panel&&button&&panel.previousElementSibling!==button)button.insertAdjacentElement('afterend',panel);const mh=panel?.querySelector('.mini-heading');if(mh){const s=mh.querySelector('span'),small=mh.querySelector('small');if(s)s.textContent='PEŁNE AKTUALNE WYNIKI W PORTALACH';if(small)small.textContent='Drewno = wszystkie drewniane łodzie; wpisana marka lub model tylko zawęża wyniki';}if(summary)summary.classList.add('verified-db-summary');}
+function arrange(){const panel=$('#liveSearchPanel'),button=$('#searchNow'),summary=$('#searchSummary');if(panel&&button&&panel.previousElementSibling!==button)button.insertAdjacentElement('afterend',panel);const mh=panel?.querySelector('.mini-heading');if(mh){const s=mh.querySelector('span'),small=mh.querySelector('small');if(s)s.textContent='PEŁNE AKTUALNE WYNIKI W PORTALACH';if(small)small.textContent='Drewno = wszystkie drewniane łodzie; marka lub model tylko opcjonalnie zawęża wyniki';}if(summary)summary.classList.add('verified-db-summary');}
 const live=$('#liveSearchLinks');if(live)new MutationObserver(()=>{arrange();patchLinks();}).observe(live,{childList:true,subtree:true});
 arrange();$('#searchNow')?.addEventListener('click',()=>setTimeout(()=>{arrange();patchLinks();},0));
 })();
