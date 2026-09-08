@@ -1,0 +1,23 @@
+/* Unified PSKL search + tracked offers */
+.search-results-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:28px 0 12px}
+.search-results-heading strong{font-size:15px}
+#searchSummary{padding:14px 16px;background:#fff;border:1px solid var(--line);line-height:1.5}
+.pskl-watch-control{display:flex;align-items:center;gap:10px;margin:0 0 14px;padding:10px 11px;border:1px solid #d8cbbd;background:#fbf8f2;cursor:pointer;user-select:none}
+.pskl-watch-control input{position:absolute;opacity:0;pointer-events:none}
+.watch-box{width:24px;height:24px;display:grid;place-items:center;border:1px solid #9f8a76;background:white;color:transparent;font:700 16px Arial;flex:0 0 24px}
+.pskl-watch-control.saved{border-color:var(--copper);background:#fff6ed}
+.pskl-watch-control.saved .watch-box{background:var(--copper);border-color:var(--copper);color:#12202b}
+.watch-copy{display:flex;flex-direction:column;gap:2px}
+.watch-copy b{font:700 11px Arial;letter-spacing:.45px;text-transform:uppercase;color:#263846}
+.watch-copy small{font:10px Arial;color:#74808a}
+.tracked-panel{margin:24px 0 34px;padding:18px;border:1px solid #cdb9a3;background:rgba(255,255,255,.55)}
+.tracked-panel .mini-heading{margin-bottom:14px}
+.tracked-empty{margin:0;padding:18px;background:#fff8;border:1px dashed #cdb9a3;color:#65717a}
+.tracked-status-note{display:block;margin-top:10px;padding:8px 10px;background:#f3eee7;border-left:3px solid #a58b73;color:#6a5b50!important}
+.market-subheading{margin:12px 0 14px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.market-subheading strong{font:700 11px Arial;letter-spacing:1.2px;text-transform:uppercase;color:#5a6770}
+#pskl-watch-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:12000;opacity:0;pointer-events:none;padding:12px 16px;background:#061b2b;color:white;border:1px solid #b97943;box-shadow:0 12px 30px #0004;font:700 12px Arial;transition:.22s}
+#pskl-watch-toast.show{opacity:1;transform:translate(-50%,0)}
+/* The 10-second parrot flies right-to-left; flip its body so it faces the direction of travel. */
+#pskl-scene-layer .scene-parrot{scale:-1 1}
+@media(max-width:760px){.tracked-panel{padding:12px}.pskl-watch-control{padding:9px}.market-subheading{align-items:flex-start;flex-direction:column}#pskl-watch-toast{width:calc(100% - 32px);text-align:center}}
