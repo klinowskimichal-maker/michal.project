@@ -8,7 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 OUT = Path(__file__).resolve().parents[1] / 'assets' / 'data' / 'market-live.json'
-UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.36 PSKL-Market-Index/1.0'
+UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.36 PSKL-Market-Index/1.1'
 SESSION = requests.Session()
 SESSION.headers.update({'User-Agent': UA, 'Accept-Language': 'pl,en;q=0.8,no;q=0.7,sv;q=0.6'})
 
@@ -49,18 +49,22 @@ PORTALS = [
 WOOD_WORDS = ('wood','wooden','mahogany','timber','drewn','mahon','trä','trebåt','trebat','klink','clinker','plank')
 CLASSIC_WORDS = ('riva','boesch','storebro','storö','storo','snekke','chris craft','chris-craft','century','lyman','gar wood','hacker','greavette','shepherd','fairey','pettersson')
 
+
 def norm(s):
     return re.sub(r'\s+', ' ', (s or '')).strip()
 
+
 def slug(s):
     import unicodedata
-    s = unicodedata.normalize('NFKD', s.lower()).encode('ascii', 'ignore').decode('ascii')
-    s = s.replace('ł','l').replace('ø','o').replace('æ','ae')
+    s = s.lower().replace('ł','l').replace('ø','o').replace('æ','ae')
+    s = unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode('ascii')
     return re.sub(r'[^a-z0-9]+', '-', s).strip('-')
+
 
 def year_from(text):
     m = re.search(r'\b(19[0-9]{2}|20[0-2][0-9])\b', text)
     return int(m.group(1)) if m else None
+
 
 def price_from(text):
     patterns = [
@@ -71,14 +75,17 @@ def price_from(text):
         m = re.search(pat, text, re.I)
         if m:
             a,b = m.groups()
-            if re.search(r'\d', a): return norm(f'{a} {b}')
+            if re.search(r'\d', a):
+                return norm(f'{a} {b}')
             return norm(f'{b} {a}')
     return 'Cena w ogłoszeniu'
+
 
 def image_from(anchor):
     parent = anchor
     for _ in range(4):
-        if not parent: break
+        if not parent:
+            break
         img = parent.find('img') if hasattr(parent, 'find') else None
         if img:
             for key in ('src','data-src','data-lazy-src'):
@@ -88,49 +95,85 @@ def image_from(anchor):
         parent = getattr(parent, 'parent', None)
     return None
 
+
+def offer_signal(anchor):
+    """Text that belongs to the listing itself, not to the whole result page."""
+    bits = [anchor.get_text(' ', strip=True), anchor.get('title'), anchor.get('aria-label')]
+    img = anchor.find('img')
+    if img:
+        bits.extend([img.get('alt'), img.get('title')])
+    return norm(' '.join(x for x in bits if x))
+
+
 def collect(portal, label, query):
     url = portal['url'](query)
     r = SESSION.get(url, timeout=25, allow_redirects=True)
     r.raise_for_status()
     soup = BeautifulSoup(r.text, 'html.parser')
-    items=[]; seen=set()
+    items=[]
+    seen=set()
+
     for a in soup.find_all('a', href=True):
-        href = urljoin(portal['base'], a.get('href'))
-        href = href.split('#')[0]
+        href = urljoin(portal['base'], a.get('href')).split('#')[0]
         if not portal['match'](href) or href in seen:
             continue
-        title = norm(a.get_text(' ', strip=True))
-        parent = a.parent
-        txt = title
-        for _ in range(3):
-            if parent is None: break
-            candidate = norm(parent.get_text(' ', strip=True))
-            if len(candidate) > len(txt): txt = candidate
-            if len(txt) > 450: break
-            parent = parent.parent
-        title = title if len(title) >= 8 else txt[:150]
-        if len(title) < 8: continue
-        low = (title + ' ' + txt).lower()
-        positive = any(w in low for w in WOOD_WORDS) or any(w in low for w in CLASSIC_WORDS)
-        if label == 'wood' and not positive:
+
+        signal = offer_signal(a)
+        if len(signal) < 8:
             continue
+        signal_low = signal.lower()
+        wood_evidence = any(w in signal_low for w in WOOD_WORDS)
+        classic_evidence = any(w in signal_low for w in CLASSIC_WORDS)
+        signal_year = year_from(signal_low)
+
+        # Strict wood filter: the evidence must come from this listing itself.
+        # Classic wooden families are allowed when the listing names the family/model;
+        # modern (>1989) results need explicit wood wording.
+        if label == 'wood':
+            if not wood_evidence and not classic_evidence:
+                continue
+            if classic_evidence and not wood_evidence and signal_year and signal_year > 1989:
+                continue
+
+        # Wider nearby text is used only for price/details, never to decide material.
+        parent = a.parent
+        txt = signal
+        for _ in range(2):
+            if parent is None:
+                break
+            candidate = norm(parent.get_text(' ', strip=True))
+            if len(candidate) > len(txt) and len(candidate) <= 700:
+                txt = candidate
+            parent = parent.parent
+
         seen.add(href)
         image = image_from(a)
         items.append({
-            'source': portal['name'], 'country': portal['country'], 'title': title[:180],
-            'year': year_from(low), 'material': 'wood' if label=='wood' else 'unknown',
-            'materialConfidence': 'tekst/model' if any(w in low for w in WOOD_WORDS) else 'zapytanie/model',
-            'price': price_from(txt), 'status': 'Automatyczny odczyt — otworzyć i potwierdzić',
+            'source': portal['name'],
+            'country': portal['country'],
+            'title': signal[:180],
+            'year': signal_year or year_from(txt.lower()),
+            'material': 'wood' if label == 'wood' else 'unknown',
+            'materialConfidence': 'tekst oferty' if wood_evidence else 'model klasyczny',
+            'price': price_from(txt),
+            'status': 'Automatyczny odczyt — otworzyć i potwierdzić',
             'verifiedAt': datetime.now(timezone.utc).date().isoformat(),
-            'link': href, 'image': image,
-            'imageNote': 'Zdjęcie z wyniku portalu' if image else 'Zdjęcie poglądowe',
-            'query': query, 'live': True,
+            'link': href,
+            'image': image,
+            'imageNote': 'Zdjęcie z wyniku portalu' if image else 'Brak zdjęcia w indeksie',
+            'query': query,
+            'live': True,
         })
-        if len(items) >= 8: break
+        if len(items) >= 8:
+            break
+
     return items, url
 
+
 def main():
-    all_items=[]; errors=[]; searches=[]
+    all_items=[]
+    errors=[]
+    searches=[]
     for p in PORTALS:
         for label,q in QUERIES:
             try:
@@ -140,20 +183,23 @@ def main():
             except Exception as e:
                 errors.append({'portal':p['name'],'query':q,'error':str(e)[:240]})
             time.sleep(0.7)
+
     dedup={}
     for x in all_items:
         key=x['link'].rstrip('/').lower()
         dedup[key]=x
+
     payload={
         'updatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds').replace('+00:00','Z'),
         'offers': list(dedup.values()),
         'searches': searches,
         'errors': errors,
-        'notice': 'Automatyczny indeks pomocniczy. Każdą ofertę należy potwierdzić w portalu źródłowym.'
+        'notice': 'Automatyczny indeks pomocniczy z rygorystycznym filtrem materiału. Każdą ofertę należy potwierdzić w portalu źródłowym.'
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f"Wrote {len(payload['offers'])} offers; {len(errors)} search errors -> {OUT}")
+
 
 if __name__ == '__main__':
     main()
