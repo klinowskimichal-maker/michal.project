@@ -11,7 +11,7 @@ function polishPanel(){
   if(buttons[1])buttons[1].textContent='Analiza modelu';
   if(buttons[2])buttons[2].textContent='Ocena oferty';
   if(buttons[3])buttons[3].textContent='Skala PSKŁ';
-  const note=panel.querySelector('.pskl-ai-note span');if(note)note.textContent='Lokalny ekspert PSKŁ · analiza danych katalogowych i ofert';
+  const note=panel.querySelector('.pskl-ai-note span');if(note)note.textContent='Analiza danych katalogowych i ofert PSKŁ';
 }
 function polishGreeting(node){
   if(!node?.classList?.contains('pirate-auto-greeting'))return;
@@ -20,11 +20,11 @@ function polishGreeting(node){
 new MutationObserver(m=>{for(const r of m)for(const n of r.addedNodes){if(n.nodeType===1){polishGreeting(n);n.querySelectorAll?.('.pirate-auto-greeting').forEach(polishGreeting);}}polishPanel();}).observe(document.body,{childList:true,subtree:true});
 setTimeout(polishPanel,100);setTimeout(polishPanel,1200);
 
-/* Aktualne, profesjonalne objaśnienie wyszukiwania — bez ręcznego wyboru portali. */
+/* Aktualne objaśnienie wyszukiwania — bez ręcznego wyboru portali. */
 document.addEventListener('submit',e=>{
   const form=e.target.closest?.('.pskl-chat-form');if(!form)return;
   const ta=form.querySelector('textarea'),q=(ta?.value||'').trim();
-  if(!/wyszuk|szukaj|filtr|ofert/i.test(q))return;
+  if(!/wyszuk|szukaj|filtr|gdzie.*szuk|jak.*szuk/i.test(q))return;
   const panel=$('#pskl-repair-chat');if(!panel)return;
   e.preventDefault();e.stopImmediatePropagation();
   ta.value='';
