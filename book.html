@@ -2,24 +2,219 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#061b2b">
-<meta http-equiv="refresh" content="1;url=https://www.canva.com/d/gwKrErlJBx7Qcgc">
-<title>Księga Założycielska — Wydanie I</title>
+<title>Księga Założycielska - Wydanie I | PSKŁ</title>
+<meta name="description" content="Księga Założycielska PSKŁ - Wydanie I, 34 strony. Własny czytnik Polskiego Stowarzyszenia Klasycznych i Zabytkowych Łodzi.">
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#061b2b;color:#fff;font-family:Arial,sans-serif}body{display:grid;place-items:center;padding:24px}.card{width:min(620px,100%);padding:34px 26px;border:1px solid #b98b60;border-radius:18px;background:linear-gradient(180deg,#0b3147,#061b2b);box-shadow:0 24px 70px rgba(0,0,0,.35);text-align:center}.anchor{font-size:46px}.eyebrow{margin:14px 0 7px;color:#d4a06e;font-weight:700;letter-spacing:.12em;font-size:12px}.card h1{margin:0;font:700 clamp(28px,6vw,44px)/1.08 Georgia,serif;color:#f1d0a5}.card p{margin:16px auto;max-width:480px;color:#c7d2d8;line-height:1.6}.button{display:inline-block;margin:8px 5px;padding:13px 18px;border:1px solid #d4a06e;border-radius:10px;background:#b8793f;color:#fff;text-decoration:none;font-weight:700}.button.secondary{background:transparent;color:#e7bd8e}.note{display:block;margin-top:16px;color:#8fa3ae;font-size:12px}
+:root{--navy:#061b2b;--navy2:#0b3147;--copper:#b8793f;--brass:#d4a06e;--paper:#f5f1e8;--page-w:892px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--navy)}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy) 43%,#03131f 100%);color:#fff;font-family:Arial,Helvetica,sans-serif}
+.toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:9px;min-height:58px;padding:9px max(10px,env(safe-area-inset-left));border-bottom:1px solid rgba(212,160,110,.55);background:rgba(4,23,35,.94);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.24)}
+.back,.ctrl{border:1px solid rgba(212,160,110,.7);background:#0b3147;color:#f3d3aa;border-radius:9px;padding:9px 11px;text-decoration:none;font-weight:700;cursor:pointer;white-space:nowrap}
+.back:hover,.ctrl:hover{background:#124662}
+.title{min-width:0;flex:1}
+.title strong{display:block;color:#f3d3aa;font:700 15px/1.2 Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title small{display:block;margin-top:3px;color:#9eb0ba;font-size:10px;letter-spacing:.09em}
+.pagebox{display:flex;align-items:center;gap:5px;color:#d4a06e;font-weight:700;font-size:12px;white-space:nowrap}
+.pagebox input{width:48px;border:1px solid rgba(212,160,110,.55);border-radius:7px;background:#041a28;color:#fff;padding:7px 5px;text-align:center;font-weight:700}
+.stage{width:100%;overflow-x:auto;padding:24px 10px 80px;scrollbar-color:#b8793f #061b2b}
+.reader{display:flex;flex-direction:column;align-items:center;gap:28px;min-width:100%}
+.sheet{width:min(var(--page-w),calc(100vw - 24px));margin:0;position:relative;border-radius:4px;background:white;box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 1px rgba(212,160,110,.48);overflow:hidden;transition:width .2s ease,box-shadow .2s ease}
+.sheet img{display:block;width:100%;height:auto;background:white}
+.sheet figcaption{position:absolute;right:10px;bottom:8px;padding:4px 7px;border-radius:5px;background:rgba(4,23,35,.82);color:#eac28e;font-size:9px;font-weight:700;letter-spacing:.08em;opacity:.1;transition:opacity .2s}
+.sheet:hover figcaption,.sheet.current figcaption{opacity:.9}
+.sheet.current{box-shadow:0 22px 65px rgba(0,0,0,.52),0 0 0 2px rgba(212,160,110,.75)}
+.intro{max-width:892px;margin:22px auto 0;padding:0 14px;color:#c6d3d9;text-align:center;line-height:1.55;font-size:13px}
+.intro b{color:#efc692}
+.fab{position:fixed;right:14px;bottom:16px;z-index:40;border:1px solid #d4a06e;border-radius:999px;background:rgba(4,23,35,.94);color:#f3d3aa;width:46px;height:46px;font-size:20px;box-shadow:0 10px 30px rgba(0,0,0,.32);cursor:pointer}
+@media(max-width:680px){
+ .toolbar{gap:6px;min-height:54px;padding:7px 6px}
+ .back{font-size:0;padding:9px 10px}.back::after{content:'←';font-size:17px}
+ .ctrl{padding:8px 9px}
+ .title strong{font-size:12px}.title small{display:none}
+ .pagebox{font-size:10px}.pagebox input{width:40px;padding:6px 3px}
+ .stage{padding:14px 6px 70px}
+ .reader{gap:17px}
+ .sheet{width:calc(100vw - 14px);border-radius:2px}
+}
+@media print{.toolbar,.intro,.fab,figcaption{display:none!important}.stage{padding:0}.reader{gap:0}.sheet{width:100%;box-shadow:none;break-after:page;border:0}}
 </style>
 </head>
 <body>
-<main class="card">
-<div class="anchor">⚓</div>
-<p class="eyebrow">PSKŁ · EST. 2026 · SZCZECIN</p>
-<h1>Księga Założycielska</h1>
-<p>Wydanie I · 34 strony. Otwieranie publicznej, pełnej wersji Księgi z zachowaniem oryginalnych zdjęć, grafiki i układu.</p>
-<a class="button" href="https://www.canva.com/d/gwKrErlJBx7Qcgc">Otwórz Księgę</a>
-<a class="button secondary" href="index.html#book">Wróć do PSKŁ</a>
-<span class="note">Jeżeli przekierowanie nie nastąpi automatycznie, użyj przycisku „Otwórz Księgę”.</span>
-</main>
-<script>setTimeout(()=>{location.replace('https://www.canva.com/d/gwKrErlJBx7Qcgc')},350);</script>
+<nav class="toolbar" aria-label="Nawigacja Księgi">
+  <a class="back" href="index.html#book">← PSKŁ</a>
+  <div class="title"><strong>Księga Założycielska - Wydanie I</strong><small>PSKŁ · SZCZECIN · 2026 · 34 STRONY</small></div>
+  <button class="ctrl" id="prev" type="button" aria-label="Poprzednia strona">‹</button>
+  <div class="pagebox"><input id="pageInput" type="number" min="1" max="34" value="1" aria-label="Numer strony"><span>/ 34</span></div>
+  <button class="ctrl" id="next" type="button" aria-label="Następna strona">›</button>
+  <button class="ctrl" id="zoomOut" type="button" aria-label="Pomniejsz">−</button>
+  <button class="ctrl" id="zoomIn" type="button" aria-label="Powiększ">+</button>
+</nav>
+<p class="intro"><b>Księga Założycielska</b> przedstawia misję, wartości, cele, strukturę i kierunek rozwoju Stowarzyszenia. Poniżej znajduje się pełne Wydanie I w 34 stronach, wyświetlane bezpośrednio przez PSKŁ.</p>
+<main class="stage" id="stage"><div class="reader" id="reader">
+<figure class="sheet" id="page-1" data-page="1">
+          <img src="assets/book/page-01.png" alt="Księga Założycielska - strona 1 z 34" loading="eager" fetchpriority="high" decoding="async">
+          <figcaption>STRONA 1 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-2" data-page="2">
+          <img src="assets/book/page-02.png" alt="Księga Założycielska - strona 2 z 34" loading="eager" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 2 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-3" data-page="3">
+          <img src="assets/book/page-03.png" alt="Księga Założycielska - strona 3 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 3 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-4" data-page="4">
+          <img src="assets/book/page-04.png" alt="Księga Założycielska - strona 4 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 4 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-5" data-page="5">
+          <img src="assets/book/page-05.png" alt="Księga Założycielska - strona 5 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 5 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-6" data-page="6">
+          <img src="assets/book/page-06.png" alt="Księga Założycielska - strona 6 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 6 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-7" data-page="7">
+          <img src="assets/book/page-07.png" alt="Księga Założycielska - strona 7 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 7 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-8" data-page="8">
+          <img src="assets/book/page-08.png" alt="Księga Założycielska - strona 8 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 8 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-9" data-page="9">
+          <img src="assets/book/page-09.png" alt="Księga Założycielska - strona 9 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 9 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-10" data-page="10">
+          <img src="assets/book/page-10.png" alt="Księga Założycielska - strona 10 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 10 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-11" data-page="11">
+          <img src="assets/book/page-11.png" alt="Księga Założycielska - strona 11 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 11 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-12" data-page="12">
+          <img src="assets/book/page-12.png" alt="Księga Założycielska - strona 12 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 12 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-13" data-page="13">
+          <img src="assets/book/page-13.png" alt="Księga Założycielska - strona 13 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 13 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-14" data-page="14">
+          <img src="assets/book/page-14.png" alt="Księga Założycielska - strona 14 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 14 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-15" data-page="15">
+          <img src="assets/book/page-15.png" alt="Księga Założycielska - strona 15 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 15 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-16" data-page="16">
+          <img src="assets/book/page-16.png" alt="Księga Założycielska - strona 16 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 16 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-17" data-page="17">
+          <img src="assets/book/page-17.png" alt="Księga Założycielska - strona 17 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 17 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-18" data-page="18">
+          <img src="assets/book/page-18.png" alt="Księga Założycielska - strona 18 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 18 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-19" data-page="19">
+          <img src="assets/book/page-19.png" alt="Księga Założycielska - strona 19 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 19 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-20" data-page="20">
+          <img src="assets/book/page-20.png" alt="Księga Założycielska - strona 20 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 20 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-21" data-page="21">
+          <img src="assets/book/page-21.png" alt="Księga Założycielska - strona 21 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 21 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-22" data-page="22">
+          <img src="assets/book/page-22.png" alt="Księga Założycielska - strona 22 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 22 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-23" data-page="23">
+          <img src="assets/book/page-23.png" alt="Księga Założycielska - strona 23 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 23 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-24" data-page="24">
+          <img src="assets/book/page-24.png" alt="Księga Założycielska - strona 24 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 24 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-25" data-page="25">
+          <img src="assets/book/page-25.png" alt="Księga Założycielska - strona 25 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 25 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-26" data-page="26">
+          <img src="assets/book/page-26.png" alt="Księga Założycielska - strona 26 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 26 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-27" data-page="27">
+          <img src="assets/book/page-27.png" alt="Księga Założycielska - strona 27 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 27 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-28" data-page="28">
+          <img src="assets/book/page-28.png" alt="Księga Założycielska - strona 28 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 28 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-29" data-page="29">
+          <img src="assets/book/page-29.png" alt="Księga Założycielska - strona 29 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 29 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-30" data-page="30">
+          <img src="assets/book/page-30.png" alt="Księga Założycielska - strona 30 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 30 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-31" data-page="31">
+          <img src="assets/book/page-31.png" alt="Księga Założycielska - strona 31 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 31 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-32" data-page="32">
+          <img src="assets/book/page-32.png" alt="Księga Założycielska - strona 32 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 32 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-33" data-page="33">
+          <img src="assets/book/page-33.png" alt="Księga Założycielska - strona 33 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 33 / 34</figcaption>
+        </figure>
+<figure class="sheet" id="page-34" data-page="34">
+          <img src="assets/book/page-34.png" alt="Księga Założycielska - strona 34 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <figcaption>STRONA 34 / 34</figcaption>
+        </figure>
+</div></main>
+<button class="fab" id="top" type="button" aria-label="Początek Księgi">↑</button>
+<script>
+(()=>{
+ const sheets=[...document.querySelectorAll('.sheet')];
+ const input=document.getElementById('pageInput');
+ let current=1, pageWidth=892;
+ const go=n=>{n=Math.max(1,Math.min(34,Number(n)||1));document.getElementById('page-'+n)?.scrollIntoView({behavior:'smooth',block:'start'});};
+ document.getElementById('prev').onclick=()=>go(current-1);
+ document.getElementById('next').onclick=()=>go(current+1);
+ input.addEventListener('change',()=>go(input.value));
+ input.addEventListener('keydown',e=>{if(e.key==='Enter')go(input.value)});
+ document.getElementById('top').onclick=()=>go(1);
+ document.getElementById('zoomIn').onclick=()=>{pageWidth=Math.min(1400,pageWidth+120);document.documentElement.style.setProperty('--page-w',pageWidth+'px')};
+ document.getElementById('zoomOut').onclick=()=>{pageWidth=Math.max(560,pageWidth-120);document.documentElement.style.setProperty('--page-w',pageWidth+'px')};
+ const observer=new IntersectionObserver(entries=>{
+   const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+   if(!visible)return;
+   sheets.forEach(s=>s.classList.remove('current'));
+   visible.target.classList.add('current');
+   current=Number(visible.target.dataset.page);input.value=current;
+ },{threshold:[.25,.45,.65,.8]});
+ sheets.forEach(s=>observer.observe(s));
+ document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')go(current+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(current-1);if(e.key==='Home')go(1);if(e.key==='End')go(34)});
+})();
+</script>
 </body>
 </html>
