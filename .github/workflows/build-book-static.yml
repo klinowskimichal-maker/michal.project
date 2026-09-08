@@ -1,37 +1,21 @@
-name: Zbuduj statyczną Księgę
+name: Sprawdź statyczną Księgę
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/book-source-20260908-*.txt'
-      - 'scripts/build_book_static.py'
-      - '.github/workflows/build-book-static.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Zbuduj lokalną Księgę
-        run: python scripts/build_book_static.py
-      - name: Sprawdź kompletność
+      - name: Sprawdź lokalną Księgę
         run: |
           test "$(find assets/book -maxdepth 1 -name 'page-*.png' | wc -l)" -eq 34
           test -s book.html
           ! grep -qi 'canva.com' book.html
-      - name: Zapisz Księgę w repozytorium
-        run: |
-          git config user.name "pskl-book-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add book.html assets/book/
-          if git diff --cached --quiet; then
-            echo "Brak zmian."
-          else
-            git commit -m "Publikuj lokalną 34-stronicową Księgę"
-            git push
-          fi
+          grep -q 'assets/book/page-01.png' book.html
+          grep -q 'assets/book/page-34.png' book.html
+          echo "Księga PSKŁ: 34 lokalne strony, bez przekierowania do Canvy."
