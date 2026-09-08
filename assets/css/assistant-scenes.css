@@ -1,0 +1,76 @@
+/* PSKL Pirate header intermission scenes — decorative only, never below the current header strip */
+#pskl-scene-layer{position:fixed;z-index:10015;left:0;right:0;top:0;height:74px;overflow:hidden;pointer-events:none;contain:layout paint;isolation:isolate;font-family:Arial,sans-serif}
+#pskl-scene-layer *{box-sizing:border-box;pointer-events:none}
+#pskl-scene-layer .scene-object{position:absolute;will-change:transform,opacity}
+
+/* Parrot */
+.scene-parrot{width:27px;height:21px;z-index:6;filter:drop-shadow(0 3px 3px rgba(0,0,0,.25))}
+.scene-parrot .p-body{position:absolute;left:7px;top:5px;width:14px;height:14px;border-radius:65% 50% 58% 45%;background:linear-gradient(135deg,#3c9d62,#176447);border:1px solid #0b4431}
+.scene-parrot .p-head{position:absolute;left:15px;top:1px;width:10px;height:10px;border-radius:50%;background:#2c8d58;border:1px solid #0b4431}
+.scene-parrot .p-head:before{content:'';position:absolute;right:-6px;top:4px;border-left:7px solid #e1a536;border-top:3px solid transparent;border-bottom:3px solid transparent}
+.scene-parrot .p-head:after{content:'';position:absolute;right:2px;top:2px;width:2.5px;height:2.5px;border-radius:50%;background:#071923;box-shadow:0 0 0 1px #f8e9b8}
+.scene-parrot .p-wing{position:absolute;left:2px;top:2px;width:15px;height:8px;border-radius:80% 20% 75% 20%;background:linear-gradient(90deg,#268753,#63b873);border:1px solid #0d5a3a;transform-origin:right center}
+.scene-parrot.flying .p-wing{animation:psklParrotWing .16s ease-in-out infinite alternate}
+.scene-parrot .p-tail{position:absolute;left:2px;top:13px;width:10px;height:5px;background:#2a6f79;clip-path:polygon(0 0,100% 45%,0 100%)}
+@keyframes psklParrotWing{from{transform:rotate(-25deg)}to{transform:rotate(36deg)}}
+
+/* Cannon */
+.scene-cannon{width:66px;height:40px;z-index:5;opacity:0}
+.scene-cannon .c-barrel{position:absolute;left:10px;top:9px;width:42px;height:15px;border-radius:8px 3px 3px 8px;background:linear-gradient(#33424b,#10191e);border:1px solid #050b0e;transform:rotate(-7deg);transform-origin:left center}
+.scene-cannon .c-barrel:after{content:'';position:absolute;right:-7px;top:-2px;width:9px;height:19px;border-radius:3px;background:#10191e;border:1px solid #050b0e}
+.scene-cannon .c-base{position:absolute;left:16px;top:24px;width:38px;height:8px;border-radius:3px;background:#7f4c2b;border:1px solid #3b2114}
+.scene-cannon .c-wheel{position:absolute;top:27px;width:12px;height:12px;border-radius:50%;background:#6f4529;border:2px solid #2f1d13;box-shadow:inset 0 0 0 2px #a9784b}
+.scene-cannon .c-wheel.left{left:19px}.scene-cannon .c-wheel.right{left:43px}
+.scene-cannon .c-fuse{position:absolute;left:13px;top:5px;width:15px;height:12px;border-left:2px solid #594733;border-radius:50%;transform:rotate(-32deg)}
+.scene-cannon .c-spark{position:absolute;left:8px;top:0;width:6px;height:6px;border-radius:50%;background:#ffd86b;box-shadow:0 0 7px 3px #e8722c;opacity:0}
+.scene-cannon.lit .c-spark{opacity:1;animation:psklSpark .18s ease-in-out infinite alternate}
+.scene-cannon.fire{animation:psklCannonKick .45s ease-out 1}
+.scene-smoke{width:24px;height:17px;border-radius:50%;background:radial-gradient(circle,rgba(220,225,226,.86),rgba(160,172,178,.42) 55%,transparent 72%);opacity:0;z-index:4}
+.scene-cannonball{width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#5d656a,#0d1114 70%);box-shadow:0 2px 3px rgba(0,0,0,.35);z-index:6}
+@keyframes psklSpark{to{transform:scale(1.35);filter:brightness(1.3)}}
+@keyframes psklCannonKick{35%{transform:translateX(-7px) rotate(2deg)}100%{transform:none}}
+
+/* Digging / treasure */
+.scene-shovel{width:9px;height:42px;z-index:7;transform-origin:50% 80%;opacity:0}
+.scene-shovel:before{content:'';position:absolute;left:3px;top:0;width:3px;height:30px;border-radius:2px;background:#9b6a3d}
+.scene-shovel:after{content:'';position:absolute;left:0;top:28px;width:9px;height:12px;border-radius:1px 1px 6px 6px;background:#777f82;border:1px solid #373d40}
+.scene-shovel.digging{opacity:1;animation:psklDig .52s ease-in-out 5 alternate}
+.scene-hole{width:39px;height:8px;border-radius:50%;background:radial-gradient(ellipse,#161b1d 0,#46311f 55%,transparent 72%);opacity:0;z-index:2}
+.scene-treasure{width:37px;height:26px;z-index:7;opacity:0}
+.scene-treasure .t-box{position:absolute;left:0;top:8px;width:37px;height:18px;border-radius:3px;background:linear-gradient(#8a4f28,#4b2718);border:2px solid #2d180f;box-shadow:inset 0 4px #c48a48}
+.scene-treasure .t-lid{position:absolute;left:1px;top:1px;width:35px;height:12px;border-radius:18px 18px 2px 2px;background:linear-gradient(#ad6d37,#6b381f);border:2px solid #2d180f;transform-origin:50% 100%}
+.scene-treasure.open .t-lid{transform:rotateX(55deg) translateY(-4px)}
+.scene-treasure .t-gold{position:absolute;left:6px;top:9px;width:25px;height:8px;border-radius:50%;background:repeating-radial-gradient(circle at 30% 50%,#ffe58a 0 2px,#c89120 3px 5px);box-shadow:0 -2px 9px #ffd76b;opacity:0}
+.scene-treasure.open .t-gold{opacity:1}
+.scene-sparkle{width:5px;height:5px;background:#ffe889;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);opacity:0;z-index:8}
+@keyframes psklDig{from{transform:rotate(-36deg) translateY(0)}to{transform:rotate(18deg) translateY(5px)}}
+
+/* Chase scene — neutral island pursuers, no caricature */
+.scene-runner{width:55px;height:55px;z-index:7;transform-origin:50% 100%}
+.scene-runner .pskl-pirate{transform:scale(.72);transform-origin:top left;pointer-events:none!important}
+.scene-pursuer{width:25px;height:43px;z-index:6}
+.scene-pursuer:before{content:'';position:absolute;left:7px;top:2px;width:13px;height:13px;border-radius:50%;background:#9b684a;border:1px solid #553421}
+.scene-pursuer:after{content:'';position:absolute;left:5px;top:15px;width:17px;height:21px;border-radius:7px 7px 3px 3px;background:linear-gradient(#34586b,#1c3847);border:1px solid #102733}
+.scene-pursuer .leg{position:absolute;top:33px;width:5px;height:11px;background:#2b2521;border-radius:4px;transform-origin:top center}
+.scene-pursuer .leg.a{left:7px}.scene-pursuer .leg.b{left:16px}
+.scene-pursuer.running .leg.a{animation:psklRunLeg .18s linear infinite alternate}.scene-pursuer.running .leg.b{animation:psklRunLeg .18s linear infinite alternate-reverse}
+.scene-palm{width:38px;height:67px;z-index:3;transform-origin:50% 100%}
+.scene-palm .trunk{position:absolute;left:18px;top:20px;width:6px;height:49px;border-radius:50%;background:linear-gradient(90deg,#7e4f29,#b87943);transform:rotate(7deg)}
+.scene-palm .leaf{position:absolute;left:18px;top:17px;width:27px;height:7px;border-radius:90% 10% 90% 10%;background:#2b744d;transform-origin:left center}
+.scene-palm .leaf:nth-child(2){transform:rotate(-18deg)}.scene-palm .leaf:nth-child(3){transform:rotate(40deg)}.scene-palm .leaf:nth-child(4){transform:rotate(105deg)}.scene-palm .leaf:nth-child(5){transform:rotate(160deg)}.scene-palm .leaf:nth-child(6){transform:rotate(215deg)}
+@keyframes psklRunLeg{from{transform:rotate(-24deg)}to{transform:rotate(28deg)}}
+
+/* Sinking boat */
+.scene-boat{width:100px;height:62px;z-index:6;opacity:0;transform-origin:50% 80%}
+.scene-boat .mast{position:absolute;left:48px;top:2px;width:3px;height:35px;background:#704728}
+.scene-boat .sail{position:absolute;left:51px;top:5px;width:35px;height:27px;background:linear-gradient(135deg,#f1e5c8,#cdbb93);clip-path:polygon(0 0,100% 88%,0 100%);border-left:1px solid #a18760}
+.scene-boat .hull{position:absolute;left:8px;top:34px;width:84px;height:22px;background:linear-gradient(#77452b,#351c14);clip-path:polygon(0 0,100% 0,83% 86%,20% 100%);border-top:3px solid #c18a52}
+.scene-boat .hole{position:absolute;left:67px;top:42px;width:11px;height:8px;border-radius:50%;background:#091016;box-shadow:0 0 0 2px #25140f}
+.scene-boat .water{position:absolute;left:53px;top:43px;width:35px;height:15px;border-radius:50%;border-top:3px solid #58a1b3;opacity:0}
+.scene-boat.leaking .water{opacity:1;animation:psklLeak .35s ease-in-out infinite alternate}
+.scene-deck-pirate{position:absolute;left:29px;top:0;width:55px;height:55px;transform:scale(.52);transform-origin:top left;z-index:8}
+.scene-deck-pirate .pskl-pirate{pointer-events:none!important}
+@keyframes psklLeak{to{transform:translateX(8px) scaleX(1.25);opacity:.45}}
+
+@media(max-width:760px){#pskl-scene-layer{height:61px}.scene-palm{transform:scale(.78);transform-origin:bottom center}.scene-cannon{transform:scale(.83);transform-origin:left bottom}.scene-boat{transform:scale(.78);transform-origin:left top}.scene-parrot{transform:scale(.9)}}
+@media(prefers-reduced-motion:reduce){#pskl-scene-layer{display:none!important}}
