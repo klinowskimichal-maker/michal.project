@@ -24,6 +24,14 @@ QUERIES = {
     'cbc': ['wooden', 'Chris Craft'],
 }
 MAX_PAGES = 10
+MAHOGANY_QUERIES = {
+    'olx': ['mahoniowa', 'mahoniowe'],
+    'allegro': ['mahoniowa', 'mahoniowe'],
+    'finn': ['mahogni', 'mahognibåt'],
+    'blocket': ['mahogny', 'mahognybåt'],
+    'boat24': ['mahogany'], 'yachtworld': ['mahogany'],
+    'aba': ['mahogany'], 'cbc': ['mahogany'],
+}
 
 
 PORTALS = [
@@ -61,10 +69,10 @@ def material_from(text):
     low = re.sub(r'(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)\s+(?:interior|deck|trim|cockpit|pokład|wnętrz)\w*', '', low)
     low = re.sub(r'(?:interior|deck|trim|pokład\w*|wnętrz\w*)\s+(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)', '', low)
     low = re.sub(r'\bgar[\s-]+wood\b', '', low)
-    low = re.sub(r'(?:mahogny|trä|tre)\s*(?:däck|dekk|inredning|innredning)\w*', '', low)
+    low = re.sub(r'(?:mahogny|mahogni|trä|tre)\s*(?:däck|dekk|inredning|innredning)\w*', '', low)
     if re.search(r'(?:skrovmaterial|byggemateriale)\s*:?\s*(?:trä|tre)\b', low):
         return 'wood'
-    if re.search(r'\bwood(?:en)?\b|\bmahogany\b|drewnian|mahoniow|träbåt|trebåt|trebat|mahogny', low):
+    if re.search(r'\bwood(?:en)?\b|\bmahogany\b|drewnian|mahoniow|träbåt|trebåt|trebat|mahogny|mahogni', low):
         return 'wood'
     return 'unknown'
 
@@ -244,7 +252,12 @@ def main():
     errors=[]
     searches=[]
     for p in PORTALS:
-        for q in QUERIES[p['id']]:
+        primary_found=False
+        queries=[(q,False) for q in QUERIES[p['id']]]
+        queries += [(q,True) for q in MAHOGANY_QUERIES.get(p['id'],[]) if q not in QUERIES[p['id']]]
+        for q,is_fallback in queries:
+            if is_fallback and primary_found:
+                continue
             known=set()
             visited=set()
             next_url=p['url'](q)
@@ -256,7 +269,10 @@ def main():
                     items,url,diagnostics = collect(p,'wood',q,next_url)
                     visited.add(url)
                     searches.append({'portal':p['name'],'query':q,'page':page,'url':url,'found':len(items),
-                                     **diagnostics, 'limited': page == MAX_PAGES and bool(diagnostics['next'])})
+                                     **diagnostics, 'fallback': 'mahogany' if is_fallback else None,
+                                     'limited': page == MAX_PAGES and bool(diagnostics['next'])})
+                    if items and not is_fallback:
+                        primary_found=True
                     fresh=[x for x in items if x['link'] not in known]
                     all_items.extend(fresh)
                     known.update(x['link'] for x in fresh)

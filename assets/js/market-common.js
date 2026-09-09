@@ -1,7 +1,7 @@
 (function(root){
 'use strict';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ł/g,'l').replace(/ø/g,'o').replace(/æ/g,'ae').replace(/[-–—]/g,' ');
-const woodWord=t=>/^(drewn\w*|wood|wooden|mahogany|mahogny|mahon\w*|trebat\w*|trabat\w*)$/.test(t);
+const woodWord=t=>/^(drewn\w*|wood|wooden|mahogany|mahogn[yi]\w*|mahon\w*|trebat\w*|trabat\w*)$/.test(t);
 const glassWord=t=>/^(laminat\w*|fiberglas\w*|fibreglas\w*|glasfiber\w*|glassfiber\w*|grp)$/.test(t);
 const boatWord=t=>/^(lodz|lodzie|lodka|lodki|boat|boats|bat|batar|bater)$/.test(t);
 const countryWords={polska:'Polska',polsce:'Polska',poland:'Polska',norwegia:'Norwegia',norwegii:'Norwegia',norway:'Norwegia',szwecja:'Szwecja',szwecji:'Szwecja',sweden:'Szwecja',dania:'Dania',danii:'Dania',denmark:'Dania',niemcy:'Niemcy',niemczech:'Niemcy',germany:'Niemcy',finlandia:'Finlandia',finlandii:'Finlandia',usa:'USA',kanada:'Kanada',canada:'Kanada'};
@@ -37,6 +37,7 @@ function matches(o,c){
   return c.terms.every(t=>hay.includes(t));
 }
 const slug=s=>norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const mahoganyVariants={olx:['mahoniowa','mahoniowe'],allegro:['mahoniowa','mahoniowe'],finn:['mahogni','mahognibåt'],blocket:['mahogny','mahognybåt']};
 const portals=[
   {id:'olx',name:'OLX',country:'Polska',wood:'drewniana',glass:'laminat',url:q=>'https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/'+(q?'q-'+slug(q)+'/':'')},
   {id:'allegro',name:'Allegro',country:'Polska',wood:'drewniana',glass:'laminat',url:q=>'https://allegro.pl/kategoria/lodzie-motorowki-4084?string='+encodeURIComponent(q)},
@@ -51,9 +52,10 @@ function links(c,{includeForeign=false}={}){
   const fits=p=>!c.country||p.country===c.country||['Europa','Świat'].includes(p.country)||(['USA','Kanada'].includes(c.country)&&p.country==='USA / Kanada');
   return portals.filter(p=>includeForeign||fits(p)).flatMap(p=>{
     const variants=c.material==='wood'?(p.woodVariants||(['olx','allegro'].includes(p.id)?['drewniana','drewniane','drewniany']:[p.wood])):[c.material==='fiberglass'?p.glass:''];
-    return variants.map(material=>{
+    const fallback=c.material==='wood'?(mahoganyVariants[p.id]||['mahogany']):[];
+    return [...variants,...fallback].map(material=>{
       const query=[c.query,material].filter(Boolean).join(' ');
-      return {...p,query,href:p.url(query),foreign:!fits(p),language:p.language||(p.country==='Polska'?'polski':'angielski')};
+      return {...p,query,href:p.url(query),mahogany:fallback.includes(material),foreign:!fits(p),language:p.language||(p.country==='Polska'?'polski':'angielski')};
     });
   });
 }
