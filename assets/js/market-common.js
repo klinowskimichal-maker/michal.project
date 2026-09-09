@@ -1,16 +1,16 @@
 (function(root){
 'use strict';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ł/g,'l').replace(/ø/g,'o').replace(/æ/g,'ae').replace(/[-–—]/g,' ');
-const woodWord=t=>/^(drewn\w*|wood|wooden|mahogany|mahon\w*|trebat\w*|trabat\w*)$/.test(t);
+const woodWord=t=>/^(drewn\w*|wood|wooden|mahogany|mahogny|mahon\w*|trebat\w*|trabat\w*)$/.test(t);
 const glassWord=t=>/^(laminat\w*|fiberglas\w*|fibreglas\w*|glasfiber\w*|glassfiber\w*|grp)$/.test(t);
-const boatWord=t=>/^(lodz|lodzie|lodka|lodki|boat|boats|bat|batar)$/.test(t);
+const boatWord=t=>/^(lodz|lodzie|lodka|lodki|boat|boats|bat|batar|bater)$/.test(t);
 const countryWords={polska:'Polska',polsce:'Polska',poland:'Polska',norwegia:'Norwegia',norwegii:'Norwegia',norway:'Norwegia',szwecja:'Szwecja',szwecji:'Szwecja',sweden:'Szwecja',dania:'Dania',danii:'Dania',denmark:'Dania',niemcy:'Niemcy',niemczech:'Niemcy',germany:'Niemcy',finlandia:'Finlandia',finlandii:'Finlandia',usa:'USA',kanada:'Kanada',canada:'Kanada'};
 function criteria(query='',material='',country=''){
   const words=norm(query).trim().split(/\s+/).filter(Boolean);
   const wood=words.some(woodWord),glass=words.some(glassWord);
   const detected=[...new Set(words.map(t=>countryWords[t]).filter(Boolean))];
   const inferred=detected.length===1?detected[0]:'';
-  const keep=t=>!woodWord(t)&&!glassWord(t)&&!boatWord(t)&&!(inferred&&countryWords[t]);
+  const keep=t=>!woodWord(t)&&!glassWord(t)&&!boatWord(t)&&!countryWords[t]&&!(detected.length&&/^(w|we|in)$/.test(t));
   return {material:material||(wood&&!glass?'wood':glass&&!wood?'fiberglass':''),country:country||inferred,
     terms:words.filter(keep),
     query:String(query).trim().split(/\s+/).filter(t=>keep(norm(t))).join(' ')};
@@ -25,19 +25,20 @@ const slug=s=>norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const portals=[
   {id:'olx',name:'OLX',country:'Polska',wood:'drewniana',glass:'laminat',url:q=>'https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/'+(q?'q-'+slug(q)+'/':'')},
   {id:'allegro',name:'Allegro',country:'Polska',wood:'drewniana',glass:'laminat',url:q=>'https://allegro.pl/kategoria/lodzie-motorowki-4084?string='+encodeURIComponent(q)},
-  {id:'finn',name:'FINN.no',country:'Norwegia',wood:'trebåt',glass:'glassfiber',url:q=>'https://www.finn.no/mobility/search/boat?query='+encodeURIComponent(q)},
-  {id:'blocket',name:'Blocket',country:'Szwecja',wood:'träbåt',glass:'glasfiber',url:q=>'https://www.blocket.se/mobility/search/boat?q='+encodeURIComponent(q)},
+  {id:'finn',name:'FINN.no',country:'Norwegia',language:'norweski',wood:'trebåt',woodVariants:['trebåt','trebåter'],glass:'glassfiber',url:q=>'https://www.finn.no/mobility/search/boat?query='+encodeURIComponent(q)},
+  {id:'blocket',name:'Blocket',country:'Szwecja',language:'szwedzki',wood:'träbåt',woodVariants:['träbåt','träbåtar'],glass:'glasfiber',url:q=>'https://www.blocket.se/mobility/search/boat?q='+encodeURIComponent(q)},
   {id:'boat24',name:'Boat24',country:'Europa',wood:'wood',glass:'fiberglass',url:q=>'https://www.boat24.com/en/powerboats/?q='+encodeURIComponent(q)},
   {id:'yachtworld',name:'YachtWorld',country:'Świat',wood:'wood',glass:'fiberglass',url:q=>'https://www.yachtworld.com/boats-for-sale/'+(q?'keyword-'+slug(q)+'/':'')},
   {id:'aba',name:'Antique Boat America',country:'USA / Kanada',wood:'wooden',glass:'fiberglass',url:q=>'https://www.antiqueboatamerica.com/BoatSearch.aspx?search='+encodeURIComponent(q)},
   {id:'cbc',name:'Classic Boat Collective',country:'USA / Kanada',wood:'wooden',glass:'fiberglass',url:q=>'https://classicboatcollective.com/?s='+encodeURIComponent(q)}
 ];
-function links(c){
-  return portals.filter(p=>!c.country||p.country===c.country||['Europa','Świat'].includes(p.country)||(['USA','Kanada'].includes(c.country)&&p.country==='USA / Kanada')).flatMap(p=>{
-    const variants=c.material==='wood'&&['olx','allegro'].includes(p.id)?['drewniana','drewniane','drewniany']:[c.material==='wood'?p.wood:c.material==='fiberglass'?p.glass:''];
+function links(c,{includeForeign=false}={}){
+  const fits=p=>!c.country||p.country===c.country||['Europa','Świat'].includes(p.country)||(['USA','Kanada'].includes(c.country)&&p.country==='USA / Kanada');
+  return portals.filter(p=>includeForeign||fits(p)).flatMap(p=>{
+    const variants=c.material==='wood'?(p.woodVariants||(['olx','allegro'].includes(p.id)?['drewniana','drewniane','drewniany']:[p.wood])):[c.material==='fiberglass'?p.glass:''];
     return variants.map(material=>{
       const query=[c.query,material].filter(Boolean).join(' ');
-      return {...p,query,href:p.url(query)};
+      return {...p,query,href:p.url(query),foreign:!fits(p),language:p.language||(p.country==='Polska'?'polski':'angielski')};
     });
   });
 }
