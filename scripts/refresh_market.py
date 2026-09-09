@@ -42,7 +42,7 @@ PORTALS = [
          url=lambda q: 'https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=' + quote(q),
          match=lambda u: '/oferta/' in u),
     dict(id='finn', name='FINN', country='Norwegia', base='https://www.finn.no',
-         url=lambda q: 'https://www.finn.no/mobility/search/boat?query=' + quote(q),
+         url=lambda q: 'https://www.finn.no/mobility/search/boat?q=' + quote(q),
          match=lambda u: '/mobility/item/' in u),
     dict(id='blocket', name='Blocket', country='Szwecja', base='https://www.blocket.se',
          url=lambda q: 'https://www.blocket.se/mobility/search/boat?q=' + quote(q),
@@ -237,7 +237,8 @@ def parse_page(html, portal, label, query, url):
             next_url = candidate
             break
     # HTTP 200 with only a JS shell is not a successfully read empty market.
-    return items, {'candidates': len(seen), 'state': 'read' if seen else 'unreadable', 'next': next_url}
+    return items, {'candidates': len(seen), 'state': 'read' if seen else 'unreadable', 'next': next_url,
+                   'pageTitle': norm(soup.title.get_text()) if soup.title else ''}
 
 
 def collect(portal, label, query, url):

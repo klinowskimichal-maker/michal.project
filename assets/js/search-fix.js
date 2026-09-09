@@ -46,7 +46,7 @@ function patchLinks(){
       let href=a.href;
       if(name==='OLX')href=`https://www.olx.pl/sport-hobby/sporty-wodne/q-${slug(term)}/`;
       else if(name==='Allegro')href=`https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=${encodeURIComponent(term)}`;
-      else if(name==='FINN.no')href=`https://www.finn.no/mobility/search/boat?query=${encodeURIComponent(term)}`;
+      else if(name==='FINN.no')href=`https://www.finn.no/mobility/search/boat?q=${encodeURIComponent(term)}`;
       else if(name==='Blocket')href=`https://www.blocket.se/mobility/search/boat?q=${encodeURIComponent(term)}`;
       if(a.href!==href)a.href=href;
       const em=a.querySelector('em');if(em&&em.textContent!==term)em.textContent=term;

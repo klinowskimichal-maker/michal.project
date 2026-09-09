@@ -171,7 +171,7 @@ function populateCountries(){
 const PORTALS=[
   {id:'olx',name:'OLX',market:'Polska',domain:'olx.pl',wood:'łódź drewniana motorowa',url:q=>`https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-${slug(q)}/`},
   {id:'allegro',name:'Allegro',market:'Polska',domain:'allegro.pl',wood:'łódź motorowa drewniana',url:q=>`https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=${encodeURIComponent(q)}`},
-  {id:'finn',name:'FINN.no',market:'Norwegia',domain:'finn.no',wood:'snekke trebåt',url:q=>`https://www.finn.no/mobility/search/boat?query=${encodeURIComponent(q)}`},
+  {id:'finn',name:'FINN.no',market:'Norwegia',domain:'finn.no',wood:'snekke trebåt',url:q=>`https://www.finn.no/mobility/search/boat?q=${encodeURIComponent(q)}`},
   {id:'blocket',name:'Blocket',market:'Szwecja',domain:'blocket.se',wood:'träbåt',url:q=>`https://www.blocket.se/mobility/search/boat?q=${encodeURIComponent(q)}`},
   {id:'boat24',name:'Boat24',market:'Europa',domain:'boat24.com',wood:'wooden classic powerboat',url:q=>`https://www.google.com/search?q=${encodeURIComponent(`site:boat24.com/en/powerboats ${q}`)}`},
   {id:'yachtworld',name:'YachtWorld',market:'Świat',domain:'yachtworld.com',wood:'wood antique classic',url:q=>`https://www.yachtworld.com/boats-for-sale/keyword-${slug(q)}/`},
@@ -247,3 +247,4 @@ populateCountries();
 searchLocal();
 loadLiveMarket();
 route(location.hash.slice(1)||'home',false);
+

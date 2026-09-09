@@ -41,7 +41,7 @@ const mahoganyVariants={olx:['mahoniowa','mahoniowe'],allegro:['mahoniowa','maho
 const portals=[
   {id:'olx',name:'OLX',country:'Polska',wood:'drewniana',glass:'laminat',url:q=>'https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/'+(q?'q-'+slug(q)+'/':'')},
   {id:'allegro',name:'Allegro',country:'Polska',wood:'drewniana',glass:'laminat',url:q=>'https://allegro.pl/kategoria/lodzie-motorowki-4084?string='+encodeURIComponent(q)},
-  {id:'finn',name:'FINN.no',country:'Norwegia',language:'norweski',wood:'trebåt',woodVariants:['trebåt','trebåter'],glass:'glassfiber',url:q=>'https://www.finn.no/mobility/search/boat?query='+encodeURIComponent(q)},
+  {id:'finn',name:'FINN.no',country:'Norwegia',language:'norweski',wood:'trebåt',woodVariants:['trebåt','trebåter'],glass:'glassfiber',url:q=>'https://www.finn.no/mobility/search/boat?q='+encodeURIComponent(q)},
   {id:'blocket',name:'Blocket',country:'Szwecja',language:'szwedzki',wood:'träbåt',woodVariants:['träbåt','träbåtar'],glass:'glasfiber',url:q=>'https://www.blocket.se/mobility/search/boat?q='+encodeURIComponent(q)},
   {id:'boat24',name:'Boat24',country:'Europa',wood:'wood',glass:'fiberglass',url:q=>'https://www.boat24.com/en/powerboats/?q='+encodeURIComponent(q)},
   {id:'yachtworld',name:'YachtWorld',country:'Świat',wood:'wood',glass:'fiberglass',url:q=>'https://www.yachtworld.com/boats-for-sale/'+(q?'keyword-'+slug(q)+'/':'')},
