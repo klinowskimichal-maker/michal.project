@@ -4,12 +4,16 @@ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLo
 const woodWord=t=>/^(drewn\w*|wood|wooden|mahogany|mahon\w*|trebat\w*|trabat\w*)$/.test(t);
 const glassWord=t=>/^(laminat\w*|fiberglas\w*|fibreglas\w*|glasfiber\w*|glassfiber\w*|grp)$/.test(t);
 const boatWord=t=>/^(lodz|lodzie|lodka|lodki|boat|boats|bat|batar)$/.test(t);
+const countryWords={polska:'Polska',polsce:'Polska',poland:'Polska',norwegia:'Norwegia',norwegii:'Norwegia',norway:'Norwegia',szwecja:'Szwecja',szwecji:'Szwecja',sweden:'Szwecja',dania:'Dania',danii:'Dania',denmark:'Dania',niemcy:'Niemcy',niemczech:'Niemcy',germany:'Niemcy',finlandia:'Finlandia',finlandii:'Finlandia',usa:'USA',kanada:'Kanada',canada:'Kanada'};
 function criteria(query='',material='',country=''){
   const words=norm(query).trim().split(/\s+/).filter(Boolean);
   const wood=words.some(woodWord),glass=words.some(glassWord);
-  return {material:material||(wood&&!glass?'wood':glass&&!wood?'fiberglass':''),country,
-    terms:words.filter(t=>!woodWord(t)&&!glassWord(t)&&!boatWord(t)),
-    query:String(query).trim().split(/\s+/).filter(t=>{const n=norm(t);return !woodWord(n)&&!glassWord(n)&&!boatWord(n)}).join(' ')};
+  const detected=[...new Set(words.map(t=>countryWords[t]).filter(Boolean))];
+  const inferred=detected.length===1?detected[0]:'';
+  const keep=t=>!woodWord(t)&&!glassWord(t)&&!boatWord(t)&&!(inferred&&countryWords[t]);
+  return {material:material||(wood&&!glass?'wood':glass&&!wood?'fiberglass':''),country:country||inferred,
+    terms:words.filter(keep),
+    query:String(query).trim().split(/\s+/).filter(t=>keep(norm(t))).join(' ')};
 }
 function matches(o,c){
   if(c.material&&o.material!==c.material)return false;
@@ -29,9 +33,12 @@ const portals=[
   {id:'cbc',name:'Classic Boat Collective',country:'USA / Kanada',wood:'wooden',glass:'fiberglass',url:q=>'https://classicboatcollective.com/?s='+encodeURIComponent(q)}
 ];
 function links(c){
-  return portals.filter(p=>!c.country||p.country===c.country||['Europa','Świat'].includes(p.country)||(['USA','Kanada'].includes(c.country)&&p.country==='USA / Kanada')).map(p=>{
-    const query=[c.query,c.material==='wood'?p.wood:c.material==='fiberglass'?p.glass:''].filter(Boolean).join(' ');
-    return {...p,query,href:p.url(query)};
+  return portals.filter(p=>!c.country||p.country===c.country||['Europa','Świat'].includes(p.country)||(['USA','Kanada'].includes(c.country)&&p.country==='USA / Kanada')).flatMap(p=>{
+    const variants=c.material==='wood'&&['olx','allegro'].includes(p.id)?['drewniana','drewniane','drewniany']:[c.material==='wood'?p.wood:c.material==='fiberglass'?p.glass:''];
+    return variants.map(material=>{
+      const query=[c.query,material].filter(Boolean).join(' ');
+      return {...p,query,href:p.url(query)};
+    });
   });
 }
 const api={norm,criteria,matches,links};root.PSKL_MARKET=api;

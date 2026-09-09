@@ -94,9 +94,11 @@ function renderMarketCoverage(){
   let panel=$('#marketCoverage');
   if(!panel){panel=document.createElement('div');panel.id='marketCoverage';$('#searchSummary').insertAdjacentElement('afterend',panel);}
   const status=window.PSKL_MARKET_STATUS,c=searchCriteria();
-  const failed=[...new Set((status?.errors||[]).map(x=>x.portal))];
+  const links=window.PSKL_MARKET.links(c);
+  const relevant=new Set(links.map(p=>p.name));
+  const failed=[...new Set((status?.errors||[]).map(x=>x.portal))].filter(p=>relevant.has(p));
   const timestamp=status?.updatedAt?new Date(status.updatedAt).toLocaleString('pl-PL'):'';
-  panel.innerHTML=`<p class="market-status">${timestamp?`Ostatnia próba aktualizacji: ${esc(timestamp)}.`:status?.failed?'Aktualizacja indeksu jest niedostępna; widoczne są wcześniejsze zapisane oferty.':'Dostępne są zapisane oferty; trwa sprawdzanie indeksu.'} ${failed.length?`Nie udało się pobrać części wyników: ${failed.map(esc).join(', ')}.`:''} Indeks obejmuje tylko część ogłoszeń. Dostępność i materiał kadłuba należy potwierdzić w treści oferty.</p><details class="portal-more"><summary>Więcej ogłoszeń — wyszukiwanie w portalach</summary><p>Linki przekazują frazę i materiał w języku portalu. Kraj wybrany na stronie filtruje indeks; lokalizację i materiał warto dodatkowo ustawić w portalu.</p><div class="market-portal-links">${window.PSKL_MARKET.links(c).map(p=>`<a class="button" href="${esc(p.href)}" target="_blank" rel="noopener">${esc(p.name)} · ${esc(p.query||'wszystkie łodzie')} ↗</a>`).join('')}</div></details>`;
+  panel.innerHTML=`<section class="portal-more" aria-label="Wyszukiwanie w portalach"><h3>Więcej ogłoszeń w portalach</h3><p>${failed.length?`<strong>Nie pobrano nowych ofert z: ${failed.map(esc).join(', ')}.</strong> `:''}Wyniki poniżej pochodzą z częściowej bazy PSKŁ. Liczba zapisanych ofert nie pokazuje liczby łodzi dostępnych na rynku.</p><p>Otwórz wyniki w portalu. Warto sprawdzić różne określenia: „drewniana”, „drewniane” i „drewniany” — sprzedający używają różnych tytułów.${c.country?` Wybrany kraj: <strong>${esc(c.country)}</strong>. W portalach międzynarodowych ustaw dodatkowo lokalizację.`:''}</p><div class="market-portal-links">${links.map(p=>`<a class="button" href="${esc(p.href)}" target="_blank" rel="noopener">${esc(p.name)} · ${esc(p.query||'wszystkie łodzie')} ↗</a>`).join('')}</div><p class="market-status">${timestamp?`Ostatnia próba aktualizacji bazy: ${esc(timestamp)}.`:status?.failed?'Aktualizacja bazy jest niedostępna.':'Trwa sprawdzanie aktualizacji bazy.'} Materiał kadłuba i dostępność potwierdź w ogłoszeniu.</p></section>`;
 }
 function renderSearchResults(scroll=true){
   hasSearched=true;
@@ -106,7 +108,7 @@ function renderSearchResults(scroll=true){
   if(summary){
     const watched=result.filter(isTracked).length;
     const material=searchCriteria().material;
-    summary.innerHTML=`<strong>W zapisanym indeksie PSKŁ: ${plural(result.length)}</strong>${material?` · materiał: ${material==='wood'?'drewno':'laminat'}`:''}${watched?` · obserwowane: ${watched}`:''}. To liczba pasujących zapisanych ofert, a nie wszystkich ogłoszeń w portalach.`;
+    summary.innerHTML=`<strong>W zapisanym indeksie PSKŁ: ${plural(result.length)}</strong>${material?` · materiał: ${material==='wood'?'drewno':'laminat'}`:''}${searchCriteria().country?` · kraj: ${esc(searchCriteria().country)}`:''}${watched?` · obserwowane: ${watched}`:''}. To liczba pasujących zapisanych ofert, a nie wszystkich ogłoszeń w portalach.`;
   }
   box.innerHTML=result.length?result.map(cardHtml).join(''):'<p class="empty">Brak pasujących ofert w zapisanym indeksie PSKŁ. Więcej ogłoszeń można sprawdzić przez linki do portali powyżej.</p>';
   renderMarketCoverage();
