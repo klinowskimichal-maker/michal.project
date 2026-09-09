@@ -32,7 +32,7 @@ function universe(){
   let a=[];
   try{if(typeof allOffers==='function'){const x=allOffers();if(Array.isArray(x))a=x;}}catch(e){}
   if(!a.length)a=window.PSKL_DATA?.offers||[];
-  return a.map(normalizeOffer);
+  return a.map(normalizeOffer).filter(o=>window.PSKL_MARKET.isOfferLink(o.link));
 }
 function readTracked(){
   try{const x=JSON.parse(localStorage.getItem(STORE)||'[]');return Array.isArray(x)?x:[];}catch(e){return[];}
@@ -97,7 +97,7 @@ function renderMarketCoverage(){
   const links=window.PSKL_MARKET.links(c,{includeForeign:true});
   const groups=[...new Set(links.map(p=>p.id))].map(id=>links.filter(p=>p.id===id));
   const timestamp=status?.updatedAt?new Date(status.updatedAt).toLocaleString('pl-PL'):'';
-  const label={loading:'Sprawdzanie',blocked:'Pobieranie zablokowane',unavailable:'Odczyt niedostępny',unknown:'Odczyt niepotwierdzony',empty:'Brak odczytanych ofert',partial:'Częściowy odczyt'};
+  const label={loading:'Sprawdzanie',blocked:'Pobieranie zablokowane',unavailable:'Odczyt niedostępny',unknown:'Odczyt niepotwierdzony',unconfirmed:'Materiał niepotwierdzony',empty:'Brak odczytanych ofert',partial:'Częściowy odczyt'};
   panel.innerHTML=`<section class="portal-more" aria-label="Dostępność ofert w portalach"><h3>Oferty bezpośrednio w portalach</h3><p>Kraj filtruje zapisane oferty PSKŁ. W portalach zagranicznych wyszukiwanie obejmuje tamtejszy rynek — nazwa wybranego kraju nie jest dopisywana do frazy. Określenie materiału jest tłumaczone na język portalu; nazwa marki lub modelu pozostaje bez zmian.</p><p>Przyciski otwierają wyszukiwanie w wybranym serwisie. Telefon może otworzyć jego zainstalowaną aplikację, jeśli obsługuje te linki; w pozostałych przypadkach otworzy stronę portalu.</p><div class="market-source-grid">${groups.map(group=>{
     const p=group[0],health=window.PSKL_MARKET.sourceStatus(p.name,status);
     return `<article class="market-source" data-source="${esc(p.id)}" data-state="${health.state}"><h4>${esc(p.name)}</h4><p class="market-source-scope">Rynek: ${esc(p.country)}${p.foreign?` · poza wybranym krajem (${esc(c.country)})`:''}</p><strong class="market-source-state">${label[health.state]}</strong><p>${esc(health.text)}</p><a class="button primary" href="${esc(p.href)}" target="_blank" rel="noopener">Otwórz ${esc(p.name)} ↗</a><small>Zapytanie (${esc(p.language)}): ${esc(p.query||'wszystkie łodzie')}</small>${group.length>1?`<div class="market-source-variants"><span>Sprawdź też:</span>${group.slice(1).map(v=>`<a href="${esc(v.href)}" target="_blank" rel="noopener">${esc(v.query)} ↗</a>`).join('')}</div>`:''}</article>`;

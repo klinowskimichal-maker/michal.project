@@ -6,14 +6,29 @@ const glassWord=t=>/^(laminat\w*|fiberglas\w*|fibreglas\w*|glasfiber\w*|glassfib
 const boatWord=t=>/^(lodz|lodzie|lodka|lodki|boat|boats|bat|batar|bater)$/.test(t);
 const countryWords={polska:'Polska',polsce:'Polska',poland:'Polska',norwegia:'Norwegia',norwegii:'Norwegia',norway:'Norwegia',szwecja:'Szwecja',szwecji:'Szwecja',sweden:'Szwecja',dania:'Dania',danii:'Dania',denmark:'Dania',niemcy:'Niemcy',niemczech:'Niemcy',germany:'Niemcy',finlandia:'Finlandia',finlandii:'Finlandia',usa:'USA',kanada:'Kanada',canada:'Kanada'};
 function criteria(query='',material='',country=''){
-  const words=norm(query).trim().split(/\s+/).filter(Boolean);
+  // Protect the brand Gar Wood before interpreting standalone material words.
+  const protectedQuery=String(query).replace(/\bgar[\s–—-]+wood\b/gi,'GarWoodBrand');
+  const words=norm(protectedQuery).replace(/[^a-z0-9\s]/g,' ').trim().split(/\s+/).filter(Boolean);
   const wood=words.some(woodWord),glass=words.some(glassWord);
   const detected=[...new Set(words.map(t=>countryWords[t]).filter(Boolean))];
   const inferred=detected.length===1?detected[0]:'';
   const keep=t=>!woodWord(t)&&!glassWord(t)&&!boatWord(t)&&!countryWords[t]&&!(detected.length&&/^(w|we|in)$/.test(t));
   return {material:material||(wood&&!glass?'wood':glass&&!wood?'fiberglass':''),country:country||inferred,
-    terms:words.filter(keep),
-    query:String(query).trim().split(/\s+/).filter(t=>keep(norm(t))).join(' ')};
+    terms:words.filter(keep).flatMap(t=>t==='garwoodbrand'?['gar','wood']:[t]),
+    query:protectedQuery.trim().split(/\s+/).filter(t=>keep(norm(t).replace(/[^a-z0-9]/g,''))).join(' ').replace(/GarWoodBrand/g,'Gar Wood')};
+}
+function isOfferLink(link){
+  try{
+    const u=new URL(link),h=u.hostname.replace(/^www\./,'');
+    if(u.protocol!=='https:')return false;
+    const paths={
+      'olx.pl':/^\/d\/oferta\/[^/]+/,'allegro.pl':/^\/oferta\/[^/]+/,
+      'finn.no':/^\/mobility\/item\/\d+/,'blocket.se':/^\/mobility\/item\/\d+/,
+      'boat24.com':/\/detail\/\d+/,'yachtworld.com':/^\/yacht\/[^/]+/,
+      'antiqueboatamerica.com':/^\/Boat\/[^/]+/,'classicboatcollective.com':/^\/listing\/[^/]+/
+    };
+    return Boolean(paths[h]?.test(u.pathname));
+  }catch(e){return false;}
 }
 function matches(o,c){
   if(c.material&&o.material!==c.material)return false;
@@ -48,12 +63,14 @@ function sourceStatus(name,status){
   if(!status)return {state:'loading',text:'Sprawdzanie ostatniej aktualizacji…'};
   if(status.failed)return {state:'unavailable',text:'Nie można sprawdzić aktualizacji. Otwórz oferty bezpośrednio w portalu.'};
   const errors=(status.errors||[]).filter(same),searches=(status.searches||[]).filter(same);
-  if(errors.some(x=>/\b(401|403|429)\b/.test(x.error||'')))return {state:'blocked',text:'Portal blokuje automatyczne pobieranie ofert do PSKŁ. Otwórz wyszukiwanie bezpośrednio w portalu.'};
+  if(errors.some(x=>x.kind==='blocked'||[401,403,429].includes(x.status)||/\b(401|403|429)\b/.test(x.error||'')))return {state:'blocked',text:'Portal blokuje automatyczne pobieranie ofert do PSKŁ. Otwórz wyszukiwanie bezpośrednio w portalu.'};
   if(errors.length)return {state:'unavailable',text:'Nie udało się pobrać części lub wszystkich ofert. Otwórz wyszukiwanie w portalu.'};
   if(!searches.length)return {state:'unknown',text:'Brak potwierdzonego odczytu ofert z tego portalu.'};
+  if(searches.some(x=>x.state==='unreadable'))return {state:'unavailable',text:'Strona portalu odpowiada, ale nie udostępniła czytelnych kart ogłoszeń do indeksu. Sprawdź wyniki bezpośrednio w portalu.'};
+  if(!searches.some(x=>Number(x.found)>0)&&searches.some(x=>Number(x.candidates)>0))return {state:'unconfirmed',text:'Odczytano karty ogłoszeń, ale ich treść nie potwierdza drewnianego kadłuba. Sprawdź materiał w ogłoszeniach portalu.'};
   if(!searches.some(x=>Number(x.found)>0))return {state:'empty',text:'Ostatnia aktualizacja nie odczytała żadnej oferty. Nie oznacza to braku ogłoszeń w portalu; poprawność pobierania nie jest potwierdzona.'};
   return {state:'partial',text:'Odczytano część ofert. Baza PSKŁ nie obejmuje wszystkich ogłoszeń w portalu.'};
 }
-const api={norm,criteria,matches,links,sourceStatus};root.PSKL_MARKET=api;
+const api={norm,criteria,matches,links,sourceStatus,isOfferLink};root.PSKL_MARKET=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

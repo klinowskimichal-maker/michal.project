@@ -2,7 +2,7 @@
 import json, re, time
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import quote, urljoin, urlsplit, urlunsplit, parse_qsl, urlencode
+from urllib.parse import quote, urljoin, urlsplit
 
 import requests
 from bs4 import BeautifulSoup
@@ -16,14 +16,14 @@ SESSION.headers.update({'User-Agent': UA, 'Accept-Language': 'pl,en;q=0.8,no;q=0
 QUERIES = {
     'olx': ['drewniana', 'drewniane', 'snekke'],
     'allegro': ['drewniana', 'snekke'],
-    'finn': ['trebåt', 'snekke'],
-    'blocket': ['träbåt', 'mahogny'],
+    'finn': ['trebåt', 'trebåter', 'snekke'],
+    'blocket': ['träbåt', 'träbåtar', 'mahogny'],
     'boat24': ['wood', 'Riva', 'Boesch', 'Storebro'],
     'yachtworld': ['wood', 'Chris Craft'],
     'aba': ['Lyman', 'Chris Craft', 'Gar Wood'],
     'cbc': ['wooden', 'Chris Craft'],
 }
-MAX_PAGES = 3
+MAX_PAGES = 10
 
 
 PORTALS = [
@@ -60,6 +60,10 @@ def material_from(text):
         return 'unknown'
     low = re.sub(r'(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)\s+(?:interior|deck|trim|cockpit|pokład|wnętrz)\w*', '', low)
     low = re.sub(r'(?:interior|deck|trim|pokład\w*|wnętrz\w*)\s+(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)', '', low)
+    low = re.sub(r'\bgar[\s-]+wood\b', '', low)
+    low = re.sub(r'(?:mahogny|trä|tre)\s*(?:däck|dekk|inredning|innredning)\w*', '', low)
+    if re.search(r'(?:skrovmaterial|byggemateriale)\s*:?\s*(?:trä|tre)\b', low):
+        return 'wood'
     if re.search(r'\bwood(?:en)?\b|\bmahogany\b|drewnian|mahoniow|träbåt|trebåt|trebat|mahogny', low):
         return 'wood'
     return 'unknown'
@@ -126,18 +130,13 @@ def equipment_from(text):
     return found
 
 
-def image_from(anchor):
-    parent = anchor
-    for _ in range(4):
-        if not parent:
-            break
-        img = parent.find('img') if hasattr(parent, 'find') else None
-        if img:
-            for key in ('src','data-src','data-lazy-src'):
-                v = img.get(key)
-                if v and not v.startswith('data:'):
-                    return v
-        parent = getattr(parent, 'parent', None)
+def image_from(card):
+    img = card.find('img')
+    if img:
+        for key in ('src', 'data-src', 'data-lazy-src'):
+            v = img.get(key)
+            if v and not v.startswith('data:'):
+                return v
     return None
 
 
@@ -149,51 +148,63 @@ def offer_signal(anchor):
     return norm(' '.join(x for x in bits if x))
 
 
-def collect(portal, label, query, page=1):
-    url = portal['url'](query)
-    if page > 1:
-        parts = urlsplit(url)
-        url = urlunsplit(parts._replace(query=urlencode(parse_qsl(parts.query) + [('page', page)])))
-    r = SESSION.get(url, timeout=25, allow_redirects=True)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, 'html.parser')
+def offer_url(portal, href):
+    url = urljoin(portal['base'], href or '').split('#')[0]
+    parts = urlsplit(url)
+    if parts.scheme != 'https' or (parts.hostname or '').removeprefix('www.') != urlsplit(portal['base']).hostname.removeprefix('www.'):
+        return None
+    return url if portal['match'](url) else None
+
+
+def card_for(anchor, portal, href):
+    # Read sibling title/attributes of image-only links, never another listing.
+    card = anchor
+    for parent in list(anchor.parents)[:5]:
+        if parent.name in ('body', 'html', '[document]'):
+            break
+        links = {offer_url(portal, a.get('href')) for a in parent.find_all('a', href=True)} - {None}
+        if links != {href} or len(parent.get_text(' ', strip=True)) > 1800:
+            break
+        card = parent
+        if parent.name in ('article', 'li'):
+            break
+    return card
+
+
+def parse_page(html, portal, label, query, url):
+    soup = BeautifulSoup(html, 'html.parser')
     items=[]
     seen=set()
 
     for a in soup.find_all('a', href=True):
-        href = urljoin(portal['base'], a.get('href')).split('#')[0]
-        if not portal['match'](href) or href in seen:
+        href = offer_url(portal, a.get('href'))
+        if not href or href in seen:
             continue
-
-        signal = offer_signal(a)
+        seen.add(href)
+        card = card_for(a, portal, href)
+        heading = card.find(['h2', 'h3', 'h4'])
+        signal = norm(heading.get_text(' ', strip=True)) if heading else offer_signal(a)
+        txt = norm(card.get_text(' ', strip=True))
+        signal = signal or txt
         if len(signal) < 8:
             continue
         signal_low = signal.lower()
-        wood_evidence = material_from(signal) == 'wood'
+        wood_evidence = material_from(signal + ' ' + txt) == 'wood'
         signal_year = year_from(signal_low)
 
         if label == 'wood' and not wood_evidence:
             continue
 
-        parent = a.parent
-        txt = signal
-        for _ in range(2):
-            if parent is None:
-                break
-            candidate = norm(parent.get_text(' ', strip=True))
-            if len(candidate) > len(txt) and len(candidate) <= 700:
-                txt = candidate
-            parent = parent.parent
-
-        seen.add(href)
-        image = image_from(a)
+        image = image_from(card)
+        if image:
+            image = urljoin(url, image)
         items.append({
             'source': portal['name'],
             'country': portal['country'],
             'title': signal[:180],
             'year': signal_year or year_from(txt.lower()),
             'material': 'wood' if label == 'wood' else 'unknown',
-            'materialConfidence': 'opis drewna w tytule oferty',
+            'materialConfidence': 'opis drewna w karcie ogłoszenia — potwierdzić kadłub',
             'price': price_from(txt),
             'engine': engine_from(txt),
             'equipment': equipment_from(txt),
@@ -207,7 +218,25 @@ def collect(portal, label, query, page=1):
             'live': True,
         })
 
-    return items, url
+    next_url = None
+    for a in soup.find_all('a', href=True):
+        label_text = norm(' '.join([a.get_text(' ', strip=True), a.get('aria-label', ''), a.get('title', '')])).lower()
+        if 'next' not in a.get('rel', []) and not re.search(r'\b(next|neste|nästa|następna|następny)\b', label_text):
+            continue
+        candidate = urljoin(url, a['href']).split('#')[0]
+        parts, current = urlsplit(candidate), urlsplit(url)
+        if parts.scheme == 'https' and parts.netloc == current.netloc and parts.path.rstrip('/') == current.path.rstrip('/') and candidate != url and not offer_url(portal, candidate):
+            next_url = candidate
+            break
+    # HTTP 200 with only a JS shell is not a successfully read empty market.
+    return items, {'candidates': len(seen), 'state': 'read' if seen else 'unreadable', 'next': next_url}
+
+
+def collect(portal, label, query, url):
+    r = SESSION.get(url, timeout=25, allow_redirects=True)
+    r.raise_for_status()
+    items, diagnostics = parse_page(r.text, portal, label, query, r.url)
+    return items, r.url, diagnostics
 
 
 def main():
@@ -217,25 +246,34 @@ def main():
     for p in PORTALS:
         for q in QUERIES[p['id']]:
             known=set()
+            visited=set()
+            next_url=p['url'](q)
             for page in range(1, MAX_PAGES + 1):
                 try:
-                    items,url = collect(p,'wood',q,page)
-                    searches.append({'portal':p['name'],'query':q,'page':page,'url':url,'found':len(items)})
+                    if not next_url or next_url in visited:
+                        break
+                    visited.add(next_url)
+                    items,url,diagnostics = collect(p,'wood',q,next_url)
+                    visited.add(url)
+                    searches.append({'portal':p['name'],'query':q,'page':page,'url':url,'found':len(items),
+                                     **diagnostics, 'limited': page == MAX_PAGES and bool(diagnostics['next'])})
                     fresh=[x for x in items if x['link'] not in known]
                     all_items.extend(fresh)
                     known.update(x['link'] for x in fresh)
-                    if not fresh or p['id'] not in ('olx','finn','blocket'):
-                        break
+                    # A page without wood evidence must not hide subsequent pages.
+                    next_url=diagnostics['next']
                 except Exception as e:
-                    errors.append({'portal':p['name'],'query':q,'page':page,'error':str(e)[:240]})
+                    status=getattr(getattr(e, 'response', None), 'status_code', None)
+                    errors.append({'portal':p['name'],'query':q,'page':page,'error':str(e)[:240],
+                                   'status':status, 'kind':'blocked' if status in (401,403,429) else 'unavailable'})
                     break
                 time.sleep(0.4)
             # Respect a portal's access denial; do not keep trying other queries.
-            if errors and errors[-1]['portal'] == p['name'] and any(code in errors[-1]['error'] for code in ('401 ', '403 ', '429 ')):
+            if errors and errors[-1]['portal'] == p['name'] and errors[-1]['kind'] == 'blocked':
                 break
 
     dedup={}
-    failed={e['portal'] for e in errors}
+    failed={e['portal'] for e in errors} | {s['portal'] for s in searches if s['state'] == 'unreadable'}
     if OUT.exists():
         previous=json.loads(OUT.read_text(encoding='utf-8'))
         for x in previous.get('offers',[]):
@@ -250,7 +288,7 @@ def main():
         'offers': list(dedup.values()),
         'searches': searches,
         'errors': errors,
-        'notice': 'Częściowy indeks ofert, do 3 stron na zapytanie. Data oznacza próbę odświeżenia; źródła mogą być niedostępne. Materiał i dostępność wymagają potwierdzenia w ogłoszeniu.'
+        'notice': 'Częściowy indeks ofert, do 10 stron na zapytanie, według dostępnych linków do kolejnych stron. Data oznacza próbę odświeżenia; źródła mogą być niedostępne. Materiał i dostępność wymagają potwierdzenia w ogłoszeniu.'
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
