@@ -1,319 +1,96 @@
 {
-  "updatedAt": "2026-09-09T00:40:30Z",
-  "offers": [
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1976 27′ Riva Monte Carlo Superfast",
-      "year": 1976,
-      "material": "wood",
-      "materialConfidence": "konkretny model drewniany",
-      "price": "Cena w ogłoszeniu",
-      "engine": "",
-      "equipment": [],
-      "description": "1976 27′ Riva Monte Carlo Superfast by Mark Krzyzanowski | May 3, 2025 1969 27′ Riva Super Aquarama by Mark Krzyzanowski | Apr 22, 2026 1959 26′ Riva Tritone by Mark Krzyzanowski | Apr 22, 2026 1986 31′ Riva St Tropez by Mark Krzyzanowski | Oct 16, 2024 Classic Boat Collective Boat Brokerage by Classic Boat Collective | Aug 19, 2024 …buyers, making the selling process seamless and rewarding. About Classic Boat Collective Classic Boat Collective, LLC combines the shared experience of some of the Antique & Classic Boat Industry’s leading… « Older Entries",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-09",
-      "link": "https://classicboatcollective.com/listing/1976-27-riva-monte-carlo-superfast/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2025/05/IMG_6136.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1969 27′ Riva Super Aquarama",
-      "year": 1969,
-      "material": "wood",
-      "materialConfidence": "konkretny model drewniany",
-      "price": "Cena w ogłoszeniu",
-      "engine": "",
-      "equipment": [],
-      "description": "1976 27′ Riva Monte Carlo Superfast by Mark Krzyzanowski | May 3, 2025 1969 27′ Riva Super Aquarama by Mark Krzyzanowski | Apr 22, 2026 1959 26′ Riva Tritone by Mark Krzyzanowski | Apr 22, 2026 1986 31′ Riva St Tropez by Mark Krzyzanowski | Oct 16, 2024 Classic Boat Collective Boat Brokerage by Classic Boat Collective | Aug 19, 2024 …buyers, making the selling process seamless and rewarding. About Classic Boat Collective Classic Boat Collective, LLC combines the shared experience of some of the Antique & Classic Boat Industry’s leading… « Older Entries",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-09",
-      "link": "https://classicboatcollective.com/listing/1969-27-riva-super-aquarama/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2026/04/Daniela-2-1080x675.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1959 26′ Riva Tritone",
-      "year": 1959,
-      "material": "wood",
-      "materialConfidence": "konkretny model drewniany",
-      "price": "Cena w ogłoszeniu",
-      "engine": "",
-      "equipment": [],
-      "description": "1976 27′ Riva Monte Carlo Superfast by Mark Krzyzanowski | May 3, 2025 1969 27′ Riva Super Aquarama by Mark Krzyzanowski | Apr 22, 2026 1959 26′ Riva Tritone by Mark Krzyzanowski | Apr 22, 2026 1986 31′ Riva St Tropez by Mark Krzyzanowski | Oct 16, 2024 Classic Boat Collective Boat Brokerage by Classic Boat Collective | Aug 19, 2024 …buyers, making the selling process seamless and rewarding. About Classic Boat Collective Classic Boat Collective, LLC combines the shared experience of some of the Antique & Classic Boat Industry’s leading… « Older Entries",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-09",
-      "link": "https://classicboatcollective.com/listing/1959-26-riva-tritone/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2026/04/358731.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1970 26′ Lyman Cruisette",
-      "year": 1970,
-      "material": "wood",
-      "materialConfidence": "konkretny model drewniany",
-      "price": "Cena w ogłoszeniu",
-      "engine": "",
-      "equipment": [],
-      "description": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Sportsman by Mark Krzyzanowski | Sep 3, 2025 1991 24′ Chris Craft Triple Cockpit Up Swept Runabout by Mark Krzyzanowski | Mar 12, 2025 1939 19′ Chris Craft Barrel Back by Mark Krzyzanowski | Jan 9, 2025 « Older Entries",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-09",
-      "link": "https://classicboatcollective.com/listing/1970-26-lyman-cruisette/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2025/02/26-Lyman-1.webp",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1967 26′ Lyman Cruisette Hard Top",
-      "year": 1967,
-      "material": "wood",
-      "materialConfidence": "konkretny model drewniany",
-      "price": "Cena w ogłoszeniu",
-      "engine": "",
-      "equipment": [],
-      "description": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Sportsman by Mark Krzyzanowski | Sep 3, 2025 1991 24′ Chris Craft Triple Cockpit Up Swept Runabout by Mark Krzyzanowski | Mar 12, 2025 1939 19′ Chris Craft Barrel Back by Mark Krzyzanowski | Jan 9, 2025 « Older Entries",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-09",
-      "link": "https://classicboatcollective.com/listing/1967-26-lyman-cruisette-hard-top/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2026/01/Lyman-at-Dock-2-1080x675.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1967 30′ Lyman Sportsman",
-      "year": 1967,
-      "material": "wood",
-      "materialConfidence": "konkretny model drewniany",
-      "price": "Cena w ogłoszeniu",
-      "engine": "",
-      "equipment": [],
-      "description": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Sportsman by Mark Krzyzanowski | Sep 3, 2025 1991 24′ Chris Craft Triple Cockpit Up Swept Runabout by Mark Krzyzanowski | Mar 12, 2025 1939 19′ Chris Craft Barrel Back by Mark Krzyzanowski | Jan 9, 2025 « Older Entries",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-09",
-      "link": "https://classicboatcollective.com/listing/1967-30-lyman-sportsman/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2025/09/1.-Side-view-top-down--1080x675.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    },
-    {
-      "source": "Classic Boat Collective",
-      "country": "USA / Kanada",
-      "title": "1939 19′ Chris Craft Barrel Back",
-      "year": 1939,
-      "material": "wood",
-      "materialConfidence": "konkretny model drewniany",
-      "price": "Cena w ogłoszeniu",
-      "engine": "",
-      "equipment": [],
-      "description": "1970 26′ Lyman Cruisette by Mark Krzyzanowski | Feb 18, 2025 1967 26′ Lyman Cruisette Hard Top by Mark Krzyzanowski | Jan 12, 2026 1967 30′ Lyman Sportsman by Mark Krzyzanowski | Sep 3, 2025 1991 24′ Chris Craft Triple Cockpit Up Swept Runabout by Mark Krzyzanowski | Mar 12, 2025 1939 19′ Chris Craft Barrel Back by Mark Krzyzanowski | Jan 9, 2025 « Older Entries",
-      "status": "Automatyczny odczyt — otworzyć i potwierdzić",
-      "verifiedAt": "2026-09-09",
-      "link": "https://classicboatcollective.com/listing/1939-19-chris-craft-barrel-back-2/",
-      "image": "https://classicboatcollective.com/wp-content/uploads/2025/01/20241112_091826-1080x675.jpg",
-      "imageNote": "Zdjęcie z wyniku portalu",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "live": true
-    }
-  ],
+  "updatedAt": "2026-09-09T03:36:45Z",
+  "offers": [],
   "searches": [
     {
       "portal": "FINN",
-      "query": "drewniana łódź motorowa klasyczna",
-      "url": "https://www.finn.no/mobility/search/boat?query=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna",
+      "query": "trebåt",
+      "page": 1,
+      "url": "https://www.finn.no/mobility/search/boat?query=treb%C3%A5t",
       "found": 0
     },
     {
       "portal": "FINN",
-      "query": "snekke trebåt",
-      "url": "https://www.finn.no/mobility/search/boat?query=snekke%20treb%C3%A5t",
-      "found": 0
-    },
-    {
-      "portal": "FINN",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "url": "https://www.finn.no/mobility/search/boat?query=Riva%20Boesch%20Storebro%20classic%20wooden%20boat",
-      "found": 0
-    },
-    {
-      "portal": "FINN",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "url": "https://www.finn.no/mobility/search/boat?query=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat",
+      "query": "snekke",
+      "page": 1,
+      "url": "https://www.finn.no/mobility/search/boat?query=snekke",
       "found": 0
     },
     {
       "portal": "Blocket",
-      "query": "drewniana łódź motorowa klasyczna",
-      "url": "https://www.blocket.se/mobility/search/boat?q=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna",
+      "query": "träbåt",
+      "page": 1,
+      "url": "https://www.blocket.se/mobility/search/boat?q=tr%C3%A4b%C3%A5t",
       "found": 0
     },
     {
       "portal": "Blocket",
-      "query": "snekke trebåt",
-      "url": "https://www.blocket.se/mobility/search/boat?q=snekke%20treb%C3%A5t",
-      "found": 0
-    },
-    {
-      "portal": "Blocket",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "url": "https://www.blocket.se/mobility/search/boat?q=Riva%20Boesch%20Storebro%20classic%20wooden%20boat",
-      "found": 0
-    },
-    {
-      "portal": "Blocket",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "url": "https://www.blocket.se/mobility/search/boat?q=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat",
+      "query": "mahogny",
+      "page": 1,
+      "url": "https://www.blocket.se/mobility/search/boat?q=mahogny",
       "found": 0
     },
     {
       "portal": "Antique Boat America",
-      "query": "drewniana łódź motorowa klasyczna",
-      "url": "https://www.antiqueboatamerica.com/BoatSearch.aspx?search=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna",
+      "query": "Lyman",
+      "page": 1,
+      "url": "https://www.antiqueboatamerica.com/BoatSearch.aspx?search=Lyman",
       "found": 0
     },
     {
       "portal": "Antique Boat America",
-      "query": "snekke trebåt",
-      "url": "https://www.antiqueboatamerica.com/BoatSearch.aspx?search=snekke%20treb%C3%A5t",
+      "query": "Chris Craft",
+      "page": 1,
+      "url": "https://www.antiqueboatamerica.com/BoatSearch.aspx?search=Chris%20Craft",
       "found": 0
     },
     {
       "portal": "Antique Boat America",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "url": "https://www.antiqueboatamerica.com/BoatSearch.aspx?search=Riva%20Boesch%20Storebro%20classic%20wooden%20boat",
-      "found": 0
-    },
-    {
-      "portal": "Antique Boat America",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "url": "https://www.antiqueboatamerica.com/BoatSearch.aspx?search=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat",
+      "query": "Gar Wood",
+      "page": 1,
+      "url": "https://www.antiqueboatamerica.com/BoatSearch.aspx?search=Gar%20Wood",
       "found": 0
     },
     {
       "portal": "Classic Boat Collective",
-      "query": "drewniana łódź motorowa klasyczna",
-      "url": "https://classicboatcollective.com/?s=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna",
+      "query": "wooden",
+      "page": 1,
+      "url": "https://classicboatcollective.com/?s=wooden",
       "found": 0
     },
     {
       "portal": "Classic Boat Collective",
-      "query": "snekke trebåt",
-      "url": "https://classicboatcollective.com/?s=snekke%20treb%C3%A5t",
+      "query": "Chris Craft",
+      "page": 1,
+      "url": "https://classicboatcollective.com/?s=Chris%20Craft",
       "found": 0
-    },
-    {
-      "portal": "Classic Boat Collective",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "url": "https://classicboatcollective.com/?s=Riva%20Boesch%20Storebro%20classic%20wooden%20boat",
-      "found": 3
-    },
-    {
-      "portal": "Classic Boat Collective",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "url": "https://classicboatcollective.com/?s=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat",
-      "found": 4
     }
   ],
   "errors": [
     {
       "portal": "OLX",
-      "query": "drewniana łódź motorowa klasyczna",
-      "error": "403 Client Error: Forbidden for url: https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-drewniana-lodz-motorowa-klasyczna/"
-    },
-    {
-      "portal": "OLX",
-      "query": "snekke trebåt",
-      "error": "403 Client Error: Forbidden for url: https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-snekke-trebat/"
-    },
-    {
-      "portal": "OLX",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "error": "403 Client Error: Forbidden for url: https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-riva-boesch-storebro-classic-wooden-boat/"
-    },
-    {
-      "portal": "OLX",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "error": "403 Client Error: Forbidden for url: https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-chris-craft-century-lyman-wooden-classic-boat/"
+      "query": "drewniana",
+      "page": 1,
+      "error": "403 Client Error: Forbidden for url: https://www.olx.pl/sport-hobby/sporty-wodne/lodzie-i-jachty/q-drewniana/"
     },
     {
       "portal": "Allegro",
-      "query": "drewniana łódź motorowa klasyczna",
-      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna"
-    },
-    {
-      "portal": "Allegro",
-      "query": "snekke trebåt",
-      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=snekke%20treb%C3%A5t"
-    },
-    {
-      "portal": "Allegro",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=Riva%20Boesch%20Storebro%20classic%20wooden%20boat"
-    },
-    {
-      "portal": "Allegro",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat"
+      "query": "drewniana",
+      "page": 1,
+      "error": "403 Client Error: Forbidden for url: https://allegro.pl/kategoria/lodzie-motorowki-4084?oferta-dotyczy=sprzeda%C5%BC&string=drewniana"
     },
     {
       "portal": "Boat24",
-      "query": "drewniana łódź motorowa klasyczna",
-      "error": "403 Client Error: Forbidden for url: https://www.boat24.com/en/powerboats/?q=drewniana%20%C5%82%C3%B3d%C5%BA%20motorowa%20klasyczna"
-    },
-    {
-      "portal": "Boat24",
-      "query": "snekke trebåt",
-      "error": "403 Client Error: Forbidden for url: https://www.boat24.com/en/powerboats/?q=snekke%20treb%C3%A5t"
-    },
-    {
-      "portal": "Boat24",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "error": "403 Client Error: Forbidden for url: https://www.boat24.com/en/powerboats/?q=Riva%20Boesch%20Storebro%20classic%20wooden%20boat"
-    },
-    {
-      "portal": "Boat24",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "error": "403 Client Error: Forbidden for url: https://www.boat24.com/en/powerboats/?q=Chris%20Craft%20Century%20Lyman%20wooden%20classic%20boat"
+      "query": "wood",
+      "page": 1,
+      "error": "403 Client Error: Forbidden for url: https://www.boat24.com/en/powerboats/?q=wood"
     },
     {
       "portal": "YachtWorld",
-      "query": "drewniana łódź motorowa klasyczna",
-      "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-drewniana-lodz-motorowa-klasyczna/"
-    },
-    {
-      "portal": "YachtWorld",
-      "query": "snekke trebåt",
-      "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-snekke-trebat/"
-    },
-    {
-      "portal": "YachtWorld",
-      "query": "Riva Boesch Storebro classic wooden boat",
-      "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-riva-boesch-storebro-classic-wooden-boat/"
-    },
-    {
-      "portal": "YachtWorld",
-      "query": "Chris Craft Century Lyman wooden classic boat",
-      "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-chris-craft-century-lyman-wooden-classic-boat/"
+      "query": "wood",
+      "page": 1,
+      "error": "403 Client Error: Forbidden for url: https://www.yachtworld.com/boats-for-sale/keyword-wood/"
     }
   ],
-  "notice": "Automatyczny indeks pomocniczy z rygorystycznym filtrem materiału. Każdą ofertę należy potwierdzić w portalu źródłowym."
+  "notice": "Częściowy indeks ofert, do 3 stron na zapytanie. Data oznacza próbę odświeżenia; źródła mogą być niedostępne. Materiał i dostępność wymagają potwierdzenia w ogłoszeniu."
 }
