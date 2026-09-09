@@ -95,10 +95,13 @@ function renderMarketCoverage(){
   if(!panel){panel=document.createElement('div');panel.id='marketCoverage';$('#searchSummary').insertAdjacentElement('afterend',panel);}
   const status=window.PSKL_MARKET_STATUS,c=searchCriteria();
   const links=window.PSKL_MARKET.links(c);
-  const relevant=new Set(links.map(p=>p.name));
-  const failed=[...new Set((status?.errors||[]).map(x=>x.portal))].filter(p=>relevant.has(p));
+  const groups=[...new Set(links.map(p=>p.id))].map(id=>links.filter(p=>p.id===id));
   const timestamp=status?.updatedAt?new Date(status.updatedAt).toLocaleString('pl-PL'):'';
-  panel.innerHTML=`<section class="portal-more" aria-label="Wyszukiwanie w portalach"><h3>Więcej ogłoszeń w portalach</h3><p>${failed.length?`<strong>Nie pobrano nowych ofert z: ${failed.map(esc).join(', ')}.</strong> `:''}Wyniki poniżej pochodzą z częściowej bazy PSKŁ. Liczba zapisanych ofert nie pokazuje liczby łodzi dostępnych na rynku.</p><p>Otwórz wyniki w portalu. Warto sprawdzić różne określenia: „drewniana”, „drewniane” i „drewniany” — sprzedający używają różnych tytułów.${c.country?` Wybrany kraj: <strong>${esc(c.country)}</strong>. W portalach międzynarodowych ustaw dodatkowo lokalizację.`:''}</p><div class="market-portal-links">${links.map(p=>`<a class="button" href="${esc(p.href)}" target="_blank" rel="noopener">${esc(p.name)} · ${esc(p.query||'wszystkie łodzie')} ↗</a>`).join('')}</div><p class="market-status">${timestamp?`Ostatnia próba aktualizacji bazy: ${esc(timestamp)}.`:status?.failed?'Aktualizacja bazy jest niedostępna.':'Trwa sprawdzanie aktualizacji bazy.'} Materiał kadłuba i dostępność potwierdź w ogłoszeniu.</p></section>`;
+  const label={loading:'Sprawdzanie',blocked:'Pobieranie zablokowane',unavailable:'Odczyt niedostępny',unknown:'Odczyt niepotwierdzony',empty:'Brak odczytanych ofert',partial:'Częściowy odczyt'};
+  panel.innerHTML=`<section class="portal-more" aria-label="Dostępność ofert w portalach"><h3>Oferty bezpośrednio w portalach</h3><p>Przyciski otwierają wyszukiwanie w wybranym serwisie. Telefon może otworzyć jego zainstalowaną aplikację, jeśli obsługuje te linki; w pozostałych przypadkach otworzy stronę portalu.</p><div class="market-source-grid">${groups.map(group=>{
+    const p=group[0],health=window.PSKL_MARKET.sourceStatus(p.name,status);
+    return `<article class="market-source" data-source="${esc(p.id)}" data-state="${health.state}"><h4>${esc(p.name)}</h4><strong class="market-source-state">${label[health.state]}</strong><p>${esc(health.text)}</p><a class="button primary" href="${esc(p.href)}" target="_blank" rel="noopener">Otwórz ${esc(p.name)} ↗</a><small>Wyszukiwanie: ${esc(p.query||'wszystkie łodzie')}</small>${group.length>1?`<div class="market-source-variants"><span>Sprawdź też:</span>${group.slice(1).map(v=>`<a href="${esc(v.href)}" target="_blank" rel="noopener">${esc(v.query)} ↗</a>`).join('')}</div>`:''}</article>`;
+  }).join('')}</div><p class="market-status">${timestamp?`Status według ostatniej próby aktualizacji: ${esc(timestamp)}.`:status?.failed?'Aktualizacja bazy jest niedostępna.':'Trwa sprawdzanie aktualizacji bazy.'} Wyniki w PSKŁ pochodzą z częściowej bazy. Materiał kadłuba i dostępność potwierdź w ogłoszeniu.${c.country?` Wybrany kraj: ${esc(c.country)}. W portalach międzynarodowych ustaw dodatkowo lokalizację.`:''}</p></section>`;
 }
 function renderSearchResults(scroll=true){
   hasSearched=true;
@@ -140,9 +143,9 @@ function initSearchButton(){
   const old=$('#searchNow');if(!old)return;
   const fresh=old.cloneNode(true);old.replaceWith(fresh);
   fresh.addEventListener('click',()=>renderSearchResults(true));
-  $('#query')?.addEventListener('input',()=>{if(hasSearched)renderSearchResults(false)});
+  $('#query')?.addEventListener('input',()=>{if(hasSearched)renderSearchResults(false);else renderMarketCoverage()});
   $('#query')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();renderSearchResults(true)}});
-  ['#material','#country'].forEach(sel=>$(sel)?.addEventListener('change',()=>{if(hasSearched)renderSearchResults(false)}));
+  ['#material','#country'].forEach(sel=>$(sel)?.addEventListener('change',()=>{if(hasSearched)renderSearchResults(false);else renderMarketCoverage()}));
 }
 function resetSearchPrompt(){
   const box=$('#searchResults');if(box)box.innerHTML='';
@@ -153,8 +156,8 @@ function cleanLegacySearch(){
   resetSearchPrompt();
 }
 function observeMarketRefresh(){
-  window.addEventListener('pskl-market-loaded',()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();});
+  window.addEventListener('pskl-market-loaded',()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else {resetSearchPrompt();renderMarketCoverage();}});
 }
-cleanLegacySearch();initSearchButton();renderOffersWorkspace();observeMarketRefresh();
+cleanLegacySearch();initSearchButton();renderOffersWorkspace();observeMarketRefresh();renderMarketCoverage();
 window.PSKL_TRACKED_OFFERS={list:currentTracked,add:addTracked,remove:removeTracked,render:renderOffersWorkspace};
 })();

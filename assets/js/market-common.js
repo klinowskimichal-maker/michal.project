@@ -41,6 +41,18 @@ function links(c){
     });
   });
 }
-const api={norm,criteria,matches,links};root.PSKL_MARKET=api;
+function sourceStatus(name,status){
+  const canonical=s=>s==='FINN.no'?'FINN':s;
+  const same=x=>canonical(x.portal)===canonical(name);
+  if(!status)return {state:'loading',text:'Sprawdzanie ostatniej aktualizacji…'};
+  if(status.failed)return {state:'unavailable',text:'Nie można sprawdzić aktualizacji. Otwórz oferty bezpośrednio w portalu.'};
+  const errors=(status.errors||[]).filter(same),searches=(status.searches||[]).filter(same);
+  if(errors.some(x=>/\b(401|403|429)\b/.test(x.error||'')))return {state:'blocked',text:'Portal blokuje automatyczne pobieranie ofert do PSKŁ. Otwórz wyszukiwanie bezpośrednio w portalu.'};
+  if(errors.length)return {state:'unavailable',text:'Nie udało się pobrać części lub wszystkich ofert. Otwórz wyszukiwanie w portalu.'};
+  if(!searches.length)return {state:'unknown',text:'Brak potwierdzonego odczytu ofert z tego portalu.'};
+  if(!searches.some(x=>Number(x.found)>0))return {state:'empty',text:'Ostatnia aktualizacja nie odczytała żadnej oferty. Nie oznacza to braku ogłoszeń w portalu; poprawność pobierania nie jest potwierdzona.'};
+  return {state:'partial',text:'Odczytano część ofert. Baza PSKŁ nie obejmuje wszystkich ogłoszeń w portalu.'};
+}
+const api={norm,criteria,matches,links,sourceStatus};root.PSKL_MARKET=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
