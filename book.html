@@ -7,7 +7,7 @@
 <title>Księga Założycielska - Wydanie I | PSKŁ</title>
 <meta name="description" content="Księga Założycielska PSKŁ - Wydanie I, 34 strony. Własny czytnik Polskiego Stowarzyszenia Klasycznych i Zabytkowych Łodzi.">
 <style>
-:root{--navy:#061b2b;--navy2:#0b3147;--copper:#b8793f;--brass:#d4a06e;--paper:#f5f1e8;--page-w:892px}
+:root{--navy:#061b2b;--navy2:#0b3147;--copper:#b8793f;--brass:#d4a06e;--paper:#f5f1e8;--page-w:min(892px,calc(100vw - 24px))}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--navy)}
 body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy) 43%,#03131f 100%);color:#fff;font-family:Arial,Helvetica,sans-serif}
@@ -20,8 +20,8 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
 .pagebox{display:flex;align-items:center;gap:5px;color:#d4a06e;font-weight:700;font-size:12px;white-space:nowrap}
 .pagebox input{width:48px;border:1px solid rgba(212,160,110,.55);border-radius:7px;background:#041a28;color:#fff;padding:7px 5px;text-align:center;font-weight:700}
 .stage{width:100%;overflow-x:auto;padding:24px 10px 80px;scrollbar-color:#b8793f #061b2b}
-.reader{display:flex;flex-direction:column;align-items:center;gap:28px;min-width:100%}
-.sheet{width:min(var(--page-w),calc(100vw - 24px));margin:0;position:relative;border-radius:4px;background:white;box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 1px rgba(212,160,110,.48);overflow:hidden;transition:width .2s ease,box-shadow .2s ease}
+.reader{display:flex;flex-direction:column;align-items:center;gap:28px;min-width:max-content}
+.sheet{width:var(--page-w);scroll-margin-top:76px;margin:0;position:relative;border-radius:4px;background:white;box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 1px rgba(212,160,110,.48);overflow:hidden;transition:width .2s ease,box-shadow .2s ease}
 .sheet img{display:block;width:100%;height:auto;background:white}
 .sheet figcaption{position:absolute;right:10px;bottom:8px;padding:4px 7px;border-radius:5px;background:rgba(4,23,35,.82);color:#eac28e;font-size:9px;font-weight:700;letter-spacing:.08em;opacity:.1;transition:opacity .2s}
 .sheet:hover figcaption,.sheet.current figcaption{opacity:.9}
@@ -37,7 +37,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
  .pagebox{font-size:10px}.pagebox input{width:40px;padding:6px 3px}
  .stage{padding:14px 6px 70px}
  .reader{gap:17px}
- .sheet{width:calc(100vw - 14px);border-radius:2px}
+ .sheet{border-radius:2px}
 }
 @media print{.toolbar,.intro,.fab,figcaption{display:none!important}.stage{padding:0}.reader{gap:0}.sheet{width:100%;box-shadow:none;break-after:page;border:0}}
 </style>
@@ -52,6 +52,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
   <button class="ctrl" id="zoomOut" type="button" aria-label="Pomniejsz">−</button>
   <button class="ctrl" id="zoomIn" type="button" aria-label="Powiększ">+</button>
 </nav>
+<div class="intro"><a class="back" href="assets/book/ksiega-zalozycielska.pdf">Otwórz PDF</a> <a class="back" href="assets/book/ksiega-zalozycielska.pdf" download>Pobierz PDF</a></div>
 <p class="intro"><b>Księga Założycielska</b> przedstawia misję, wartości, cele, strukturę i kierunek rozwoju Stowarzyszenia. Poniżej znajduje się pełne Wydanie I w 34 stronach, wyświetlane bezpośrednio przez PSKŁ.</p>
 <main class="stage" id="stage"><div class="reader" id="reader">
 <figure class="sheet" id="page-1" data-page="1">
@@ -196,24 +197,26 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
 (()=>{
  const sheets=[...document.querySelectorAll('.sheet')];
  const input=document.getElementById('pageInput');
- let current=1, pageWidth=892;
- const go=n=>{n=Math.max(1,Math.min(34,Number(n)||1));document.getElementById('page-'+n)?.scrollIntoView({behavior:'smooth',block:'start'});};
+ let current=1, pageWidth=Math.min(892,innerWidth-24);
+ const go=n=>{n=Math.max(1,Math.min(34,Math.round(Number(n)||1)));current=n;input.value=n;document.getElementById('page-'+n)?.scrollIntoView({behavior:'smooth',block:'start'});};
  document.getElementById('prev').onclick=()=>go(current-1);
  document.getElementById('next').onclick=()=>go(current+1);
  input.addEventListener('change',()=>go(input.value));
  input.addEventListener('keydown',e=>{if(e.key==='Enter')go(input.value)});
  document.getElementById('top').onclick=()=>go(1);
  document.getElementById('zoomIn').onclick=()=>{pageWidth=Math.min(1400,pageWidth+120);document.documentElement.style.setProperty('--page-w',pageWidth+'px')};
- document.getElementById('zoomOut').onclick=()=>{pageWidth=Math.max(560,pageWidth-120);document.documentElement.style.setProperty('--page-w',pageWidth+'px')};
+ document.getElementById('zoomOut').onclick=()=>{pageWidth=Math.max(240,pageWidth-120);document.documentElement.style.setProperty('--page-w',pageWidth+'px')};
+ const intersections=new Map();
  const observer=new IntersectionObserver(entries=>{
-   const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+   entries.forEach(e=>{if(e.isIntersecting)intersections.set(e.target,e);else intersections.delete(e.target)});
+   const visible=[...intersections.values()].sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
    if(!visible)return;
    sheets.forEach(s=>s.classList.remove('current'));
    visible.target.classList.add('current');
    current=Number(visible.target.dataset.page);input.value=current;
  },{threshold:[.25,.45,.65,.8]});
  sheets.forEach(s=>observer.observe(s));
- document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='PageDown')go(current+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(current-1);if(e.key==='Home')go(1);if(e.key==='End')go(34)});
+ document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select,button,a'))return;if(['ArrowRight','ArrowLeft','PageDown','PageUp','Home','End'].includes(e.key))e.preventDefault();if(e.key==='ArrowRight'||e.key==='PageDown')go(current+1);if(e.key==='ArrowLeft'||e.key==='PageUp')go(current-1);if(e.key==='Home')go(1);if(e.key==='End')go(34)});
 })();
 </script>
 </body>

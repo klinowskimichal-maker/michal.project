@@ -1,17 +1,18 @@
 (function(){
 'use strict';
 const $=s=>document.querySelector(s);
+const setText=(el,text)=>{if(el&&el.textContent!==text)el.textContent=text};
 function polishPanel(){
   const panel=$('#pskl-repair-chat');if(!panel)return;
-  const small=panel.querySelector('.pskl-chat-title small');if(small)small.textContent='NAWIGACJA · ANALIZA · WERYFIKACJA';
+  const small=panel.querySelector('.pskl-chat-title small');setText(small,'NAWIGACJA · ANALIZA · WERYFIKACJA');
   const first=panel.querySelector('.pskl-messages .pskl-msg.bot');
   if(first&&/znowu jestem|pełnym doradcą/i.test(first.textContent))first.textContent='Witaj. Wybierz model lub ofertę, aby rozpocząć analizę. Mogę również pomóc w nawigacji po katalogu i wyszukiwaniu.';
   const buttons=[...panel.querySelectorAll('.pskl-quick button')];
-  if(buttons[0])buttons[0].textContent='Nawigacja';
-  if(buttons[1])buttons[1].textContent='Analiza modelu';
-  if(buttons[2])buttons[2].textContent='Ocena oferty';
-  if(buttons[3])buttons[3].textContent='Skala PSKŁ';
-  const note=panel.querySelector('.pskl-ai-note span');if(note)note.textContent='Analiza danych katalogowych i ofert PSKŁ';
+  setText(buttons[0],'Nawigacja');
+  setText(buttons[1],'Analiza modelu');
+  setText(buttons[2],'Ocena oferty');
+  setText(buttons[3],'Skala PSKŁ');
+  const note=panel.querySelector('.pskl-ai-note span');setText(note,'Analiza danych katalogowych i ofert PSKŁ');
 }
 function polishGreeting(node){
   if(!node?.classList?.contains('pirate-auto-greeting'))return;
@@ -31,7 +32,7 @@ document.addEventListener('submit',e=>{
   const box=panel.querySelector('.pskl-messages');
   const add=(text,who)=>{const d=document.createElement('div');d.className=`pskl-msg ${who}`;d.textContent=text;box.appendChild(d);};
   add(q,'user');
-  add('W zakładce „Szukaj” ustaw frazę, materiał i kraj, a następnie wybierz „SZUKAJ”. Pasujące oferty pojawią się automatycznie poniżej. Zaznaczenie „Obserwuj ofertę” zapisuje wybraną pozycję w zakładce „Oferty”, gdzie można ją dalej śledzić i analizować.','bot');
+  add('W zakładce „Szukaj” ustaw frazę, materiał i kraj, a następnie wybierz „SZUKAJ”. Pasujące zapisane oferty pojawią się poniżej. Indeks obejmuje część rynku; więcej ogłoszeń można otworzyć przez linki do portali. Zaznaczenie „Obserwuj ofertę” zapisuje wybraną pozycję w zakładce „Oferty”, gdzie można ją dalej śledzić i analizować.','bot');
   const body=panel.querySelector('.pskl-chat-body');if(body)body.scrollTop=body.scrollHeight;
 },true);
 })();

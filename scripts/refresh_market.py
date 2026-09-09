@@ -2,7 +2,7 @@
 import json, re, time
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import quote, urljoin
+from urllib.parse import quote, urljoin, urlsplit, urlunsplit, parse_qsl, urlencode
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,12 +12,19 @@ UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/131 Safari/537.3
 SESSION = requests.Session()
 SESSION.headers.update({'User-Agent': UA, 'Accept-Language': 'pl,en;q=0.8,no;q=0.7,sv;q=0.6'})
 
-QUERIES = [
-    ('wood', 'drewniana łódź motorowa klasyczna'),
-    ('wood', 'snekke trebåt'),
-    ('wood', 'Riva Boesch Storebro classic wooden boat'),
-    ('wood', 'Chris Craft Century Lyman wooden classic boat'),
-]
+# Separate, local-language queries avoid requiring several unrelated brands at once.
+QUERIES = {
+    'olx': ['drewniana', 'drewniane', 'snekke'],
+    'allegro': ['drewniana', 'snekke'],
+    'finn': ['trebåt', 'snekke'],
+    'blocket': ['träbåt', 'mahogny'],
+    'boat24': ['wood', 'Riva', 'Boesch', 'Storebro'],
+    'yachtworld': ['wood', 'Chris Craft'],
+    'aba': ['Lyman', 'Chris Craft', 'Gar Wood'],
+    'cbc': ['wooden', 'Chris Craft'],
+}
+MAX_PAGES = 3
+
 
 PORTALS = [
     dict(id='olx', name='OLX', country='Polska', base='https://www.olx.pl',
@@ -46,15 +53,18 @@ PORTALS = [
          match=lambda u: '/listing/' in u),
 ]
 
-WOOD_WORDS = ('wood','wooden','mahogany','timber','drewn','mahon','trä','trebåt','trebat','klink','clinker','plank')
-WOOD_MODEL_WORDS = (
-    'aquarama','super aquarama','tritone','ariston','riva junior','monte carlo superfast',
-    'chris craft barrel','chris-craft barrel','chris craft riviera','chris-craft riviera',
-    'chris craft continental','chris-craft continental','chris craft sportsman','chris-craft sportsman',
-    'lyman cruisette','lyman sportsman','lyman runabout','gar wood','hacker craft','hacker-craft',
-    'greavette','shepherd','fairey huntsman','fairey swordsman','pettersson',
-    'boesch 510','boesch 580','boesch 590','storebro solö','storebro solo','solö ruff','solo ruff'
-)
+def material_from(text):
+    low = (text or '').lower()
+    # A wooden interior or deck alone is not evidence of a wooden hull.
+    if re.search(r'laminat|fiberglas|fibreglas|glasfiber|glassfiber|\bgrp\b|plast(?:ik|ics?)?\b', low):
+        return 'unknown'
+    low = re.sub(r'(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)\s+(?:interior|deck|trim|cockpit|pokład|wnętrz)\w*', '', low)
+    low = re.sub(r'(?:interior|deck|trim|pokład\w*|wnętrz\w*)\s+(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)', '', low)
+    if re.search(r'\bwood(?:en)?\b|\bmahogany\b|drewnian|mahoniow|träbåt|trebåt|trebat|mahogny', low):
+        return 'wood'
+    return 'unknown'
+
+
 ENGINE_WORDS = ('Volvo Penta','Volvo','MerCruiser','Chris-Craft','Crusader','Marstal','Ford','Hercules','Chrysler','Gray Marine','Gray','Parsons','GM','Yanmar','Perkins','Beta Marine')
 EQUIPMENT_WORDS = {
     'trailer': ('trailer','przyczep'),
@@ -139,8 +149,11 @@ def offer_signal(anchor):
     return norm(' '.join(x for x in bits if x))
 
 
-def collect(portal, label, query):
+def collect(portal, label, query, page=1):
     url = portal['url'](query)
+    if page > 1:
+        parts = urlsplit(url)
+        url = urlunsplit(parts._replace(query=urlencode(parse_qsl(parts.query) + [('page', page)])))
     r = SESSION.get(url, timeout=25, allow_redirects=True)
     r.raise_for_status()
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -156,11 +169,10 @@ def collect(portal, label, query):
         if len(signal) < 8:
             continue
         signal_low = signal.lower()
-        wood_evidence = any(w in signal_low for w in WOOD_WORDS)
-        model_evidence = any(w in signal_low for w in WOOD_MODEL_WORDS)
+        wood_evidence = material_from(signal) == 'wood'
         signal_year = year_from(signal_low)
 
-        if label == 'wood' and not (wood_evidence or model_evidence):
+        if label == 'wood' and not wood_evidence:
             continue
 
         parent = a.parent
@@ -181,21 +193,19 @@ def collect(portal, label, query):
             'title': signal[:180],
             'year': signal_year or year_from(txt.lower()),
             'material': 'wood' if label == 'wood' else 'unknown',
-            'materialConfidence': 'tekst oferty' if wood_evidence else 'konkretny model drewniany',
+            'materialConfidence': 'opis drewna w tytule oferty',
             'price': price_from(txt),
             'engine': engine_from(txt),
             'equipment': equipment_from(txt),
             'description': txt[:700],
             'status': 'Automatyczny odczyt — otworzyć i potwierdzić',
-            'verifiedAt': datetime.now(timezone.utc).date().isoformat(),
+            'indexedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
             'link': href,
             'image': image,
             'imageNote': 'Zdjęcie z wyniku portalu' if image else 'Brak zdjęcia w indeksie',
             'query': query,
             'live': True,
         })
-        if len(items) >= 8:
-            break
 
     return items, url
 
@@ -205,16 +215,33 @@ def main():
     errors=[]
     searches=[]
     for p in PORTALS:
-        for label,q in QUERIES:
-            try:
-                items,url = collect(p,label,q)
-                searches.append({'portal':p['name'],'query':q,'url':url,'found':len(items)})
-                all_items.extend(items)
-            except Exception as e:
-                errors.append({'portal':p['name'],'query':q,'error':str(e)[:240]})
-            time.sleep(0.7)
+        for q in QUERIES[p['id']]:
+            known=set()
+            for page in range(1, MAX_PAGES + 1):
+                try:
+                    items,url = collect(p,'wood',q,page)
+                    searches.append({'portal':p['name'],'query':q,'page':page,'url':url,'found':len(items)})
+                    fresh=[x for x in items if x['link'] not in known]
+                    all_items.extend(fresh)
+                    known.update(x['link'] for x in fresh)
+                    if not fresh or p['id'] not in ('olx','finn','blocket'):
+                        break
+                except Exception as e:
+                    errors.append({'portal':p['name'],'query':q,'page':page,'error':str(e)[:240]})
+                    break
+                time.sleep(0.4)
+            # Respect a portal's access denial; do not keep trying other queries.
+            if errors and errors[-1]['portal'] == p['name'] and any(code in errors[-1]['error'] for code in ('401 ', '403 ', '429 ')):
+                break
 
     dedup={}
+    failed={e['portal'] for e in errors}
+    if OUT.exists():
+        previous=json.loads(OUT.read_text(encoding='utf-8'))
+        for x in previous.get('offers',[]):
+            if x.get('source') in failed:
+                x={**x,'stale':True,'status':'Ostatni zapis — aktualizacja źródła niedostępna'}
+                dedup[x['link'].rstrip('/').lower()]=x
     for x in all_items:
         dedup[x['link'].rstrip('/').lower()] = x
 
@@ -223,7 +250,7 @@ def main():
         'offers': list(dedup.values()),
         'searches': searches,
         'errors': errors,
-        'notice': 'Automatyczny indeks pomocniczy z rygorystycznym filtrem materiału. Każdą ofertę należy potwierdzić w portalu źródłowym.'
+        'notice': 'Częściowy indeks ofert, do 3 stron na zapytanie. Data oznacza próbę odświeżenia; źródła mogą być niedostępne. Materiał i dostępność wymagają potwierdzenia w ogłoszeniu.'
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')

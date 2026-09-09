@@ -74,3 +74,5 @@
 
 @media(max-width:760px){#pskl-scene-layer{height:61px}.scene-palm{transform:scale(.78);transform-origin:bottom center}.scene-cannon{transform:scale(.83);transform-origin:left bottom}.scene-boat{transform:scale(.78);transform-origin:left top}.scene-parrot{transform:scale(.9)}}
 @media(prefers-reduced-motion:reduce){#pskl-scene-layer{display:none!important}}
+
+.scene-runner .pirate-leg.left{animation:psklRunLeg .18s linear infinite alternate}.scene-runner .pirate-leg.right{animation:psklRunLeg .18s linear infinite alternate-reverse}.scene-runner .pirate-arm.left{animation:psklRunLeg .22s linear infinite alternate-reverse}.scene-runner .pirate-arm.right{animation:psklRunLeg .22s linear infinite alternate}.scene-treasure .t-lid{transition:transform .45s ease-out}

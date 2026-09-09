@@ -52,12 +52,6 @@ function createPirate(){
       setTimeout(()=>pirate.classList.remove('salute'),1500);
     });
   }
-  if(!window.PSKL_PIRATE_SCENES&&!window.__psklScenesReloaded){
-    window.__psklScenesReloaded=true;
-    const sc=document.createElement('script');
-    sc.src='assets/js/assistant-scenes.js?v=26';
-    document.body.appendChild(sc);
-  }
   return root;
 }
 createPirate();

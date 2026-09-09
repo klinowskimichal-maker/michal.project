@@ -4,8 +4,8 @@ const $$ = s => [...document.querySelectorAll(s)];
 const norm = s => (s || '').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
 const materialLabel = m => m === 'wood' ? 'Drewno' : m === 'fiberglass' ? 'Laminat' : 'Inny';
-function pluralModels(n){if(n===1)return '1 model';if(n>=2&&n<=4)return `${n} modele`;return `${n} modeli`;}
-function pluralOffers(n){if(n===1)return '1 oferta';if(n>=2&&n<=4)return `${n} oferty`;return `${n} ofert`;}
+function pluralModels(n){if(n===1)return '1 model';if(n%10>=2&&n%10<=4&&(n%100<12||n%100>14))return `${n} modele`;return `${n} modeli`;}
+function pluralOffers(n){if(n===1)return '1 oferta';if(n%10>=2&&n%10<=4&&(n%100<12||n%100>14))return `${n} oferty`;return `${n} ofert`;}
 const slug=s=>norm(s).replace(/ł/g,'l').replace(/ø/g,'o').replace(/æ/g,'ae').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 
 const IMG={
@@ -123,11 +123,12 @@ function renderModelList(country){
   const list=models.filter(m=>m.country===country);
   $('#countryCards').style.display='grid';
   $('#catalogIntro').style.display='block';
-  $('#modelList').innerHTML=`<div class="model-list-screen"><div class="model-list-heading"><h3 class="model-country-title"><span class="flag">${list[0]?.flag||''}</span>${esc(country)}</h3><span>${pluralModels(list.length)}</span></div><p class="model-help">Wybierz model lub typ. Zdjęcia i historia są dostępne po wejściu w pozycję.</p><div class="model-select-grid">${list.map((m,i)=>`<button class="model-select-card" data-model-index="${i}"><span><small>${esc(m.brand)}</small><strong>${esc(m.model)}</strong></span><em>${esc(m.years)}</em><b>Zdjęcia i historia →</b></button>`).join('')}</div></div>`;
+  $('#modelList').innerHTML=`<div class="model-list-screen"><div class="model-list-heading"><h3 class="model-country-title"><span class="flag">${list[0]?.flag||''}</span>${esc(country)}</h3><span>${pluralModels(list.length)}</span></div><p class="model-help">Wybierz model lub typ. Zdjęcia i historia są dostępne po wejściu w pozycję.</p><div class="model-select-grid">${list.map((m,i)=>`<button class="model-select-card" data-model-index="${i}" data-catalog-index="${models.indexOf(m)}"><span><small>${esc(m.brand)}</small><strong>${esc(m.model)}</strong></span><em>${esc(m.years)}</em><b>Zdjęcia i historia →</b></button>`).join('')}</div></div>`;
   $$('[data-model-index]').forEach(b=>b.onclick=()=>renderModelDetail(list[Number(b.dataset.modelIndex)]));
 }
 function renderModelDetail(m){
   const gallery=galleryForModel(m);
+  $('#modelList').dataset.selectedModel=String(models.indexOf(m));
   $('#countryCards').style.display='none';
   $('#catalogIntro').style.display='none';
   const thumbs=gallery.images.map((src,i)=>`<button class="model-thumb${i===0?' active':''}" data-gallery-src="${esc(src)}" aria-label="Zdjęcie ${i+1}"><img data-photo src="${esc(src)}" alt="${esc(m.brand)} ${esc(m.model)} — zdjęcie ${i+1}" referrerpolicy="no-referrer"></button>`).join('');
@@ -214,14 +215,18 @@ function searchLocal(){
 async function loadLiveMarket(){
   try{
     const r=await fetch(`assets/data/market-live.json?t=${Date.now()}`,{cache:'no-store'});
-    if(!r.ok)return;
+    if(!r.ok)throw new Error('Indeks rynku niedostępny');
     const data=await r.json();
+    window.PSKL_MARKET_STATUS={updatedAt:data.updatedAt,errors:data.errors||[],searches:data.searches||[]};
     liveOffers=Array.isArray(data.offers)?data.offers:[];
     liveUpdatedAt=data.updatedAt||null;
     renderOffers();
     populateCountries();
     searchLocal();
+    window.dispatchEvent(new Event('pskl-market-loaded'));
   }catch(e){
+    window.PSKL_MARKET_STATUS={failed:true,errors:[],searches:[]};
+    window.dispatchEvent(new Event('pskl-market-loaded'));
     console.warn('Automatyczny indeks rynku niedostępny',e);
   }
 }

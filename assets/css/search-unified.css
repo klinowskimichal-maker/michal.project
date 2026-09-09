@@ -22,5 +22,7 @@
 #pskl-watch-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);z-index:12000;opacity:0;pointer-events:none;padding:12px 16px;background:#061b2b;color:white;border:1px solid #b97943;box-shadow:0 12px 30px #0004;font:700 12px Arial;transition:.22s}
 #pskl-watch-toast.show{opacity:1;transform:translate(-50%,0)}
 /* The 10-second parrot flies right-to-left; flip its body so it faces the direction of travel. */
-#pskl-scene-layer .scene-parrot{scale:-1 1}
+#pskl-scene-layer .parrot-facing{width:100%;height:100%;transform:scaleX(-1)}
 @media(max-width:760px){.tracked-panel{padding:12px}.pskl-watch-control{padding:9px}.market-subheading{align-items:flex-start;flex-direction:column}#pskl-watch-toast{width:calc(100% - 32px);text-align:center}}
+
+.market-status{font-size:14px;line-height:1.6;color:#425664}.portal-more{margin:16px 0 24px;border:1px solid var(--line);padding:16px}.portal-more summary{cursor:pointer;font-weight:700;font-size:16px}.portal-more p{font-size:14px;line-height:1.6}.market-portal-links{display:flex;flex-wrap:wrap;gap:10px}.market-portal-links a{font-size:14px;overflow-wrap:anywhere;max-width:100%}.pskl-watch-control:has(input:focus-visible){outline:2px solid #075b9a;outline-offset:3px}

@@ -9,7 +9,7 @@ let selectedOffer=null;
 
 function findModel(q){
   const nq=norm(q),models=data().models||[];
-  let m=models.find(x=>nq.includes(norm(`${x.brand} ${x.model}`)));
+  let m=[...models].sort((a,b)=>b.model.length-a.model.length).find(x=>nq.includes(norm(`${x.brand} ${x.model}`)));
   if(m)return m;
   const tokens=nq.split(/[^a-z0-9ąćęłńóśźż]+/).filter(x=>x.length>2);
   const ranked=models.map(x=>({x,score:tokens.filter(t=>norm(`${x.brand} ${x.model}`).includes(t)).length})).sort((a,b)=>b.score-a.score);
@@ -17,7 +17,8 @@ function findModel(q){
 }
 function activeModel(){
   const h=$('.model-detail-copy h2')?.textContent?.trim();
-  return h?findModel(h):null;
+  const index=$('#modelList')?.dataset.selectedModel;
+  return h&&index!==undefined?data().models[Number(index)]:null;
 }
 function modelText(m){
   if(!m)return 'Nie mam jeszcze wybranego modelu. Wejdź w Katalog i wybierz łódź albo wpisz jej nazwę.';
@@ -72,7 +73,7 @@ function answer(q){
   if(selectedOffer&&/ocen|wart|ryzyk|kup|cena|silnik|ofert|weryfik/.test(n))return evaluate(selectedOffer);
   if(/prowadz|pomoc|pokaż|pokaz|gdzie/.test(n))return guide();
   if(/gwiazd|popular|trudno.*zdob|rzadk/.test(n))return 'Skala PSKŁ: popularność 1–5 oznacza rozpoznawalność i obecność modelu na rynku. Trudność zdobycia 1–5 oznacza rzadkość; 5/5 = bardzo trudny do znalezienia dobry egzemplarz.';
-  if(/wyszuk|drewn|olx|finn|blocket|boat24|allegro/.test(n))return 'W Wyszukiwaniu wybierz materiał. „Drewno” ma szukać całego rynku drewnianych łodzi; marka lub model tylko zawężają wyniki. Potem otwieraj pełne wyniki w portalach i wróć do Pirata z konkretną ofertą.';
+  if(/wyszuk|drewn|olx|finn|blocket|boat24|allegro/.test(n))return 'W Wyszukiwaniu wybierz materiał. „Drewno” filtruje zapisane oferty; marka lub model tylko zawężają wyniki. Potem otwieraj pełne wyniki w portalach i wróć do Pirata z konkretną ofertą.';
   if(/ofert|weryfik/.test(n))return selectedOffer?evaluate(selectedOffer):'Kliknij przy konkretnej łodzi „🏴‍☠️ Pirat: oceń ofertę”. Zapamiętam tę kartę i sprawdzę model, rocznik, materiał, napęd, status oraz ryzyka.';
   if(/silnik|napęd|naped|histori|model|konstruk|długo|dlugo/.test(n)&&m)return modelText(m);
   if(m&&norm(`${m.brand} ${m.model}`).split(' ').some(x=>x.length>3&&n.includes(x)))return modelText(m);
@@ -113,15 +114,5 @@ function decorateOffers(){
 new MutationObserver(decorateOffers).observe(document.body,{childList:true,subtree:true});
 decorateOffers();bindPirate();setTimeout(bindPirate,500);setTimeout(bindPirate,1800);
 
-/* Aktywność Pirata co 10 s niezależnie od kliknięć na stronie. */
-const poses=['spyglass','mapflip','dance','salute','peek','laugh','shrug','look'];let poseIndex=0;
-function tenSecondPirate(){
-  if(document.hidden)return;
-  const pirate=$('#pskl-assistant .pskl-pirate');if(!pirate)return;
-  poses.forEach(p=>pirate.classList.remove(p));
-  const p=poses[poseIndex++%poses.length];pirate.classList.add(p);
-  setTimeout(()=>pirate.classList.remove(p),2200);
-}
-setTimeout(tenSecondPirate,10000);setInterval(tenSecondPirate,10000);
 window.PSKL_PIRATE_FULL_ADVISOR=true;
 })();

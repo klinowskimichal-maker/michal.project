@@ -85,16 +85,18 @@ function watchControl(card,o,checked,trackedView=false){
 function showToast(text){
   let t=$('#pskl-watch-toast');if(!t){t=document.createElement('div');t.id='pskl-watch-toast';document.body.appendChild(t);}t.textContent=text;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),2600);
 }
-function plural(n){return n===1?'1 oferta':(n>=2&&n<=4?`${n} oferty`:`${n} ofert`);}
+function plural(n){return n===1?'1 oferta':(n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?`${n} oferty`:`${n} ofert`);}
+function searchCriteria(){return window.PSKL_MARKET.criteria($('#query')?.value,$('#material')?.value,$('#country')?.value)}
 function matches(o){
-  const x=normalizeOffer(o),q=norm($('#query')?.value||''),material=$('#material')?.value||'',country=$('#country')?.value||'';
-  if(material&&x.material!==material)return false;
-  if(country&&x.country!==country)return false;
-  if(q){
-    const hay=norm(`${x.title||''} ${x.source||''} ${x.country||''} ${x.engine||''} ${x.location||''} ${x.description||''} ${(x.equipment||[]).join(' ')}`);
-    const terms=q.split(/\s+/).filter(Boolean);if(!terms.every(t=>hay.includes(t)))return false;
-  }
-  return true;
+  return window.PSKL_MARKET.matches(normalizeOffer(o),searchCriteria());
+}
+function renderMarketCoverage(){
+  let panel=$('#marketCoverage');
+  if(!panel){panel=document.createElement('div');panel.id='marketCoverage';$('#searchSummary').insertAdjacentElement('afterend',panel);}
+  const status=window.PSKL_MARKET_STATUS,c=searchCriteria();
+  const failed=[...new Set((status?.errors||[]).map(x=>x.portal))];
+  const timestamp=status?.updatedAt?new Date(status.updatedAt).toLocaleString('pl-PL'):'';
+  panel.innerHTML=`<p class="market-status">${timestamp?`Ostatnia próba aktualizacji: ${esc(timestamp)}.`:status?.failed?'Aktualizacja indeksu jest niedostępna; widoczne są wcześniejsze zapisane oferty.':'Dostępne są zapisane oferty; trwa sprawdzanie indeksu.'} ${failed.length?`Nie udało się pobrać części wyników: ${failed.map(esc).join(', ')}.`:''} Indeks obejmuje tylko część ogłoszeń. Dostępność i materiał kadłuba należy potwierdzić w treści oferty.</p><details class="portal-more"><summary>Więcej ogłoszeń — wyszukiwanie w portalach</summary><p>Linki przekazują frazę i materiał w języku portalu. Kraj wybrany na stronie filtruje indeks; lokalizację i materiał warto dodatkowo ustawić w portalu.</p><div class="market-portal-links">${window.PSKL_MARKET.links(c).map(p=>`<a class="button" href="${esc(p.href)}" target="_blank" rel="noopener">${esc(p.name)} · ${esc(p.query||'wszystkie łodzie')} ↗</a>`).join('')}</div></details>`;
 }
 function renderSearchResults(scroll=true){
   hasSearched=true;
@@ -103,9 +105,11 @@ function renderSearchResults(scroll=true){
   const box=$('#searchResults'),summary=$('#searchSummary');if(!box)return;
   if(summary){
     const watched=result.filter(isTracked).length;
-    summary.innerHTML=`<strong>${plural(result.length)}</strong> spełnia ustawione kryteria${watched?` · ${watched} obserwowane`:''}. Każdy wynik zawiera źródło i bezpośredni link do ogłoszenia. Zaznaczenie „Obserwuj ofertę” zapisuje pozycję w zakładce Oferty.`;
+    const material=searchCriteria().material;
+    summary.innerHTML=`<strong>W zapisanym indeksie PSKŁ: ${plural(result.length)}</strong>${material?` · materiał: ${material==='wood'?'drewno':'laminat'}`:''}${watched?` · obserwowane: ${watched}`:''}. To liczba pasujących zapisanych ofert, a nie wszystkich ogłoszeń w portalach.`;
   }
-  box.innerHTML=result.length?result.map(cardHtml).join(''):'<p class="empty">Brak ofert z bezpośrednim linkiem spełniających aktualne kryteria w indeksie PSKŁ. Zmień filtry lub frazę wyszukiwania.</p>';
+  box.innerHTML=result.length?result.map(cardHtml).join(''):'<p class="empty">Brak pasujących ofert w zapisanym indeksie PSKŁ. Więcej ogłoszeń można sprawdzić przez linki do portali powyżej.</p>';
+  renderMarketCoverage();
   if(result.length){const cards=[...box.querySelectorAll('.offer-card')];cards.forEach((card,i)=>watchControl(card,result[i],isTracked(result[i]),false));}
   try{if(typeof wireImageFallbacks==='function')wireImageFallbacks(box);}catch(e){}
   if(scroll)summary?.scrollIntoView({behavior:'smooth',block:'start'});
@@ -135,6 +139,7 @@ function initSearchButton(){
   const fresh=old.cloneNode(true);old.replaceWith(fresh);
   fresh.addEventListener('click',()=>renderSearchResults(true));
   $('#query')?.addEventListener('input',()=>{if(hasSearched)renderSearchResults(false)});
+  $('#query')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();renderSearchResults(true)}});
   ['#material','#country'].forEach(sel=>$(sel)?.addEventListener('change',()=>{if(hasSearched)renderSearchResults(false)}));
 }
 function resetSearchPrompt(){
@@ -146,9 +151,7 @@ function cleanLegacySearch(){
   resetSearchPrompt();
 }
 function observeMarketRefresh(){
-  const box=$('#offerCards');if(box)new MutationObserver(()=>{if(!paintingOffers)requestAnimationFrame(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();});}).observe(box,{childList:true});
-  setTimeout(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();},1200);
-  setTimeout(()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();},3200);
+  window.addEventListener('pskl-market-loaded',()=>{renderOffersWorkspace();if(hasSearched)renderSearchResults(false);else resetSearchPrompt();});
 }
 cleanLegacySearch();initSearchButton();renderOffersWorkspace();observeMarketRefresh();
 window.PSKL_TRACKED_OFFERS={list:currentTracked,add:addTracked,remove:removeTracked,render:renderOffersWorkspace};
