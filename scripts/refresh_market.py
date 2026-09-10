@@ -2,7 +2,7 @@
 import json, re, time
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import quote, urljoin, urlsplit
+from urllib.parse import parse_qs, quote, urljoin, urlsplit
 
 import requests
 from bs4 import BeautifulSoup
@@ -72,7 +72,7 @@ def material_from(text):
     low = re.sub(r'(?:mahogny|mahogni|trä|tre)\s*(?:däck|dekk|inredning|innredning)\w*', '', low)
     if re.search(r'(?:skrovmaterial|byggemateriale)\s*:?\s*(?:trä|tre)\b', low):
         return 'wood'
-    if re.search(r'\bwood(?:en)?\b|\bmahogany\b|drewnian|mahoniow|träbåt|trebåt|trebat|mahogny|mahogni', low):
+    if re.search(r'\bwood(?:en)?\b|\bmahogany\b|drewnian|mahoniow|träbåt|trebåt|trebat|mahogny|mahogni|\b(?:tre|trä)[\s-]+(?:snekke|snekka|snipa|båt)\b', low):
         return 'wood'
     return 'unknown'
 
@@ -104,7 +104,13 @@ def year_from(text):
     return int(m.group(1)) if m else None
 
 
-def price_from(text):
+def price_from(text, portal_id=None):
+    # Scandinavian cards use "kr"; currency is determined by the source.
+    currency = {'finn': 'NOK', 'blocket': 'SEK'}.get(portal_id)
+    if currency:
+        m = re.search(r'(?<!\d)(\d{1,3}(?:[\s\u00a0]\d{3})+|\d+)\s*kr\b', text, re.I)
+        if m:
+            return norm(f'{m.group(1)} {currency}')
     patterns = [
         r'(?<!\d)(\d[\d\s.,]{2,})\s?(PLN|zł|NOK|SEK|EUR|€|USD|\$|GBP|£|CAD)',
         r'(PLN|NOK|SEK|EUR|USD|GBP|CAD)\s?(\d[\d\s.,]{2,})',
@@ -213,7 +219,7 @@ def parse_page(html, portal, label, query, url):
             'year': signal_year or year_from(txt.lower()),
             'material': 'wood' if label == 'wood' else 'unknown',
             'materialConfidence': 'opis drewna w karcie ogłoszenia — potwierdzić kadłub',
-            'price': price_from(txt),
+            'price': price_from(txt, portal['id']),
             'engine': engine_from(txt),
             'equipment': equipment_from(txt),
             'description': txt[:700],
@@ -236,6 +242,29 @@ def parse_page(html, portal, label, query, url):
         if parts.scheme == 'https' and parts.netloc == current.netloc and parts.path.rstrip('/') == current.path.rstrip('/') and candidate != url and not offer_url(portal, candidate):
             next_url = candidate
             break
+    # FINN/Blocket expose pagination as a web component, not anchor links.
+    # Read the published component attributes; never guess how many pages exist.
+    if not next_url:
+        pagination = soup.find('w-pagination')
+        if pagination:
+            try:
+                current_page = int(pagination.get('current-page', '0'))
+                pages = int(pagination.get('pages', '0'))
+                base_url = pagination.get('base-url', '')
+                candidate = urljoin(url, base_url + str(current_page + 1))
+                parts, current = urlsplit(candidate), urlsplit(url)
+                old_query, new_query = parse_qs(current.query), parse_qs(parts.query)
+                expected_page = int(old_query.pop('page', ['1'])[0])
+                next_page = new_query.pop('page', [])
+                if (0 < current_page < pages and current_page == expected_page
+                        and base_url and parts.scheme == 'https'
+                        and parts.netloc == current.netloc
+                        and parts.path.rstrip('/') == current.path.rstrip('/')
+                        and old_query == new_query
+                        and next_page == [str(current_page + 1)]):
+                    next_url = candidate
+            except (ValueError, TypeError):
+                pass
     # HTTP 200 with only a JS shell is not a successfully read empty market.
     return items, {'candidates': len(seen), 'state': 'read' if seen else 'unreadable', 'next': next_url,
                    'pageTitle': norm(soup.title.get_text()) if soup.title else ''}
