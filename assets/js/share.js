@@ -16,7 +16,7 @@ document.getElementById('shareLink').addEventListener('click',async()=>{
   catch(error){if(error.name!=='AbortError')await copyLink();}
 });
 document.getElementById('copyLogo').addEventListener('click',async()=>{
-  const html='<a href="'+site+'"><img src="'+site+'assets/branding/logo-pskl.png" width="360" alt="PSKŁ — otwórz stronę stowarzyszenia" style="max-width:100%;height:auto;border:0"></a>';
+  const html='<a href="'+site+'"><img src="'+site+'assets/branding/pskl-tabliczka.webp" width="360" alt="PSKŁ — otwórz stronę stowarzyszenia" style="max-width:100%;height:auto;border:0"></a>';
   try{
     if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined')throw new Error('unsupported');
     await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([site],{type:'text/plain'})})]);
