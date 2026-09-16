@@ -1,11 +1,13 @@
-const CACHE='pskl-shell-v1';
+const CACHE='pskl-shell-v2';
 const SHELL=[
   './',
   './index.html',
   './udostepnij.html',
   './manifest.webmanifest',
-  './assets/branding/pskl-192.png',
-  './assets/branding/pskl-512.png',
+  './assets/branding/pskl-tabliczka-icon-192.png',
+  './assets/branding/pskl-tabliczka-icon-512.png',
+  './assets/branding/pskl-tabliczka-maskable-192.png',
+  './assets/branding/pskl-tabliczka-maskable-512.png',
   './assets/branding/pskl-tabliczka.webp'
 ];
 self.addEventListener('install',event=>{

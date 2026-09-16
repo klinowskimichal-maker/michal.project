@@ -12,7 +12,9 @@
   "theme_color": "#061b2b",
   "prefer_related_applications": false,
   "icons": [
-    {"src": "assets/branding/pskl-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "assets/branding/pskl-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+    {"src": "assets/branding/pskl-tabliczka-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "assets/branding/pskl-tabliczka-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "assets/branding/pskl-tabliczka-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "assets/branding/pskl-tabliczka-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
   ]
 }
