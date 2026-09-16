@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const site='https://klinowskimichal-maker.github.io/michal.project/';
+const site='https://klinowskimichal-maker.github.io/michal.project/udostepnij.html';
 const status=document.getElementById('status');
 const tell=message=>{status.textContent=message;};
 async function copyLink(){

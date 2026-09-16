@@ -130,7 +130,7 @@ function route(name,updateHash=true){
 }
 $$('.route').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));
 window.addEventListener('popstate',()=>route(location.hash.slice(1)||'home',false));
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['home','catalog','offers','search','book'].includes(h))route(h,false)});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['home','catalog','offers','search','book','contact'].includes(h))route(h,false)});
 
 let currentCountry='';
 function renderCountries(){

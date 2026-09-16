@@ -1,6 +1,8 @@
 .optionbar{grid-template-columns:repeat(5,1fr)}
 .optionbar .option{text-decoration:none}
-.share-option{background:#173d53}
+.contact-option{background:#173d53}
+#contact{background:linear-gradient(145deg,#061b2b,#10364e);color:#fff}.contact-card{max-width:760px;margin:0 auto;padding:54px;border:1px solid #c48a57;box-shadow:0 28px 70px #0003}.contact-card h2{color:#fff}.contact-links{display:grid;gap:12px}.contact-links a{display:flex;justify-content:space-between;gap:20px;padding:18px;border:1px solid #47657a;color:#fff;text-decoration:none;background:#0b2d42}.contact-links span{color:#d4a06e;font:700 11px Arial;text-transform:uppercase;letter-spacing:1px}.contact-links strong{font:700 16px Arial}
+@media(max-width:600px){.contact-card{padding:32px 20px}.contact-links a{flex-direction:column;gap:7px}}
 #nav>a{color:#f4f3ef;text-decoration:none;padding:10px 12px;font:600 12px Arial;border-radius:2px}
 #nav>a:hover{color:#ffe0c2;background:#15364b}
 @media(max-width:760px){.optionbar .option{min-width:0}.optionbar .option b,.optionbar .option span{font-size:9px}#nav>a{padding:13px}}

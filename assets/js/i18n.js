@@ -13,8 +13,8 @@ if(lang!=='en')return;
 
 const data=window.PSKL_I18N_DATA||{};
 const ui={
-  'Start':'Home','Katalog':'Catalogue','Oferty':'Listings','Szukaj':'Search','Oferty rynkowe':'Market listings','Wyszukiwanie':'Search','Księga':'Founding Book','Logo i instalacja':'Logo and installation',
-  'modele i profile':'models and profiles','obserwowane i analiza':'watchlist and analysis','wyniki według filtrów':'filtered results','34 strony':'34 pages','udostępnij i instaluj':'share and install',
+  'Start':'Home','Katalog':'Catalogue','Oferty':'Listings','Szukaj':'Search','Oferty rynkowe':'Market listings','Wyszukiwanie':'Search','Księga':'Founding Book','Logo i instalacja':'Logo and installation','Dane kontaktowe':'Contact details','05 · DANE KONTAKTOWE':'05 · CONTACT DETAILS',
+  'modele i profile':'models and profiles','obserwowane i analiza':'watchlist and analysis','wyniki według filtrów':'filtered results','34 strony':'34 pages','udostępnij i instaluj':'share and install','telefon i email':'phone and email','Telefon':'Phone','Email':'Email',
   'POLSKIE STOWARZYSZENIE KLASYCZNYCH I ZABYTKOWYCH ŁODZI':'POLISH ASSOCIATION OF ANTIQUE AND CLASSIC BOATS',
   'Klasyczne łodzie.':'Classic boats.','Dziedzictwo, które żyje.':'Living heritage.',
   'Cyfrowy katalog klasycznych i zabytkowych łodzi: historia modeli, konstrukcja, oryginalne i typowe fabryczne silniki, lata produkcji, profile kolekcjonerskie oraz wyszukiwanie aktualnych ofert na rynkach polskich, skandynawskich, europejskich i północnoamerykańskich.':'A digital catalogue of classic and antique boats, including model histories, construction, original and typical factory engines, production years, collector profiles and current listings from Poland, Scandinavia, Europe and North America.',

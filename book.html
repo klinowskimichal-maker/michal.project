@@ -54,7 +54,6 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
   <button class="ctrl" id="zoomOut" type="button" aria-label="Pomniejsz">−</button>
   <button class="ctrl" id="zoomIn" type="button" aria-label="Powiększ">+</button>
 </nav>
-<div class="intro"><a class="back" href="assets/book/ksiega-zalozycielska.pdf">Otwórz PDF</a> <a class="back" href="assets/book/ksiega-zalozycielska.pdf" download>Pobierz PDF</a></div>
 <p class="intro"><b>Księga Założycielska</b> przedstawia misję, wartości, cele, strukturę i kierunek rozwoju Stowarzyszenia. Poniżej znajduje się pełne Wydanie I w 34 stronach, wyświetlane bezpośrednio przez PSKŁ.</p>
 <main class="stage" id="stage"><div class="reader" id="reader">
 <figure class="sheet" id="page-1" data-page="1">
@@ -204,7 +203,6 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
   document.title='Founding Book, First Edition | PSKŁ';
   document.querySelector('.title strong').textContent='Founding Book, First Edition';
   document.querySelector('.title small').textContent='PSKŁ · SZCZECIN · 2026 · 34 PAGES';
-  const links=document.querySelectorAll('.intro .back');links[0].textContent='Open PDF';links[1].textContent='Download PDF';
   document.querySelector('p.intro').innerHTML='<b>The Founding Book</b> presents the Association’s mission, values, objectives, structure and direction. The full First Edition of 34 pages is displayed below directly by PSKŁ.';
   document.querySelectorAll('.sheet').forEach((sheet,index)=>{const n=index+1;sheet.querySelector('img').alt=`Founding Book, page ${n} of 34`;sheet.querySelector('figcaption').textContent=`PAGE ${n} / 34`});
  }
