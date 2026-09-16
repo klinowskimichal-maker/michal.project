@@ -9,14 +9,22 @@ function pluralOffers(n){if(n===1)return '1 oferta';if(n%10>=2&&n%10<=4&&(n%100<
 const slug=s=>norm(s).replace(/ł/g,'l').replace(/ø/g,'o').replace(/æ/g,'ae').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 
 const IMG={
-  riva:[
+  rivaAquarama:[
     'https://commons.wikimedia.org/wiki/Special:FilePath/Riva%20Aquarama.jpg?width=1280',
     'https://commons.wikimedia.org/wiki/Special:FilePath/Riva%20Aquarama%2001.jpg?width=1280'
   ],
-  chris:[
+  rivaAriston:['https://i.pinimg.com/736x/ca/97/7f/ca977fb2e50bb8dbbc7dc5e0ee8c256a.jpg'],
+  rivaOlympic:['https://absoluteclassics.com/cdn/shop/products/wooden-boat-for-sale-1969-riva-olympic-hull-25-23418802864311.jpg?v=1611903109&width=1280'],
+  rivaJunior:['https://images.boatsgroup.com/resize/1/46/73/1963-riva-junior-power-10124673-20260324012333634-3.jpg'],
+  rivaFlorida:['https://images.boatsgroup.com/resize/1/34/74/1962-riva-super-florida-power-9433474-20240629101310379-1_XLARGE.jpg?exact=true&format=webp&ratio=default&t=1719681241&w=1600'],
+  chrisBarrelBack:[
     'https://i0.wp.com/www.acontinuouslean.com/wp-content/uploads/2012/04/Chris_craft_Barrel_back_4.jpeg?fit=1600%2C989&ssl=1',
     'https://i.pinimg.com/736x/33/6d/9f/336d9f12cfaba4fd030e98089d1eba53.jpg'
   ],
+  chrisRiviera:['https://marinesource.com/images-storage/chris-craft-riviera18-1952-5134447.jpg?url=https%3A%2F%2Fcdn.yachtbroker.org%2Fimages%2Fhighdef%2F2830591_1e725803_0.jpg'],
+  chrisCapri:['https://www.classicboat.com/18-chris-craft-capri-1959-31n-025-9in.jpg'],
+  chrisCobra:['https://cdn.rmsothebys.com/6/6/b/9/5/f/66b95f3414858ed90c981cd3c55206fa9caebbd7.webp'],
+  chrisSportsman:['https://admin.antiqueboatamerica.com/pictures/1/12/42535%287%29.jpeg'],
   snekke:[
     'https://baatplassen.no/i/uploads/monthly_2023_08/359_221750599.jpg.9a575e960c14bb7a6d47c344a3fb72cb.jpg'
   ],
@@ -27,10 +35,8 @@ const IMG={
   faerder:[
     'https://smallboatsmonthly.com/wp-content/uploads/2015/02/Vesla-FS9-HvasserPS.jpg'
   ],
-  storebro:[
-    'https://classic-yachts.com/wp-content/uploads/2024/05/20240527_141627.jpg',
-    'https://images.boatsgroup.com/resize/1/91/99/1968-storebro-34-power-9519199-20250417142953929-1_XLARGE.jpg'
-  ],
+  storebroSolo:['https://static.b24.co/fotos/large/692167-9ae8d2d011c4c2d96f97dff582f4189f-x-8390556-49b89442833e366c9b25fa7483a9ba2e.jpg'],
+  storebroStoro:['https://www.storebropassion.de/boote/storo1/images/storo1ak2.jpg'],
   boesch510:[
     'https://www.best-boats24.net/haendler/malibu/boote/111333/1.gr.jpg',
     'https://images.boatsgroup.com/resize/1/78/24/1971-boesch-510-saint-tropez-power-10097824-20260302064843079-0.jpg'
@@ -43,12 +49,14 @@ const IMG={
     'https://ea2xbj72fxx.exactdn.com/wp-content/uploads/2022/08/BOESCH-590-ACAPULCO0014-scaled.jpg',
     'https://ea2xbj72fxx.exactdn.com/wp-content/uploads/2022/08/BOESCH-590-ACAPULCO0011-scaled.jpg?strip=all'
   ],
-  century:['https://cdn.themarket.co.uk/f4659e77-5b9e-4619-9ed3-cc02ae2ba784/c8bf8ea9-2e87-4a0d-bfb6-dbfa711c3a5d.jpg?height=650&optimizer=image&width=900'],
-  fairey:['https://images.sandemanyachtcompany.co.uk/uploads/boats/1170x600_163_119669699359c380e1b742f.JPG'],
+  centuryResorter:['https://boats-from-usa.com/sites/default/files/boats/2017-07/03/136003/century-resorter-1551918.jpg'],
+  faireyHuntress:['https://boatmanager.sandemanyachtcompany.co.uk/uploads/boats/0x0_163_131667387659c380e3cdb38.JPG'],
   lyman:['https://admin.antiqueboatamerica.com/pictures/5/57/30282%285%29.JPG'],
   garwood:['https://admin.antiqueboatamerica.com/pictures/8/49/39380%281%29.JPG'],
-  greavette:['https://static.wixstatic.com/media/fcaebf_fe657183be524edfbb22ef1129e7d9ec~mv2.jpg/v1/fill/w_1000,h_660,al_c,q_90/fcaebf_fe657183be524edfbb22ef1129e7d9ec~mv2.jpg'],
-  shepherd:['https://admin.antiqueboatamerica.com/pictures/4/29/27462%284%29.jpg']
+  hacker:['https://res.cloudinary.com/mecum/image/upload/v1669823128/auctions/sc22/sc0522-502262/1854316_24.jpg'],
+  greavette:['https://admin.antiqueboatamerica.com/pictures/8/86/39806%282%29.JPG'],
+  shepherd:['https://static.wixstatic.com/media/8d12e6_330b3b379acf4cb6aae6780e01667ff4~mv2.jpg/v1/fill/w_978%2Ch_449%2Cq_90/8d12e6_330b3b379acf4cb6aae6780e01667ff4~mv2.jpg'],
+  pettersson:['https://static.b24.co/fotos/xlarge/387014-6f6ec3b158e74f117bc618b85f74218e-x-7690921-ad62f30395b26f214a3510a53d5dcb45.jpg']
 };
 
 function galleryForModel(m){
@@ -59,17 +67,27 @@ function galleryForModel(m){
   if(t.includes('faerder')||t.includes('færder')) return {images:IMG.faerder,note:'Færdersnekke — tradycyjna odmiana z Oslofjordu'};
   if(t.includes('arendal')) return {images:IMG.arendal,note:'Arendalsnekke — zdjęcia referencyjne'};
   if(t.includes('snekke')) return {images:IMG.snekke,note:'Tradycyjna norweska snekke'};
-  if(t.includes('riva')) return {images:IMG.riva,note:'Riva — zdjęcia referencyjne'};
-  if(t.includes('chris-craft')||t.includes('chris craft')) return {images:IMG.chris,note:'Klasyczne Chris-Craft'};
-  if(t.includes('storebro')||t.includes('storö')||t.includes('storo')||t.includes('solö')||t.includes('solo')) return {images:IMG.storebro,note:'Klasyczne Storebro'};
-  if(t.includes('century')) return {images:IMG.century,note:'Klasyczne Century'};
-  if(t.includes('fairey')) return {images:IMG.fairey,note:'Klasyczne Fairey'};
+  if(t.includes('aquarama')&&!t.includes('super')&&!t.includes('special')) return {images:IMG.rivaAquarama,note:'Riva Aquarama'};
+  if(t.includes('ariston')) return {images:IMG.rivaAriston,note:'Riva Ariston'};
+  if(t.includes('olympic')) return {images:IMG.rivaOlympic,note:'Riva Olympic'};
+  if(t.includes('junior')) return {images:IMG.rivaJunior,note:'Riva Junior'};
+  if(t.includes('florida')) return {images:IMG.rivaFlorida,note:'Riva Super Florida'};
+  if(t.includes('barrel back')) return {images:IMG.chrisBarrelBack,note:'Chris-Craft Custom Barrel Back'};
+  if(t.includes('riviera')) return {images:IMG.chrisRiviera,note:'Chris-Craft Riviera'};
+  if(t.includes('capri')) return {images:IMG.chrisCapri,note:'Chris-Craft Capri'};
+  if(t.includes('cobra')) return {images:IMG.chrisCobra,note:'Chris-Craft Cobra'};
+  if(t.includes('sportsman')) return {images:IMG.chrisSportsman,note:'Chris-Craft U-22 Sportsman'};
+  if(t.includes('solo')||t.includes('solö')) return {images:IMG.storebroSolo,note:'Storebro Solö Ruff'};
+  if(t.includes('storo')||t.includes('storö')||t.includes('royal cruiser i')) return {images:IMG.storebroStoro,note:'Storebro Royal Cruiser I / Storö I'};
+  if(t.includes('resorter')) return {images:IMG.centuryResorter,note:'Century Resorter'};
+  if(t.includes('huntress')) return {images:IMG.faireyHuntress,note:'Fairey Huntress 23'};
   if(t.includes('lyman')) return {images:IMG.lyman,note:'Klasyczny Lyman'};
-  if(t.includes('gar wood')||t.includes('hacker')) return {images:IMG.garwood,note:'Amerykański mahoniowy runabout'};
+  if(t.includes('gar wood')) return {images:IMG.garwood,note:'Gar Wood Triple Cockpit Runabout'};
+  if(t.includes('hacker')) return {images:IMG.hacker,note:'Hacker-Craft Triple Cockpit Runabout'};
   if(t.includes('greavette')) return {images:IMG.greavette,note:'Klasyczny Greavette'};
   if(t.includes('shepherd')) return {images:IMG.shepherd,note:'Klasyczny Shepherd'};
-  if(t.includes('pettersson')) return {images:IMG.storebro,note:'Skandynawska klasyczna łódź motorowa'};
-  return {images:IMG.riva,note:'Klasyczna łódź drewniana'};
+  if(t.includes('pettersson')) return {images:IMG.pettersson,note:'Łódź projektu C.G. Petterssona'};
+  return {images:[],note:'Brak zweryfikowanego zdjęcia dokładnie tego modelu'};
 }
 
 function imageForOffer(o){
@@ -79,13 +97,17 @@ function imageForOffer(o){
   if(t.includes('boesch 580')) return IMG.boesch580[0];
   if(t.includes('boesch 590')) return IMG.boesch590[0];
   if(t.includes('snekke')||t.includes('arendal')) return IMG.snekke[0];
-  if(t.includes('storebro')||t.includes('storo')||t.includes('sol')) return IMG.storebro[0];
-  if(t.includes('century')) return IMG.century[0];
+  if(t.includes('storebro')&&(t.includes('solo')||t.includes('solö'))) return IMG.storebroSolo[0];
+  if(t.includes('storebro')||t.includes('storo')||t.includes('storö')) return IMG.storebroStoro[0];
+  if(t.includes('century')&&t.includes('resorter')) return IMG.centuryResorter[0];
   if(t.includes('shepherd')) return IMG.shepherd[0];
   if(t.includes('lyman')) return IMG.lyman[0];
-  if(t.includes('chris')) return IMG.chris[0];
-  if(t.includes('riva')) return IMG.riva[0];
-  return IMG.riva[0];
+  if(t.includes('chris')&&t.includes('barrel')) return IMG.chrisBarrelBack[0];
+  if(t.includes('chris')&&t.includes('riviera')) return IMG.chrisRiviera[0];
+  if(t.includes('chris')&&t.includes('capri')) return IMG.chrisCapri[0];
+  if(t.includes('riva')&&t.includes('aquarama')) return IMG.rivaAquarama[0];
+  if(t.includes('riva')&&t.includes('ariston')) return IMG.rivaAriston[0];
+  return '';
 }
 function wireImageFallbacks(root=document){
   root.querySelectorAll('img[data-photo]').forEach(img=>{
@@ -132,11 +154,12 @@ function renderModelDetail(m){
   $('#countryCards').style.display='none';
   $('#catalogIntro').style.display='none';
   const thumbs=gallery.images.map((src,i)=>`<button class="model-thumb${i===0?' active':''}" data-gallery-src="${esc(src)}" aria-label="Zdjęcie ${i+1}"><img data-photo src="${esc(src)}" alt="${esc(m.brand)} ${esc(m.model)} — zdjęcie ${i+1}" referrerpolicy="no-referrer"></button>`).join('');
-  $('#modelList').innerHTML=`<article class="model-detail"><button class="model-back" id="modelBack">← Wstecz do listy modeli</button><div class="model-detail-grid"><div class="model-gallery"><div class="model-main-photo photo-shell"><div class="photo-fallback"><span>⚓</span><strong>${esc(m.brand)} ${esc(m.model)}</strong><small>Zdjęcie chwilowo niedostępne</small></div><img id="modelMainImage" data-photo src="${esc(gallery.images[0])}" alt="${esc(m.brand)} ${esc(m.model)}" loading="eager" referrerpolicy="no-referrer"></div>${gallery.images.length>1?`<div class="model-thumbs">${thumbs}</div>`:''}<small class="photo-note">${esc(gallery.note)}. Materiał referencyjny — nie przedstawia konkretnego egzemplarza, chyba że opis mówi inaczej.</small></div><div class="model-detail-copy"><p class="eyebrow">${m.flag} ${esc(m.country)} · ${esc(m.brand)}</p><h2>${esc(m.model)}</h2><dl><div><dt>${esc(m.periodLabel||'Produkcja')}</dt><dd>${esc(m.years)}</dd></div><div><dt>Konstrukcja</dt><dd>${esc(m.construction)}</dd></div>${m.length?`<div><dt>Długość</dt><dd>${esc(m.length)} m</dd></div>`:''}</dl><h3>Historia i cechy</h3><p>${esc(m.history)}</p>${m.source?`<p class="source-link"><a href="${esc(m.source)}" target="_blank" rel="noopener">Źródło historyczne ↗</a></p>`:''}</div></div></article>`;
+  const mainPhoto=gallery.images.length?`<img id="modelMainImage" data-photo src="${esc(gallery.images[0])}" alt="${esc(m.brand)} ${esc(m.model)}" loading="eager" referrerpolicy="no-referrer">`:'';
+  $('#modelList').innerHTML=`<article class="model-detail"><button class="model-back" id="modelBack">← Wstecz do listy modeli</button><div class="model-detail-grid"><div class="model-gallery"><div class="model-main-photo photo-shell${gallery.images.length?'':' photo-missing'}"><div class="photo-fallback"><span>⚓</span><strong>${esc(m.brand)} ${esc(m.model)}</strong><small>${gallery.images.length?'Zdjęcie chwilowo niedostępne':'Zdjęcie tego modelu nie zostało jeszcze zweryfikowane'}</small></div>${mainPhoto}</div>${gallery.images.length>1?`<div class="model-thumbs">${thumbs}</div>`:''}<small class="photo-note">${esc(gallery.note)}${gallery.images.length?'. Zdjęcie przedstawia wskazany model lub typ, ale nie konkretny opisywany egzemplarz.':'. Nie pokazujemy zdjęcia innego modelu jako zamiennika.'}</small></div><div class="model-detail-copy"><p class="eyebrow">${m.flag} ${esc(m.country)} · ${esc(m.brand)}</p><h2>${esc(m.model)}</h2><dl><div><dt>${esc(m.periodLabel||'Produkcja')}</dt><dd>${esc(m.years)}</dd></div><div><dt>Konstrukcja</dt><dd>${esc(m.construction)}</dd></div>${m.length?`<div><dt>Długość</dt><dd>${esc(m.length)} m</dd></div>`:''}</dl><h3>Historia i cechy</h3><p>${esc(m.history)}</p>${m.source?`<p class="source-link"><a href="${esc(m.source)}" target="_blank" rel="noopener">Źródło historyczne ↗</a></p>`:''}</div></div></article>`;
   $('#modelBack').onclick=()=>{renderModelList(currentCountry);window.scrollTo({top:0,behavior:'smooth'});};
   $$('.model-thumb').forEach(btn=>btn.onclick=()=>{
     $$('.model-thumb').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
-    const main=$('#modelMainImage');main.style.display='block';main.parentElement.classList.remove('photo-missing');main.src=btn.dataset.gallerySrc;
+    const main=$('#modelMainImage');if(!main)return;main.style.display='block';main.parentElement.classList.remove('photo-missing');main.src=btn.dataset.gallerySrc;
     wireImageFallbacks(main.parentElement);
   });
   wireImageFallbacks($('#modelList'));
@@ -247,4 +270,3 @@ populateCountries();
 searchLocal();
 loadLiveMarket();
 route(location.hash.slice(1)||'home',false);
-
