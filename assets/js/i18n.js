@@ -13,7 +13,7 @@ if(lang!=='en')return;
 
 const data=window.PSKL_I18N_DATA||{};
 const ui={
-  'Start':'Home','Katalog':'Catalogue','Oferty rynkowe':'Market listings','Wyszukiwanie':'Search','Księga':'Founding Book',
+  'Start':'Home','Katalog':'Catalogue','Oferty':'Listings','Szukaj':'Search','Oferty rynkowe':'Market listings','Wyszukiwanie':'Search','Księga':'Founding Book','Logo i instalacja':'Logo and installation',
   'modele i profile':'models and profiles','obserwowane i analiza':'watchlist and analysis','wyniki według filtrów':'filtered results','34 strony':'34 pages',
   'POLSKIE STOWARZYSZENIE KLASYCZNYCH I ZABYTKOWYCH ŁODZI':'POLISH ASSOCIATION OF ANTIQUE AND CLASSIC BOATS',
   'Klasyczne łodzie.':'Classic boats.','Dziedzictwo, które żyje.':'Living heritage.',
