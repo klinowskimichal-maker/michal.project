@@ -22,9 +22,11 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
 .pagebox input{width:48px;border:1px solid rgba(212,160,110,.55);border-radius:7px;background:#041a28;color:#fff;padding:7px 5px;text-align:center;font-weight:700}
 .stage{width:100%;overflow-x:auto;padding:24px 10px 80px;scrollbar-color:#b8793f #061b2b}
 .reader{display:flex;flex-direction:column;align-items:center;gap:28px;min-width:max-content}
-.sheet{width:var(--page-w);scroll-margin-top:76px;margin:0;position:relative;border-radius:4px;background:white;box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 1px rgba(212,160,110,.48);overflow:hidden;transition:width .2s ease,box-shadow .2s ease}
-.sheet img{display:block;width:100%;height:auto;background:white}
-.sheet figcaption{position:absolute;right:10px;bottom:8px;padding:4px 7px;border-radius:5px;background:rgba(4,23,35,.82);color:#eac28e;font-size:9px;font-weight:700;letter-spacing:.08em;opacity:.1;transition:opacity .2s}
+.sheet{width:var(--page-w);scroll-margin-top:76px;margin:0;position:relative;border-radius:4px;background:white;box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 0 1px rgba(212,160,110,.48);overflow:hidden;transition:width .2s ease,box-shadow .2s ease;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.sheet img{display:block;width:100%;height:auto;background:white;pointer-events:none;-webkit-user-drag:none;user-drag:none}
+.watermark-layer{position:absolute;inset:0;z-index:3;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(4,1fr);align-items:center;justify-items:center;overflow:hidden;pointer-events:none}
+.watermark-layer span{display:block;min-width:180px;color:rgba(6,27,43,.16);font:800 clamp(18px,3.2vw,42px)/1 Arial,Helvetica,sans-serif;letter-spacing:.14em;text-align:center;transform:rotate(-31deg);text-shadow:0 1px 0 rgba(255,255,255,.28)}
+.sheet figcaption{position:absolute;z-index:4;right:10px;bottom:8px;padding:4px 7px;border-radius:5px;background:rgba(4,23,35,.82);color:#eac28e;font-size:9px;font-weight:700;letter-spacing:.08em;opacity:.1;transition:opacity .2s}
 .sheet:hover figcaption,.sheet.current figcaption{opacity:.9}
 .sheet.current{box-shadow:0 22px 65px rgba(0,0,0,.52),0 0 0 2px rgba(212,160,110,.75)}
 .intro{max-width:892px;margin:22px auto 0;padding:0 14px;color:#c6d3d9;text-align:center;line-height:1.55;font-size:13px}
@@ -40,7 +42,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
  .reader{gap:17px}
  .sheet{border-radius:2px}
 }
-@media print{.toolbar,.intro,.fab,figcaption{display:none!important}.stage{padding:0}.reader{gap:0}.sheet{width:100%;box-shadow:none;break-after:page;border:0}}
+@media print{.toolbar,.intro,.fab,figcaption{display:none!important}.stage{padding:0}.reader{gap:0}.sheet{width:100%;box-shadow:none;break-after:page;border:0}.watermark-layer span{color:rgba(6,27,43,.18)!important}}
 </style>
 <link rel="manifest" href="manifest.webmanifest?v=tabliczka-3"><link rel="icon" type="image/png" sizes="192x192" href="assets/branding/pskl-tabliczka-icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/pskl-tabliczka-apple-180.png"><meta name="apple-mobile-web-app-title" content="PSKL"><meta name="apple-mobile-web-app-capable" content="yes"></head>
 <body>
@@ -207,6 +209,15 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
   document.querySelectorAll('.sheet').forEach((sheet,index)=>{const n=index+1;sheet.querySelector('img').alt=`Founding Book, page ${n} of 34`;sheet.querySelector('figcaption').textContent=`PAGE ${n} / 34`});
  }
  const sheets=[...document.querySelectorAll('.sheet')];
+ sheets.forEach(sheet=>{
+   const watermark=document.createElement('div');watermark.className='watermark-layer';watermark.setAttribute('aria-hidden','true');
+   watermark.innerHTML='<span>PSKL MK</span>'.repeat(12);sheet.appendChild(watermark);
+ });
+ const reader=document.getElementById('reader');
+ reader.addEventListener('contextmenu',event=>event.preventDefault());
+ reader.addEventListener('dragstart',event=>event.preventDefault());
+ reader.addEventListener('copy',event=>event.preventDefault());
+ document.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&['c','s','p','u'].includes(event.key.toLowerCase()))event.preventDefault()});
  const input=document.getElementById('pageInput');
  let current=1, pageWidth=Math.min(892,innerWidth-24);
  const go=n=>{n=Math.max(1,Math.min(34,Math.round(Number(n)||1)));current=n;input.value=n;document.getElementById('page-'+n)?.scrollIntoView({behavior:'smooth',block:'start'});};
