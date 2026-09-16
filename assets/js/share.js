@@ -15,6 +15,7 @@ document.getElementById('shareLink').addEventListener('click',async()=>{
   try{await navigator.share({title:'PSKŁ — Klasyczne łodzie',url:site});}
   catch(error){if(error.name!=='AbortError')await copyLink();}
 });
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 document.getElementById('copyLogo').addEventListener('click',async()=>{
   const html='<a href="'+site+'"><img src="'+site+'assets/branding/pskl-tabliczka.webp" width="360" alt="PSKŁ — otwórz stronę stowarzyszenia" style="max-width:100%;height:auto;border:0"></a>';
   try{
@@ -30,7 +31,7 @@ const installed=()=>{
   document.getElementById('installState').textContent='PSKŁ jest otwarte jako aplikacja. Ikonę można odnaleźć na ekranie lub w menu aplikacji urządzenia.';
 };
 if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone)installed();
-window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;});
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;installButton.classList.add('install-ready');});
 window.addEventListener('appinstalled',()=>{installPrompt=null;installed();tell('PSKŁ zostało dodane do urządzenia.');});
 installButton.addEventListener('click',async()=>{
   if(installPrompt){
