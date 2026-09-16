@@ -64,7 +64,7 @@ PORTALS = [
 def material_from(text):
     low = (text or '').lower()
     # A wooden interior or deck alone is not evidence of a wooden hull.
-    if re.search(r'laminat|fiberglas|fibreglas|glasfiber|glassfiber|\bgrp\b|plast(?:ik|ics?)?\b', low):
+    if re.search(r'laminat|fiberglas|fibreglas|glasfiber|glassfiber|\bgrp\b|\bhdpe\b|polyetylen|polyethylen|plast(?:ik|ics?)?\b', low):
         return 'unknown'
     low = re.sub(r'(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)\s+(?:interior|deck|trim|cockpit|pokład|wnętrz)\w*', '', low)
     low = re.sub(r'(?:interior|deck|trim|pokład\w*|wnętrz\w*)\s+(?:wood(?:en)?|mahogany|teak|drewnian\w*|mahoniow\w*)', '', low)
