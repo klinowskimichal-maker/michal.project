@@ -67,8 +67,8 @@ async function treasure(){
 async function chase(){
  if(!assistant())return;hideHome();
  const r=make('scene-runner');r.style.top='6px';const cp=clonePirate();if(cp)r.appendChild(cp);
- const followers=Array.from({length:3},(_,i)=>{const n=make('scene-pursuer running','<span class="leg a"></span><span class="leg b"></span>');n.style.top='15px';return animate(n,[{transform:`translateX(${innerWidth+135+i*36}px)`},{transform:`translateX(${-140+i*36}px)`}],{duration:5700,easing:'linear'})});
- await Promise.all([animate(r,[{transform:`translateX(${innerWidth+35}px)`},{transform:'translateX(-240px)'}],{duration:5700,easing:'linear'}),...followers]);
+ const lion=make('scene-lion running','<span class="lion-tail"></span><span class="lion-body"></span><span class="lion-mane"></span><span class="lion-head"><span class="lion-ear left"></span><span class="lion-ear right"></span><span class="lion-eye left"></span><span class="lion-eye right"></span><span class="lion-muzzle"></span><span class="lion-nose"></span></span><span class="lion-leg front-a"></span><span class="lion-leg front-b"></span><span class="lion-leg rear-a"></span><span class="lion-leg rear-b"></span>');lion.style.top='8px';
+ await Promise.all([animate(r,[{transform:`translateX(${innerWidth+35}px)`},{transform:'translateX(-240px)'}],{duration:5700,easing:'linear'}),animate(lion,[{transform:`translateX(${innerWidth+125}px)`},{transform:'translateX(-180px)'}],{duration:5700,easing:'linear'})]);
 }
 async function boat(){
  if(!assistant())return;hideHome();
@@ -105,5 +105,5 @@ window.addEventListener('pagehide',pause);
 const chat=$('.pskl-chat');
 if(chat)new MutationObserver(()=>{if(chat.classList.contains('open'))pause()}).observe(chat,{attributes:true,attributeFilter:['class']});
 setInterval(run,10000);
-window.PSKL_PIRATE_SCENES_10S={playNow:run,names:['papuga','armata','skarb','pościg','łódź']};
+window.PSKL_PIRATE_SCENES_10S={playNow:run,names:['papuga','armata','skarb','lew','łódź']};
 })();

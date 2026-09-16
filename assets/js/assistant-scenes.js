@@ -84,18 +84,18 @@ async function sceneTreasure(){
   await anim(t,[{opacity:1,transform:'translateY(-20px) scale(1)'},{opacity:0,transform:'translateY(12px) scale(.8)'}],{duration:650,easing:'ease-in'});
 }
 
-function pursuer(x,delay){const n=make('div','scene-object scene-pursuer running');n.style.left='0';n.style.top='26px';n.innerHTML='<span class="leg a"></span><span class="leg b"></span>';n.dataset.start=x;n.dataset.delay=delay;return n}
+function lion(){const n=make('div','scene-object scene-lion running');n.style.left='0';n.style.top='18px';n.innerHTML='<span class="lion-tail"></span><span class="lion-body"></span><span class="lion-mane"></span><span class="lion-head"><span class="lion-ear left"></span><span class="lion-ear right"></span><span class="lion-eye left"></span><span class="lion-eye right"></span><span class="lion-muzzle"></span><span class="lion-nose"></span></span><span class="lion-leg front-a"></span><span class="lion-leg front-b"></span><span class="lion-leg rear-a"></span><span class="lion-leg rear-b"></span>';return n}
 function palm(x,scale){const p=make('div','scene-object scene-palm');p.style.left=x+'px';p.style.top='5px';p.style.transform=`scale(${scale})`;p.innerHTML='<span class="trunk"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span><span class="leaf"></span>';return p}
 async function sceneChase(){
   const w=innerWidth;document.body.classList.add('pskl-scene-active');assistant.style.transition='opacity .2s';assistant.style.opacity='0';
   palm(w*.20,.78);palm(w*.51,.9);palm(w*.78,.7);
   const runner=make('div','scene-object scene-runner');runner.style.left='0';runner.style.top='17px';runner.appendChild(clonePirate());
   const p=parrotEl();p.style.left='0';p.style.top='0';
-  const purs=[pursuer(w+95,250),pursuer(w+135,430),pursuer(w+175,610)];
+  const chasingLion=lion();
   const runnerA=anim(runner,[{transform:`translate(${w+75}px,0) rotate(0)`},{transform:`translate(${w*.55}px,-4px) rotate(-4deg)`,offset:.46},{transform:`translate(${w*.18}px,2px) rotate(4deg)`,offset:.8},{transform:'translate(-90px,-2px) rotate(-3deg)'}],{duration:6900,easing:'linear'});
   runner.animate([{translate:'0 0'},{translate:'0 -4px'},{translate:'0 0'}],{duration:240,iterations:28,easing:'ease-in-out'});
   anim(p,[{transform:`translate(${w+120}px,18px)`},{transform:`translate(${w*.55}px,2px)`,offset:.46},{transform:'translate(-60px,8px)'}],{duration:5900,easing:'linear'});
-  purs.forEach((n,i)=>setTimeout(()=>anim(n,[{transform:`translate(${w+100+i*38}px,0)`},{transform:'translate(-80px,0)'}],{duration:6500,easing:'linear'}),Number(n.dataset.delay)));
+  anim(chasingLion,[{transform:`translate(${w+135}px,0)`},{transform:'translate(-120px,0)'}],{duration:6500,easing:'linear'});
   await runnerA;await wait(250);assistant.style.opacity='1';
 }
 

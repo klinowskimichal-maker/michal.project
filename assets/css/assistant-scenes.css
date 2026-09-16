@@ -45,15 +45,21 @@
 .scene-sparkle{width:5px;height:5px;background:#ffe889;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);opacity:0;z-index:8}
 @keyframes psklDig{from{transform:rotate(-36deg) translateY(0)}to{transform:rotate(18deg) translateY(5px)}}
 
-/* Chase scene — neutral island pursuers, no caricature */
+/* Chase scene: a clearly recognizable lion */
 .scene-runner{width:55px;height:55px;z-index:7;transform-origin:50% 100%}
 .scene-runner .pskl-pirate{transform:scale(.72);transform-origin:top left;pointer-events:none!important}
-.scene-pursuer{width:25px;height:43px;z-index:6}
-.scene-pursuer:before{content:'';position:absolute;left:7px;top:2px;width:13px;height:13px;border-radius:50%;background:#9b684a;border:1px solid #553421}
-.scene-pursuer:after{content:'';position:absolute;left:5px;top:15px;width:17px;height:21px;border-radius:7px 7px 3px 3px;background:linear-gradient(#34586b,#1c3847);border:1px solid #102733}
-.scene-pursuer .leg{position:absolute;top:33px;width:5px;height:11px;background:#2b2521;border-radius:4px;transform-origin:top center}
-.scene-pursuer .leg.a{left:7px}.scene-pursuer .leg.b{left:16px}
-.scene-pursuer.running .leg.a{animation:psklRunLeg .18s linear infinite alternate}.scene-pursuer.running .leg.b{animation:psklRunLeg .18s linear infinite alternate-reverse}
+.scene-lion{width:78px;height:49px;z-index:6;filter:drop-shadow(0 3px 2px #0004)}
+.lion-body{position:absolute;left:24px;top:18px;width:45px;height:24px;border-radius:55% 48% 42% 48%;background:linear-gradient(145deg,#e2a33e,#b86821);border:2px solid #713b16}
+.lion-mane{position:absolute;left:4px;top:7px;width:36px;height:36px;border-radius:48% 52% 47% 53%;background:radial-gradient(circle at 55% 45%,#a9501d 0 46%,#6f2f17 71%);border:2px solid #562313}
+.lion-head{position:absolute;left:11px;top:13px;width:25px;height:24px;border-radius:48%;background:#d89031;border:2px solid #713b16;z-index:3}
+.lion-ear{position:absolute;top:-6px;width:8px;height:8px;border-radius:50%;background:#d89031;border:2px solid #713b16}.lion-ear.left{left:1px}.lion-ear.right{right:1px}
+.lion-eye{position:absolute;top:7px;width:3px;height:3px;border-radius:50%;background:#15100b}.lion-eye.left{left:5px}.lion-eye.right{right:5px}
+.lion-muzzle{position:absolute;left:5px;top:12px;width:13px;height:9px;border-radius:50%;background:#f0c879}.lion-nose{position:absolute;left:10px;top:13px;width:5px;height:4px;border-radius:50%;background:#322018}
+.lion-tail{position:absolute;left:65px;top:12px;width:18px;height:16px;border-right:4px solid #b86821;border-top:3px solid #b86821;border-radius:0 90% 0 0;transform-origin:left bottom}.lion-tail:after{content:'';position:absolute;right:-5px;top:-5px;width:7px;height:7px;border-radius:50%;background:#713b16}
+.lion-leg{position:absolute;top:36px;width:7px;height:13px;border-radius:4px;background:#b86821;border:1px solid #713b16;transform-origin:top center}.lion-leg.front-a{left:29px}.lion-leg.front-b{left:40px}.lion-leg.rear-a{left:57px}.lion-leg.rear-b{left:66px}
+.scene-lion.running .front-a,.scene-lion.running .rear-b{animation:psklLionRun .2s linear infinite alternate}.scene-lion.running .front-b,.scene-lion.running .rear-a{animation:psklLionRun .2s linear infinite alternate-reverse}.scene-lion.running .lion-tail{animation:psklLionTail .32s ease-in-out infinite alternate}
+@keyframes psklLionRun{from{transform:rotate(-35deg) translateY(0)}to{transform:rotate(42deg) translateY(-2px)}}
+@keyframes psklLionTail{to{transform:rotate(-18deg)}}
 .scene-palm{width:38px;height:67px;z-index:3;transform-origin:50% 100%}
 .scene-palm .trunk{position:absolute;left:18px;top:20px;width:6px;height:49px;border-radius:50%;background:linear-gradient(90deg,#7e4f29,#b87943);transform:rotate(7deg)}
 .scene-palm .leaf{position:absolute;left:18px;top:17px;width:27px;height:7px;border-radius:90% 10% 90% 10%;background:#2b744d;transform-origin:left center}

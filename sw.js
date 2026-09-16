@@ -1,9 +1,12 @@
-const CACHE='pskl-shell-v4';
+const CACHE='pskl-shell-v5';
 const SHELL=[
   './',
   './index.html',
   './udostepnij.html',
   './manifest.webmanifest',
+  './assets/js/i18n-data.js',
+  './assets/js/i18n.js',
+  './assets/css/i18n.css',
   './assets/branding/pskl-tabliczka-icon-192.png',
   './assets/branding/pskl-tabliczka-icon-512.png',
   './assets/branding/pskl-tabliczka-maskable-192.png',
