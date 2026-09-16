@@ -120,7 +120,7 @@ function wireImageFallbacks(root=document){
 }
 
 function route(name,updateHash=true){
-  const valid=['home','catalog','offers','search','book','contact'];
+  const valid=['home','association','catalog','offers','search','book','contact'];
   if(!valid.includes(name))name='home';
   $$('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
   $$('.route').forEach(b=>b.classList.toggle('active',b.dataset.route===name));
@@ -130,7 +130,7 @@ function route(name,updateHash=true){
 }
 $$('.route').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));
 window.addEventListener('popstate',()=>route(location.hash.slice(1)||'home',false));
-window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['home','catalog','offers','search','book','contact'].includes(h))route(h,false)});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['home','association','catalog','offers','search','book','contact'].includes(h))route(h,false)});
 
 let currentCountry='';
 function renderCountries(){
