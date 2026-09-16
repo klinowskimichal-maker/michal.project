@@ -58,6 +58,9 @@ function translateData(value,seen=new Set()){
 translateData(window.PSKL_DATA);translateData(window.PSKL_CATALOG);
 window.addEventListener('pskl-market-loaded',()=>{try{if(typeof window.allOffers==='function')translateData(window.allOffers());translateData(window.PSKL_MARKET_STATUS);}catch(e){}});
 
+const searchIntro=document.querySelector('#search .section-intro');
+if(searchIntro)searchIntro.innerHTML='Set a phrase, material and country, then press <strong>SEARCH</strong>. Matching saved listings will appear below. The PSKŁ index covers part of the market. The retrieval date and source availability are shown with the results. Current results can also be opened directly on the marketplaces. Each result shows its <strong>source</strong>, for example OLX, Blocket, FINN.no or Boat24, and contains a <strong>direct link to the specific listing</strong>. Select <strong>✓ Watch listing</strong> to save it in Listings for further tracking and analysis.';
+
 const replacements=[
   [/^(\d+) modele?$/,(_,n)=>`${n} models`],[/^(\d+) modeli$/,(_,n)=>`${n} models`],[/^1 model$/,'1 model'],
   [/^(\d+) oferty$/,(_,n)=>`${n} listings`],[/^(\d+) ofert$/,(_,n)=>`${n} listings`],[/^1 oferta$/,'1 listing'],
