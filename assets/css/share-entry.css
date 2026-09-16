@@ -1,0 +1,6 @@
+.optionbar{grid-template-columns:repeat(5,1fr)}
+.optionbar .option{text-decoration:none}
+.share-option{background:#173d53}
+#nav>a{color:#f4f3ef;text-decoration:none;padding:10px 12px;font:600 12px Arial;border-radius:2px}
+#nav>a:hover{color:#ffe0c2;background:#15364b}
+@media(max-width:760px){.optionbar .option{min-width:0}.optionbar .option b,.optionbar .option span{font-size:9px}#nav>a{padding:13px}}

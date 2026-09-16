@@ -1,5 +1,6 @@
 (function(){
 'use strict';
+if(window.PSKL_LANG==='en')return;
 const $=s=>document.querySelector(s);
 const setText=(el,text)=>{if(el&&el.textContent!==text)el.textContent=text};
 function polishPanel(){

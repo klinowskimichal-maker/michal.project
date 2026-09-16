@@ -1,5 +1,6 @@
 (function(){
 'use strict';
+if(window.PSKL_LANG==='en')return;
 const $=s=>document.querySelector(s);const norm=s=>(s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 let selected=null;
 function chatRoot(){return $('#pskl-repair-chat')||$('.pskl-chat')}
