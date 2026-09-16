@@ -2,7 +2,7 @@
 'use strict';
 const norm=s=>(s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-// Wewnętrzne, orientacyjne widełki PSKŁ w EUR. Używa ich wyłącznie lokalny ekspert.
+// Wewnętrzne, orientacyjne widełki PSKL w EUR. Używa ich wyłącznie lokalny ekspert.
 // To heurystyka kwalifikacyjna, nie profesjonalna wycena ani indeks transakcyjny.
 const BANDS={
   'riva aquarama':[450000,750000],'riva super aquarama':[500000,850000],'riva aquarama special':[650000,950000],
@@ -71,11 +71,11 @@ function evaluate(o){const m=findModel(o),band=adjustedBand(o,m),price=parsePric
   if(band.engineState==='match'){score+=6;reasons.push('napęd zgodny z typową rodziną')}else if(band.engineState==='different'){score-=7;risks.push('napęd może być nieoryginalny')}else risks.push('brak pewnych danych silnika');
   score+=band.signals.pos.length*2;score-=band.signals.neg.length*8;reasons.push(...band.signals.pos);risks.push(...band.signals.neg);
   let pricePosition='unknown',priceText='Cena nie została odczytana — brak oceny opłacalności cenowej.';
-  if(price){if(price.eur<band.low*.78){pricePosition='very_low';score+=5;priceText='Cena jest wyraźnie poniżej wewnętrznego zakresu PSKŁ — może to być okazja, ale też sygnał ukrytych prac.'}
-    else if(price.eur<band.low){pricePosition='low';score+=7;priceText='Cena jest poniżej wewnętrznego zakresu PSKŁ i wygląda atrakcyjnie, jeśli stan się potwierdzi.'}
-    else if(price.eur<=band.high){pricePosition='fair';score+=8;priceText='Cena mieści się w wewnętrznym zakresie PSKŁ dla takiej konfiguracji.'}
-    else if(price.eur<=band.high*1.25){pricePosition='high';score-=4;priceText='Cena jest powyżej wewnętrznego zakresu PSKŁ; musi ją uzasadniać stan, oryginalność lub dokumentacja.'}
-    else{pricePosition='very_high';score-=12;priceText='Cena jest wyraźnie powyżej wewnętrznego zakresu PSKŁ.'}}
+  if(price){if(price.eur<band.low*.78){pricePosition='very_low';score+=5;priceText='Cena jest wyraźnie poniżej wewnętrznego zakresu PSKL — może to być okazja, ale też sygnał ukrytych prac.'}
+    else if(price.eur<band.low){pricePosition='low';score+=7;priceText='Cena jest poniżej wewnętrznego zakresu PSKL i wygląda atrakcyjnie, jeśli stan się potwierdzi.'}
+    else if(price.eur<=band.high){pricePosition='fair';score+=8;priceText='Cena mieści się w wewnętrznym zakresie PSKL dla takiej konfiguracji.'}
+    else if(price.eur<=band.high*1.25){pricePosition='high';score-=4;priceText='Cena jest powyżej wewnętrznego zakresu PSKL; musi ją uzasadniać stan, oryginalność lub dokumentacja.'}
+    else{pricePosition='very_high';score-=12;priceText='Cena jest wyraźnie powyżej wewnętrznego zakresu PSKL.'}}
   if(!o?.year)risks.push('brak pewnego rocznika');if(!o?.link)risks.push('brak linku źródłowego');if(/sold|sprzedan|expired|nieakt/i.test(String(o?.status||''))){score-=18;risks.push('oferta może być nieaktywna')}
   score=clamp(Math.round(score),20,95);const verdict=score>=82?'BARDZO CIEKAWA':score>=72?'WARTA UWAGI':score>=60?'CIEKAWA, ALE DO SPRAWDZENIA':score>=48?'TYLKO PO DOKŁADNEJ WERYFIKACJI':'RACZEJ ODPUSZCZAĆ';
   return{o,m,band,price,score,verdict,pricePosition,priceText,reasons:[...new Set(reasons)],risks:[...new Set(risks)]};

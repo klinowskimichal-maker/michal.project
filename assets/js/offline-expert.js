@@ -10,19 +10,19 @@ function fromCard(card){const title=card.querySelector('h3')?.textContent?.trim(
 function openChat(){const c=chatRoot();if(c)c.classList.add('open')}
 function add(text,who='bot'){const c=chatRoot(),box=c?.querySelector('.pskl-messages');if(!box)return;const m=document.createElement('div');m.className=`pskl-msg ${who}`;m.textContent=text;box.appendChild(m);const body=c.querySelector('.pskl-chat-body');if(body)body.scrollTop=body.scrollHeight}
 function eur(n){return new Intl.NumberFormat('pl-PL',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n)}
-function summary(ev,showBand=false){let out=`${ev.o.title}\nWerdykt Pirata PSKŁ: ${ev.verdict} · ${ev.score}/100`;
+function summary(ev,showBand=false){let out=`${ev.o.title}\nWerdykt Pirata PSKL: ${ev.verdict} · ${ev.score}/100`;
   if(ev.confidence)out+=`\nPewność diagnozy na podstawie dostępnych danych: ${ev.confidence}%`;
   if(ev.o.year)out+=`\nRok: ${ev.o.year}`;if(ev.o.engine)out+=`\nSilnik/napęd: ${ev.o.engine}`;if(ev.o.price)out+=`\nCena: ${ev.o.price}`;
   out+=`\n\n${ev.priceText}`;
-  if(showBand)out+=`\nOrientacyjny wewnętrzny zakres PSKŁ po korektach: ${eur(ev.band.low)} – ${eur(ev.band.high)}.`;
+  if(showBand)out+=`\nOrientacyjny wewnętrzny zakres PSKL po korektach: ${eur(ev.band.low)} – ${eur(ev.band.high)}.`;
   if(ev.woodAssessment?.length)out+=`\n\nDrewno / konstrukcja — sygnały z opisu:\n• ${ev.woodAssessment.join('\n• ')}`;
   if(ev.equipmentAssessment?.length)out+=`\n\nWyposażenie zauważone w opisie:\n• ${ev.equipmentAssessment.join('\n• ')}`;
   if(ev.reasons.length)out+=`\n\nNa plus:\n• ${ev.reasons.slice(0,8).join('\n• ')}`;
   if(ev.risks.length)out+=`\n\nRyzyka / braki danych:\n• ${ev.risks.slice(0,8).join('\n• ')}`;
-  out+=`\n\nCo sprawdzić fizycznie: poszycie i dno od środka, wręgi, pawęż, wilgoć/zgniliznę, mocowania i okucia, dokumentację napraw, numer kadłuba, oryginalność wyposażenia oraz zimny rozruch silnika. To bezpłatna lokalna kwalifikacja PSKŁ — nie survey ani profesjonalna wycena.`;
+  out+=`\n\nCo sprawdzić fizycznie: poszycie i dno od środka, wręgi, pawęż, wilgoć/zgniliznę, mocowania i okucia, dokumentację napraw, numer kadłuba, oryginalność wyposażenia oraz zimny rozruch silnika. To bezpłatna lokalna kwalifikacja PSKL — nie survey ani profesjonalna wycena.`;
   return out;
 }
-function answer(q){if(!selected)return'Najpierw wybierz konkretną ofertę przyciskiem „🏴‍☠️ Pirat: oceń ofertę”.';const V=window.PSKL_VALUATION;if(!V)return'Ładuję bezpłatny lokalny moduł diagnozy PSKŁ.';const ev=V.evaluate(selected),n=norm(q);
+function answer(q){if(!selected)return'Najpierw wybierz konkretną ofertę przyciskiem „🏴‍☠️ Pirat: oceń ofertę”.';const V=window.PSKL_VALUATION;if(!V)return'Ładuję bezpłatny lokalny moduł diagnozy PSKL.';const ev=V.evaluate(selected),n=norm(q);
   if(/wideł|widel|zakres|ile wart|wartosc|wartość|cena|kwot/.test(n))return summary(ev,true);
   if(/silnik|napęd|naped|motor/.test(n)){const m=ev.m;let s=`Dane napędu z oferty: ${selected.engine||'brak danych'}.`;if(m?.originalEngine)s+=`\nTypowy/originalny napęd katalogowy: ${m.originalEngine}.`;s+=ev.band.engineState==='match'?'\nOcena: napęd wygląda zgodnie z rodziną typową dla modelu.':ev.band.engineState==='different'?'\nOcena: napęd może być nieoryginalny lub nietypowy — sprawdzić dokumentację.':'\nOcena: za mało danych, żeby potwierdzić zgodność.';return s}
   if(/drew|maho|teak|dąb|dab|zgnil|wilgo|poszy/.test(n))return ev.woodAssessment?.length?`Z opisu oferty Pirat wychwycił:\n• ${ev.woodAssessment.join('\n• ')}\n\nRyzyka konstrukcyjne:\n• ${(ev.risks.length?ev.risks:['brak wyraźnych sygnałów w tekście — konieczne oględziny']).join('\n• ')}`:'W ogłoszeniu jest za mało danych o drewnie, żeby wiarygodnie ocenić jego jakość. Konieczne są zdjęcia od środka i oględziny wilgotności, wręg, poszycia i pawęży.';
@@ -31,7 +31,7 @@ function answer(q){if(!selected)return'Najpierw wybierz konkretną ofertę przyc
   if(/unikal|rzadk|kolekc|popular/.test(n)){const m=ev.m;return m?`${m.brand} ${m.model}: popularność kolekcjonerska ${m.popularity||3}/5, trudność zdobycia ${m.difficulty||3}/5. Te parametry wpływają na lokalną ocenę atrakcyjności i orientacyjny zakres wartości.`:'Nie dopasowałem modelu wystarczająco pewnie, więc nie chcę zgadywać jego unikalności.'}
   return summary(ev,false);
 }
-function updateNote(){const c=chatRoot();const note=c?.querySelector('.pskl-ai-note span');if(note)note.textContent='Lokalny ekspert PSKŁ · bez API · 0 zł za odpowiedzi';const small=c?.querySelector('.pskl-chat-title small');if(small)small.textContent='POMOC · DORADCA · DIAGNOZA OFERT · 0 ZŁ'}
+function updateNote(){const c=chatRoot();const note=c?.querySelector('.pskl-ai-note span');if(note)note.textContent='Lokalny ekspert PSKL · bez API · 0 zł za odpowiedzi';const small=c?.querySelector('.pskl-chat-title small');if(small)small.textContent='POMOC · DORADCA · DIAGNOZA OFERT · 0 ZŁ'}
 document.addEventListener('click',e=>{const btn=e.target.closest('.pskl-offer-ask');if(!btn)return;const card=btn.closest('.offer-card');if(!card)return;e.preventDefault();e.stopImmediatePropagation();selected=fromCard(card);window.PSKL_SELECTED_OFFER=selected;openChat();add(`Oceń ofertę: ${selected.title}`,'user');const V=window.PSKL_VALUATION;if(V)add(summary(V.evaluate(selected),false));else add('Moduł diagnozy nie został załadowany.');const pirate=$('.pskl-pirate');if(pirate){pirate.classList.add('spyglass');setTimeout(()=>pirate.classList.remove('spyglass'),1900)}},true);
 document.addEventListener('submit',e=>{const form=e.target.closest('#pskl-repair-chat .pskl-chat-form');if(!form||!selected)return;e.preventDefault();e.stopImmediatePropagation();const ta=form.querySelector('textarea');const q=ta?.value?.trim();if(!q)return;ta.value='';add(q,'user');add(answer(q));},true);
 setTimeout(updateNote,300);setTimeout(updateNote,1800);setTimeout(updateNote,3500);

@@ -121,7 +121,7 @@ async function runNext(){
   if(running||busyUser()){schedule(8000);return}
   running=true;clear();document.body.classList.add('pskl-scene-active');
   const name=sceneNames[sceneIndex];
-  try{await scenes[sceneIndex]()}catch(e){console.warn('PSKŁ pirate scene failed:',name,e)}
+  try{await scenes[sceneIndex]()}catch(e){console.warn('PSKL pirate scene failed:',name,e)}
   sceneIndex=(sceneIndex+1)%scenes.length;
   await wait(250);clear();running=false;schedule(30000);
 }

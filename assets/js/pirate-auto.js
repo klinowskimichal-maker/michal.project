@@ -2,6 +2,14 @@
 'use strict';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const EN=window.PSKL_LANG==='en';
+const verdictEN=value=>({
+  'BARDZO CIEKAWA':'VERY INTERESTING',
+  'WARTA UWAGI':'WORTH CONSIDERING',
+  'CIEKAWA, ALE DO SPRAWDZENIA':'INTERESTING, BUT NEEDS CHECKING',
+  'TYLKO PO DOKŁADNEJ WERYFIKACJI':'ONLY AFTER THOROUGH VERIFICATION',
+  'RACZEJ ODPUSZCZAĆ':'PROBABLY BEST TO PASS',
+  'WYMAGA OSTROŻNEJ WERYFIKACJI':'REQUIRES CAREFUL VERIFICATION'
+}[value]||value);
 const norm=s=>(s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function universe(){try{const x=typeof window.allOffers==='function'?window.allOffers():null;if(Array.isArray(x))return x}catch(e){}return window.PSKL_DATA?.offers||[]}
 function fromCard(card){
@@ -17,7 +25,7 @@ function analyseCard(card){
   const V=window.PSKL_VALUATION;if(!V)return;
   const o=fromCard(card),ev=V.evaluate(o),body=card.querySelector('.offer-body')||card;
   const badge=document.createElement('button');badge.type='button';badge.className=`pirate-auto-verdict ${tone(ev.score)}`;
-  badge.innerHTML=`<span>🏴‍☠️ ${EN?'PSKŁ PIRATE':'PIRAT PSKŁ'}</span><strong>${ev.verdict}</strong><small>${ev.score}/100 · ${EN?'confidence':'pewność'} ${ev.confidence||'—'}%</small>`;
+  badge.innerHTML=`<span>🏴‍☠️ ${EN?'PSKL PIRATE':'PIRAT PSKL'}</span><strong>${EN?verdictEN(ev.verdict):ev.verdict}</strong><small>${ev.score}/100 · ${EN?'confidence':'pewność'} ${ev.confidence||'—'}%</small>`;
   badge.title=EN?'Click to see the full Pirate assessment':'Kliknij, aby zobaczyć pełną analizę Pirata';
   badge.onclick=e=>{e.preventDefault();e.stopPropagation();const ask=card.querySelector('.pskl-offer-ask');if(ask)ask.click();else document.querySelector('#pskl-assistant .pskl-pirate')?.click();};
   body.insertBefore(badge,body.firstChild);card.dataset.pirateAuto='1';
@@ -26,7 +34,7 @@ function scan(){$$('.offer-card').forEach(analyseCard)}
 new MutationObserver(scan).observe(document.body,{childList:true,subtree:true});scan();setTimeout(scan,800);setTimeout(scan,2200);
 function greet(){
   const root=$('#pskl-assistant');if(!root||root.querySelector('.pirate-auto-greeting'))return;
-  const b=document.createElement('div');b.className='pirate-auto-greeting';b.innerHTML=EN?'<b>Ahoy! 🏴‍☠️</b><span>I am the PSKŁ Pirate. I guide you around the site, advise on models and assess listings.</span>':'<b>Ahoj! 🏴‍☠️</b><span>Jestem Piratem PSKŁ. Pomagam po stronie, doradzam przy modelach i po cichu oceniam oferty.</span>';
+  const b=document.createElement('div');b.className='pirate-auto-greeting';b.innerHTML=EN?'<b>Ahoy! 🏴‍☠️</b><span>I am the PSKL Pirate. I guide you around the site, advise on models and assess listings.</span>':'<b>Ahoj! 🏴‍☠️</b><span>Jestem Piratem PSKL. Pomagam po stronie, doradzam przy modelach i po cichu oceniam oferty.</span>';
   root.appendChild(b);requestAnimationFrame(()=>b.classList.add('show'));setTimeout(()=>b.classList.remove('show'),6500);setTimeout(()=>b.remove(),7200);
   const p=root.querySelector('.pskl-pirate');if(p){p.classList.add('salute');setTimeout(()=>p.classList.remove('salute'),1600)}
 }

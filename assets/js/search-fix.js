@@ -53,7 +53,7 @@ function patchLinks(){
       const cta=a.querySelector('strong:last-child');const label='Otwórz pełne aktualne wyniki ↗';if(cta&&cta.textContent!==label)cta.textContent=label;
     });
     const n=localMatches().length,summary=$('#searchSummary');
-    if(summary)summary.innerHTML=`<strong>Wcześniej zapisane oferty w bazie PSKŁ: ${n}</strong> · Ta liczba nie opisuje całego rynku. Pełne bieżące wyniki są otwierane bezpośrednio w wybranych portalach powyżej.`;
+    if(summary)summary.innerHTML=`<strong>Wcześniej zapisane oferty w bazie PSKL: ${n}</strong> · Ta liczba nie opisuje całego rynku. Pełne bieżące wyniki są otwierane bezpośrednio w wybranych portalach powyżej.`;
   }finally{patching=false;}
 }
 function arrange(){

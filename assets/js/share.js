@@ -10,17 +10,17 @@ async function copyLink(){
 document.getElementById('copyLink').addEventListener('click',copyLink);
 document.getElementById('shareLink').addEventListener('click',async()=>{
   if(!navigator.share){await copyLink();return;}
-  try{await navigator.share({title:'PSKŁ',url:site});}
+  try{await navigator.share({title:'PSKL',url:site});}
   catch(error){if(error.name!=='AbortError')await copyLink();}
 });
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 let installPrompt=null;
 const installButton=document.getElementById('installApp');
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;});
-window.addEventListener('appinstalled',()=>{installPrompt=null;tell('PSKŁ zostało zainstalowane.');});
+window.addEventListener('appinstalled',()=>{installPrompt=null;tell('PSKL zostało zainstalowane.');});
 installButton.addEventListener('click',async()=>{
   if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone){
-    tell('Usuń poprzednią instalację PSKŁ. Następnie otwórz ten link w Chrome i zainstaluj ponownie.');
+    tell('Usuń poprzednią instalację PSKL. Następnie otwórz ten link w Chrome i zainstaluj ponownie.');
     return;
   }
   if(installPrompt){

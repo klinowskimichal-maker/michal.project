@@ -4,7 +4,7 @@ if(document.getElementById('pskl-assistant')) return;
 const root=document.createElement('div');
 root.id='pskl-assistant';
 root.setAttribute('data-bootstrap','1');
-root.innerHTML=`<button class="pskl-pirate" type="button" aria-label="Piracki Asystent PSKŁ">
+root.innerHTML=`<button class="pskl-pirate" type="button" aria-label="Piracki Asystent PSKL">
 <span class="map-glow"></span><span class="pirate-hat"></span><span class="pirate-head"><span class="pirate-ear"></span><span class="pirate-patch"></span><span class="pirate-eye"></span><span class="pirate-nose"></span><span class="pirate-smile"></span><span class="pirate-beard"></span></span><span class="pirate-body"></span><span class="pirate-belt"></span><span class="pirate-arm left"><span class="pirate-hand"></span></span><span class="pirate-arm right"><span class="pirate-hand"></span></span><span class="pirate-map"></span><span class="pirate-leg left"></span><span class="pirate-leg right"></span><span class="pirate-boot left"></span><span class="pirate-boot right"></span></button><div class="pskl-bootstrap-bubble">Ahoj! 🏴‍☠️</div>`;
 document.body.appendChild(root);
 root.style.setProperty('display','block','important');

@@ -65,13 +65,13 @@ function sourceStatus(name,status){
   if(!status)return {state:'loading',text:'Sprawdzanie ostatniej aktualizacji…'};
   if(status.failed)return {state:'unavailable',text:'Nie można sprawdzić aktualizacji. Otwórz oferty bezpośrednio w portalu.'};
   const errors=(status.errors||[]).filter(same),searches=(status.searches||[]).filter(same);
-  if(errors.some(x=>x.kind==='blocked'||[401,403,429].includes(x.status)||/\b(401|403|429)\b/.test(x.error||'')))return {state:'blocked',text:'Portal blokuje automatyczne pobieranie ofert do PSKŁ. Otwórz wyszukiwanie bezpośrednio w portalu.'};
+  if(errors.some(x=>x.kind==='blocked'||[401,403,429].includes(x.status)||/\b(401|403|429)\b/.test(x.error||'')))return {state:'blocked',text:'Portal blokuje automatyczne pobieranie ofert do PSKL. Otwórz wyszukiwanie bezpośrednio w portalu.'};
   if(errors.length)return {state:'unavailable',text:'Nie udało się pobrać części lub wszystkich ofert. Otwórz wyszukiwanie w portalu.'};
   if(!searches.length)return {state:'unknown',text:'Brak potwierdzonego odczytu ofert z tego portalu.'};
   if(searches.some(x=>x.state==='unreadable'))return {state:'unavailable',text:'Strona portalu odpowiada, ale nie udostępniła czytelnych kart ogłoszeń do indeksu. Sprawdź wyniki bezpośrednio w portalu.'};
   if(!searches.some(x=>Number(x.found)>0)&&searches.some(x=>Number(x.candidates)>0))return {state:'unconfirmed',text:'Odczytano karty ogłoszeń, ale ich treść nie potwierdza drewnianego kadłuba. Sprawdź materiał w ogłoszeniach portalu.'};
   if(!searches.some(x=>Number(x.found)>0))return {state:'empty',text:'Ostatnia aktualizacja nie odczytała żadnej oferty. Nie oznacza to braku ogłoszeń w portalu; poprawność pobierania nie jest potwierdzona.'};
-  return {state:'partial',text:'Odczytano część ofert. Baza PSKŁ nie obejmuje wszystkich ogłoszeń w portalu.'};
+  return {state:'partial',text:'Odczytano część ofert. Baza PSKL nie obejmuje wszystkich ogłoszeń w portalu.'};
 }
 const api={norm,criteria,matches,links,sourceStatus,isOfferLink};root.PSKL_MARKET=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#061b2b">
-<title>Księga Założycielska - Wydanie I | PSKŁ</title>
-<meta name="description" content="Księga Założycielska PSKŁ - Wydanie I, 34 strony. Własny czytnik Polskiego Stowarzyszenia Klasycznych i Zabytkowych Łodzi.">
+<title>Księga Założycielska - Wydanie I | PSKL</title>
+<meta name="description" content="Księga Założycielska PSKL - Wydanie I, 34 strony. Własny czytnik Polskiego Stowarzyszenia Klasycznych i Zabytkowych Łodzi.">
 <style>
 :root{--navy:#061b2b;--navy2:#0b3147;--copper:#b8793f;--brass:#d4a06e;--paper:#f5f1e8;--page-w:min(892px,calc(100vw - 24px))}
 *{box-sizing:border-box}
@@ -42,11 +42,11 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
 }
 @media print{.toolbar,.intro,.fab,figcaption{display:none!important}.stage{padding:0}.reader{gap:0}.sheet{width:100%;box-shadow:none;break-after:page;border:0}}
 </style>
-<link rel="manifest" href="manifest.webmanifest?v=tabliczka-3"><link rel="icon" type="image/png" sizes="192x192" href="assets/branding/pskl-tabliczka-icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/pskl-tabliczka-apple-180.png"><meta name="apple-mobile-web-app-title" content="PSKŁ"><meta name="apple-mobile-web-app-capable" content="yes"></head>
+<link rel="manifest" href="manifest.webmanifest?v=tabliczka-3"><link rel="icon" type="image/png" sizes="192x192" href="assets/branding/pskl-tabliczka-icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="assets/branding/pskl-tabliczka-apple-180.png"><meta name="apple-mobile-web-app-title" content="PSKL"><meta name="apple-mobile-web-app-capable" content="yes"></head>
 <body>
 <nav class="toolbar" aria-label="Nawigacja Księgi">
-  <a class="back" href="index.html#book">← PSKŁ</a>
-  <div class="title"><strong>Księga Założycielska - Wydanie I</strong><small>PSKŁ · SZCZECIN · 2026 · 34 STRONY</small></div>
+  <a class="back" href="index.html#book">← PSKL</a>
+  <div class="title"><strong>Księga Założycielska - Wydanie I</strong><small>PSKL · SZCZECIN · 2026 · 34 STRONY</small></div>
   <div class="book-lang" aria-label="Language"><button type="button" data-lang="pl">PL</button><button type="button" data-lang="en">EN</button></div>
   <button class="ctrl" id="prev" type="button" aria-label="Poprzednia strona">‹</button>
   <div class="pagebox"><input id="pageInput" type="number" min="1" max="34" value="1" aria-label="Numer strony"><span>/ 34</span></div>
@@ -54,7 +54,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
   <button class="ctrl" id="zoomOut" type="button" aria-label="Pomniejsz">−</button>
   <button class="ctrl" id="zoomIn" type="button" aria-label="Powiększ">+</button>
 </nav>
-<p class="intro"><b>Księga Założycielska</b> przedstawia misję, wartości, cele, strukturę i kierunek rozwoju Stowarzyszenia. Poniżej znajduje się pełne Wydanie I w 34 stronach, wyświetlane bezpośrednio przez PSKŁ.</p>
+<p class="intro"><b>Księga Założycielska</b> przedstawia misję, wartości, cele, strukturę i kierunek rozwoju Stowarzyszenia. Poniżej znajduje się pełne Wydanie I w 34 stronach, wyświetlane bezpośrednio przez PSKL.</p>
 <main class="stage" id="stage"><div class="reader" id="reader">
 <figure class="sheet" id="page-1" data-page="1">
           <img src="assets/book/page-01.png" alt="Księga Założycielska - strona 1 z 34" loading="eager" fetchpriority="high" decoding="async">
@@ -200,10 +200,10 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
  document.documentElement.lang=lang;
  document.querySelectorAll('[data-lang]').forEach(button=>{button.classList.toggle('active',button.dataset.lang===lang);button.onclick=()=>{localStorage.setItem('pskl-language',button.dataset.lang);location.reload()}});
  if(lang==='en'){
-  document.title='Founding Book, First Edition | PSKŁ';
+  document.title='Founding Book, First Edition | PSKL';
   document.querySelector('.title strong').textContent='Founding Book, First Edition';
-  document.querySelector('.title small').textContent='PSKŁ · SZCZECIN · 2026 · 34 PAGES';
-  document.querySelector('p.intro').innerHTML='<b>The Founding Book</b> presents the Association’s mission, values, objectives, structure and direction. The full First Edition of 34 pages is displayed below directly by PSKŁ.';
+  document.querySelector('.title small').textContent='PSKL · SZCZECIN · 2026 · 34 PAGES';
+  document.querySelector('p.intro').innerHTML='<b>The Founding Book</b> presents the Association’s mission, values, objectives, structure and direction. The full First Edition of 34 pages is displayed below directly by PSKL.';
   document.querySelectorAll('.sheet').forEach((sheet,index)=>{const n=index+1;sheet.querySelector('img').alt=`Founding Book, page ${n} of 34`;sheet.querySelector('figcaption').textContent=`PAGE ${n} / 34`});
  }
  const sheets=[...document.querySelectorAll('.sheet')];

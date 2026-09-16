@@ -12,12 +12,12 @@ function polishPanel(){
   setText(buttons[0],'Nawigacja');
   setText(buttons[1],'Analiza modelu');
   setText(buttons[2],'Ocena oferty');
-  setText(buttons[3],'Skala PSKŁ');
-  const note=panel.querySelector('.pskl-ai-note span');setText(note,'Analiza danych katalogowych i ofert PSKŁ');
+  setText(buttons[3],'Skala PSKL');
+  const note=panel.querySelector('.pskl-ai-note span');setText(note,'Analiza danych katalogowych i ofert PSKL');
 }
 function polishGreeting(node){
   if(!node?.classList?.contains('pirate-auto-greeting'))return;
-  node.innerHTML='<b>Witaj w PSKŁ.</b><span>Mogę pomóc w nawigacji, porównaniu modeli oraz analizie ofert.</span>';
+  node.innerHTML='<b>Witaj w PSKL.</b><span>Mogę pomóc w nawigacji, porównaniu modeli oraz analizie ofert.</span>';
 }
 new MutationObserver(m=>{for(const r of m)for(const n of r.addedNodes){if(n.nodeType===1){polishGreeting(n);n.querySelectorAll?.('.pirate-auto-greeting').forEach(polishGreeting);}}polishPanel();}).observe(document.body,{childList:true,subtree:true});
 setTimeout(polishPanel,100);setTimeout(polishPanel,1200);
