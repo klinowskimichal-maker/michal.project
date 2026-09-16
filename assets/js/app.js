@@ -120,7 +120,7 @@ function wireImageFallbacks(root=document){
 }
 
 function route(name,updateHash=true){
-  const valid=['home','catalog','offers','search','book'];
+  const valid=['home','catalog','offers','search','book','contact'];
   if(!valid.includes(name))name='home';
   $$('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
   $$('.route').forEach(b=>b.classList.toggle('active',b.dataset.route===name));
