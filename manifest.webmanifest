@@ -1,10 +1,10 @@
 {
-  "id": "./",
+  "id": "./?pskl-app=tabliczka-3",
   "name": "PSKŁ — Klasyczne łodzie",
   "short_name": "PSKŁ",
   "description": "Katalog klasycznych łodzi i rynek ofert PSKŁ.",
   "lang": "pl",
-  "start_url": "./",
+  "start_url": "./?pskl-app=tabliczka-3",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
