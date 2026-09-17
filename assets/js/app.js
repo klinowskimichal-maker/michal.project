@@ -121,7 +121,7 @@ function wireImageFallbacks(root=document){
 
 function route(name,updateHash=true){
   const valid=['home','association','catalog','offers','search','book','contact'];
-  if(!valid.includes(name))name='home';
+  if(!valid.includes(name))name='association';
   $$('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
   $$('.route').forEach(b=>b.classList.toggle('active',b.dataset.route===name));
   $('#nav').classList.remove('open');
@@ -129,7 +129,7 @@ function route(name,updateHash=true){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 $$('.route').forEach(b=>b.addEventListener('click',()=>route(b.dataset.route)));
-window.addEventListener('popstate',()=>route(location.hash.slice(1)||'home',false));
+window.addEventListener('popstate',()=>route(location.hash.slice(1)||'association',false));
 window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(['home','association','catalog','offers','search','book','contact'].includes(h))route(h,false)});
 
 let currentCountry='';
@@ -269,4 +269,4 @@ renderOffers();
 populateCountries();
 searchLocal();
 loadLiveMarket();
-route(location.hash.slice(1)||'home',false);
+route(location.hash.slice(1)||'association',false);

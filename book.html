@@ -59,15 +59,15 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
 <p class="intro"><b>Księga Założycielska</b> przedstawia misję, wartości, cele, strukturę i kierunek rozwoju Stowarzyszenia. Poniżej znajduje się pełne Wydanie I w 34 stronach, wyświetlane bezpośrednio przez PSKL.</p>
 <main class="stage" id="stage"><div class="reader" id="reader">
 <figure class="sheet" id="page-1" data-page="1">
-          <img src="assets/book/page-01.png?v=36" alt="Księga Założycielska - strona 1 z 34" loading="eager" fetchpriority="high" decoding="async">
+          <img src="assets/book/page-01.png?v=37" alt="Księga Założycielska - strona 1 z 34" loading="eager" fetchpriority="high" decoding="async">
           <figcaption>STRONA 1 / 34</figcaption>
         </figure>
 <figure class="sheet" id="page-2" data-page="2">
-          <img src="assets/book/page-02.png?v=36" alt="Księga Założycielska - strona 2 z 34" loading="eager" fetchpriority="auto" decoding="async">
+          <img src="assets/book/page-02.png?v=37" alt="Księga Założycielska - strona 2 z 34" loading="eager" fetchpriority="auto" decoding="async">
           <figcaption>STRONA 2 / 34</figcaption>
         </figure>
 <figure class="sheet" id="page-3" data-page="3">
-          <img src="assets/book/page-03.png?v=36" alt="Księga Założycielska - strona 3 z 34" loading="lazy" fetchpriority="auto" decoding="async">
+          <img src="assets/book/page-03.png?v=37" alt="Księga Założycielska - strona 3 z 34" loading="lazy" fetchpriority="auto" decoding="async">
           <figcaption>STRONA 3 / 34</figcaption>
         </figure>
 <figure class="sheet" id="page-4" data-page="4">
@@ -207,7 +207,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
   document.querySelector('.title strong').textContent='Founding Book, First Edition';
   document.querySelector('.title small').textContent='PSKL · SZCZECIN · 2026 · 34 PAGES';
   document.querySelector('p.intro').innerHTML='<b>The Founding Book</b> presents the Association’s mission, values, objectives, structure and direction. The full First Edition of 34 pages is displayed below directly by PSKL.';
-  document.querySelectorAll('.sheet').forEach((sheet,index)=>{const n=index+1;const image=sheet.querySelector('img');image.src=`assets/book-en/page-${String(n).padStart(2,'0')}.png`;image.alt=`Founding Book, page ${n} of 34`;sheet.querySelector('figcaption').textContent=`PAGE ${n} / 34`});
+  document.querySelectorAll('.sheet').forEach((sheet,index)=>{const n=index+1;const image=sheet.querySelector('img');image.src=`assets/book-en/page-${String(n).padStart(2,'0')}.png?v=37`;image.alt=`Founding Book, page ${n} of 34`;sheet.querySelector('figcaption').textContent=`PAGE ${n} / 34`});
  }
  const sheets=[...document.querySelectorAll('.sheet')];
  sheets.forEach(sheet=>{

@@ -1,7 +1,8 @@
-const CACHE='pskl-shell-v13';
+const CACHE='pskl-shell-v14';
 const SHELL=[
   './',
   './index.html',
+  './book.html',
   './udostepnij.html',
   './manifest.webmanifest',
   './assets/js/i18n-data.js',
