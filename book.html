@@ -207,7 +207,7 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#123f58 0,var(--navy
   document.querySelector('.title strong').textContent='Founding Book, First Edition';
   document.querySelector('.title small').textContent='PSKL · SZCZECIN · 2026 · 34 PAGES';
   document.querySelector('p.intro').innerHTML='<b>The Founding Book</b> presents the Association’s mission, values, objectives, structure and direction. The full First Edition of 34 pages is displayed below directly by PSKL.';
-  document.querySelectorAll('.sheet').forEach((sheet,index)=>{const n=index+1;sheet.querySelector('img').alt=`Founding Book, page ${n} of 34`;sheet.querySelector('figcaption').textContent=`PAGE ${n} / 34`});
+  document.querySelectorAll('.sheet').forEach((sheet,index)=>{const n=index+1;const image=sheet.querySelector('img');image.src=`assets/book-en/page-${String(n).padStart(2,'0')}.png`;image.alt=`Founding Book, page ${n} of 34`;sheet.querySelector('figcaption').textContent=`PAGE ${n} / 34`});
  }
  const sheets=[...document.querySelectorAll('.sheet')];
  sheets.forEach(sheet=>{
