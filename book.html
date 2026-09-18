@@ -67,7 +67,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=53',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=54',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -112,7 +112,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      if(lang==='en'){
        const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
          const name='en'+String(i).padStart(2,'0')+'.b64';
-         const response=await fetch(PDFS.enBase+name+'?v=53',{cache:'force-cache'});
+         const response=await fetch(PDFS.enBase+name+'?v=54',{cache:'force-cache'});
          if(!response.ok)throw new Error('Missing English PDF data: '+name);
          return (await response.text()).trim();
        }));
@@ -180,15 +180,52 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  window.addEventListener('resize',()=>{clearTimeout(window.__psklResize);window.__psklResize=setTimeout(renderPage,120)});
 
  let touchStartX=0,touchStartY=0,touchStartAt=0;
+ let pinchActive=false,pinchStartDistance=0,pinchStartZoom=1,pinchZoom=1,justPinched=false;
+ const touchDistance=touches=>{
+   const dx=touches[0].clientX-touches[1].clientX;
+   const dy=touches[0].clientY-touches[1].clientY;
+   return Math.hypot(dx,dy);
+ };
  stage.addEventListener('touchstart',e=>{
-   if(e.touches.length!==1)return;
+   if(e.touches.length===2){
+     pinchActive=true;
+     justPinched=true;
+     pinchStartDistance=Math.max(1,touchDistance(e.touches));
+     pinchStartZoom=zoom;
+     pinchZoom=zoom;
+     const rect=shell.getBoundingClientRect();
+     const cx=(e.touches[0].clientX+e.touches[1].clientX)/2-rect.left;
+     const cy=(e.touches[0].clientY+e.touches[1].clientY)/2-rect.top;
+     shell.style.transformOrigin=cx+'px '+cy+'px';
+     return;
+   }
+   if(e.touches.length!==1||pinchActive)return;
    const t=e.touches[0];
    touchStartX=t.clientX;
    touchStartY=t.clientY;
    touchStartAt=Date.now();
  },{passive:true});
+ stage.addEventListener('touchmove',e=>{
+   if(!pinchActive||e.touches.length!==2)return;
+   e.preventDefault();
+   const distance=touchDistance(e.touches);
+   pinchZoom=Math.max(.6,Math.min(3,pinchStartZoom*(distance/pinchStartDistance)));
+   const previewScale=pinchZoom/pinchStartZoom;
+   shell.style.transform='scale('+previewScale+')';
+ },{passive:false});
  stage.addEventListener('touchend',e=>{
-   if(!doc||zoom>1.05||!e.changedTouches.length)return;
+   if(pinchActive){
+     if(e.touches.length<2){
+       pinchActive=false;
+       zoom=pinchZoom;
+       shell.style.transform='';
+       shell.style.transformOrigin='';
+       renderPage();
+       setTimeout(()=>{justPinched=false},180);
+     }
+     return;
+   }
+   if(justPinched||!doc||zoom>1.05||!e.changedTouches.length)return;
    const t=e.changedTouches[0];
    const dx=t.clientX-touchStartX;
    const dy=t.clientY-touchStartY;
