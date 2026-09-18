@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#061b2b">
 <title>Księga Założycielska - Wydanie I | PSKL</title>
 <meta name="description" content="Księga Założycielska PSKL - Wydanie I. Oryginalny PDF PL i angielskie wydanie PDF.">
@@ -25,14 +25,24 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 .lang{display:flex;gap:4px}.lang button{border:1px solid rgba(212,160,110,.72);background:#071f30;color:#f3d3aa;border-radius:7px;padding:7px 8px;font-weight:700;cursor:pointer}.lang button.active{background:#d4a06e;color:#061b2b}
 .pagebox{display:flex;align-items:center;gap:5px;color:#d4a06e;font-weight:700;font-size:12px;white-space:nowrap}
 .pagebox input{width:48px;border:1px solid rgba(212,160,110,.55);border-radius:7px;background:#041a28;color:#fff;padding:7px 5px;text-align:center;font-weight:700}
-.stage{display:flex;justify-content:center;align-items:flex-start;min-height:calc(100vh - 90px);padding:18px 10px 70px;overflow:auto;touch-action:pan-x pan-y;overscroll-behavior-y:contain;background:radial-gradient(circle at 50% -10%,#123f58 0,#061b2b 44%,#03131f 100%)}
-.page-shell{position:relative;flex:none;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(212,160,110,.5);overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.stage{display:block;min-height:calc(100vh - 90px);padding:18px 10px 70px;overflow:auto;touch-action:none;overscroll-behavior:contain;background:radial-gradient(circle at 50% -10%,#123f58 0,#061b2b 44%,#03131f 100%)}
+.page-shell{position:relative;flex:none;margin:0 auto;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(212,160,110,.5);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 #pdfCanvas{display:block;background:#fff;pointer-events:none;image-rendering:auto}
 .watermark{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
 .watermark span{position:absolute;color:rgba(6,27,43,.105);font:800 clamp(19px,3vw,42px)/1 Arial,Helvetica,sans-serif;letter-spacing:.13em;transform:rotate(-31deg);white-space:nowrap}
 .watermark span:nth-child(1){left:12%;top:18%}.watermark span:nth-child(2){right:10%;top:38%}.watermark span:nth-child(3){left:16%;top:62%}.watermark span:nth-child(4){right:13%;top:80%}
 .loading{position:absolute;inset:0;z-index:8;display:grid;place-items:center;background:rgba(255,255,255,.92);color:#061b2b;font-weight:700}
 .loading[hidden]{display:none}
+
+.page-repair{position:absolute;inset:0;z-index:2;pointer-events:none;display:none}
+.page-repair.active{display:block}
+.en15-fix{position:absolute;left:4.6%;right:4.6%;top:28.6%;height:16.9%;background:#fff;color:#17213d;font-family:Arial,Helvetica,sans-serif}
+.en15-fix .chapter{position:absolute;left:0;right:0;top:4%;text-align:center;font-weight:800;font-size:clamp(14px,2.8vw,34px);letter-spacing:.01em}
+.en15-fix .chapter-title{position:absolute;left:8%;right:8%;top:17%;text-align:center;font-weight:800;font-size:clamp(13px,2.55vw,32px);line-height:1.08}
+.en15-fix .chapter-sub{position:absolute;left:35%;right:4%;top:37%;text-align:center;color:#c5742a;font:italic clamp(10px,1.7vw,20px)/1.15 Georgia,serif}
+.en15-fix .ribs{position:absolute;left:0;top:34%;width:29%;height:28%}
+.en15-fix .vision{position:absolute;left:4.2%;top:59%;color:#b66d26;font:700 clamp(10px,1.55vw,19px)/1.15 Georgia,serif}
+.en15-fix .vision-text{position:absolute;left:4.2%;right:4.2%;top:72%;font-size:clamp(8px,1.2vw,15px);line-height:1.45;color:#17213d}
 @media(max-width:720px){
  .toolbar{gap:5px;min-height:54px;padding:6px 5px}
  .back{font-size:0;padding:9px 10px}.back::after{content:'←';font-size:17px}
@@ -46,7 +56,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 </head>
 <body>
 <nav class="toolbar" aria-label="Nawigacja Księgi">
-  <a class="back" href="index.html#book">← PSKL</a>
+  <a class="back" href="index.html?v=55#book">← PSKL</a>
   <div class="title"><strong id="bookTitle">Księga Założycielska - Wydanie I</strong><small id="bookMeta">PSKL · SZCZECIN · 2026 · PDF</small></div>
   <div class="lang" aria-label="Language"><button type="button" data-lang="pl">PL</button><button type="button" data-lang="en">EN</button></div>
   <button class="ctrl" id="prev" type="button" aria-label="Poprzednia strona">‹</button>
@@ -58,6 +68,30 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <main class="stage" id="stage">
   <div class="page-shell" id="pageShell">
     <canvas id="pdfCanvas" aria-label="Strona Księgi"></canvas>
+    <div class="page-repair" id="pageRepair" aria-hidden="true">
+      <div class="en15-fix">
+        <div class="chapter">CHAPTER XII</div>
+        <div class="chapter-title">CENTRE FOR TRADITIONAL BOATBUILDING</div>
+        <svg class="ribs" viewBox="0 0 320 110" aria-hidden="true">
+          <g fill="none" stroke="#c5742a" stroke-width="1.7" stroke-linecap="round">
+            <path d="M6 73 C78 92, 194 94, 314 58"/>
+            <path d="M18 74 C92 82, 198 83, 303 60"/>
+            <path d="M35 72 Q45 30 58 18"/>
+            <path d="M64 78 Q73 23 88 8"/>
+            <path d="M96 82 Q103 23 119 5"/>
+            <path d="M130 85 Q135 24 150 7"/>
+            <path d="M166 85 Q170 28 184 12"/>
+            <path d="M202 82 Q208 34 222 19"/>
+            <path d="M238 77 Q245 42 260 29"/>
+            <path d="M272 70 Q281 50 298 42"/>
+            <path d="M7 74 L315 58"/>
+          </g>
+        </svg>
+        <div class="chapter-sub">Centre for Traditional Boatbuilding</div>
+        <div class="vision">1. Vision</div>
+        <div class="vision-text">The Centre will be a place where history meets craft, education and community. It will support the restoration of classic boats, traditional boatbuilding courses, exhibitions and the preservation of specialist knowledge.</div>
+      </div>
+    </div>
     <div class="watermark" aria-hidden="true"><span>PSKL MK</span><span>PSKL MK</span><span>PSKL MK</span><span>PSKL MK</span></div>
     <div class="loading" id="loading">Ładowanie PDF...</div>
   </div>
@@ -67,7 +101,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=54',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=55',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -79,6 +113,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  const input=document.getElementById('pageInput');
  const total=document.getElementById('pageTotal');
  const loading=document.getElementById('loading');
+ const pageRepair=document.getElementById('pageRepair');
  const title=document.getElementById('bookTitle');
  const meta=document.getElementById('bookMeta');
  let lang=localStorage.getItem('pskl-language')==='en'?'en':'pl';
@@ -112,7 +147,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      if(lang==='en'){
        const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
          const name='en'+String(i).padStart(2,'0')+'.b64';
-         const response=await fetch(PDFS.enBase+name+'?v=54',{cache:'force-cache'});
+         const response=await fetch(PDFS.enBase+name+'?v=55',{cache:'force-cache'});
          if(!response.ok)throw new Error('Missing English PDF data: '+name);
          return (await response.text()).trim();
        }));
@@ -158,6 +193,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    shell.style.width=cssWidth+'px';
    shell.style.height=cssHeight+'px';
    input.value=current;
+   pageRepair.classList.toggle('active',lang==='en'&&current===15);
    renderTask=page.render({canvasContext:ctx,viewport,background:'rgb(255,255,255)'});
    try{await renderTask.promise}catch(e){if(e&&e.name!=='RenderingCancelledException')throw e}
    if(seq===renderSeq)loading.hidden=true;
@@ -180,23 +216,25 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  window.addEventListener('resize',()=>{clearTimeout(window.__psklResize);window.__psklResize=setTimeout(renderPage,120)});
 
  let touchStartX=0,touchStartY=0,touchStartAt=0;
- let pinchActive=false,pinchStartDistance=0,pinchStartZoom=1,pinchZoom=1,justPinched=false;
+ let pinchActive=false,pinchStartDistance=0,pinchStartZoom=1,pinchZoom=1;
+ let panActive=false,panStartX=0,panStartY=0,panScrollLeft=0,panScrollTop=0;
+ let suppressSwipeUntil=0;
+
  const touchDistance=touches=>{
    const dx=touches[0].clientX-touches[1].clientX;
    const dy=touches[0].clientY-touches[1].clientY;
    return Math.hypot(dx,dy);
  };
+
  stage.addEventListener('touchstart',e=>{
    if(e.touches.length===2){
+     e.preventDefault();
      pinchActive=true;
-     justPinched=true;
+     panActive=false;
      pinchStartDistance=Math.max(1,touchDistance(e.touches));
      pinchStartZoom=zoom;
      pinchZoom=zoom;
-     const rect=shell.getBoundingClientRect();
-     const cx=(e.touches[0].clientX+e.touches[1].clientX)/2-rect.left;
-     const cy=(e.touches[0].clientY+e.touches[1].clientY)/2-rect.top;
-     shell.style.transformOrigin=cx+'px '+cy+'px';
+     suppressSwipeUntil=Date.now()+350;
      return;
    }
    if(e.touches.length!==1||pinchActive)return;
@@ -204,41 +242,76 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    touchStartX=t.clientX;
    touchStartY=t.clientY;
    touchStartAt=Date.now();
- },{passive:true});
- stage.addEventListener('touchmove',e=>{
-   if(!pinchActive||e.touches.length!==2)return;
-   e.preventDefault();
-   const distance=touchDistance(e.touches);
-   pinchZoom=Math.max(.6,Math.min(3,pinchStartZoom*(distance/pinchStartDistance)));
-   const previewScale=pinchZoom/pinchStartZoom;
-   shell.style.transform='scale('+previewScale+')';
+   if(zoom>1.05){
+     e.preventDefault();
+     panActive=true;
+     panStartX=t.clientX;
+     panStartY=t.clientY;
+     panScrollLeft=stage.scrollLeft;
+     panScrollTop=stage.scrollTop;
+   }
  },{passive:false});
- stage.addEventListener('touchend',e=>{
-   if(pinchActive){
-     if(e.touches.length<2){
-       pinchActive=false;
-       zoom=pinchZoom;
-       shell.style.transform='';
-       shell.style.transformOrigin='';
-       renderPage();
-       setTimeout(()=>{justPinched=false},180);
-     }
+
+ stage.addEventListener('touchmove',e=>{
+   if(pinchActive&&e.touches.length===2){
+     e.preventDefault();
+     const ratio=touchDistance(e.touches)/pinchStartDistance;
+     pinchZoom=Math.max(.6,Math.min(4,pinchStartZoom*ratio));
+     const preview=pinchZoom/Math.max(.001,pinchStartZoom);
+     shell.style.transformOrigin='50% 50%';
+     shell.style.transform='scale('+preview+')';
      return;
    }
-   if(justPinched||!doc||zoom>1.05||!e.changedTouches.length)return;
+   if(panActive&&zoom>1.05&&e.touches.length===1){
+     e.preventDefault();
+     const t=e.touches[0];
+     stage.scrollLeft=panScrollLeft-(t.clientX-panStartX);
+     stage.scrollTop=panScrollTop-(t.clientY-panStartY);
+   }
+ },{passive:false});
+
+ stage.addEventListener('touchend',e=>{
+   if(pinchActive&&e.touches.length<2){
+     e.preventDefault();
+     pinchActive=false;
+     zoom=pinchZoom;
+     shell.style.transform='';
+     shell.style.transformOrigin='';
+     suppressSwipeUntil=Date.now()+350;
+     renderPage().then(()=>{
+       requestAnimationFrame(()=>{
+         const maxX=Math.max(0,stage.scrollWidth-stage.clientWidth);
+         const maxY=Math.max(0,stage.scrollHeight-stage.clientHeight);
+         stage.scrollLeft=Math.min(maxX,Math.max(0,stage.scrollLeft));
+         stage.scrollTop=Math.min(maxY,Math.max(0,stage.scrollTop));
+       });
+     });
+     return;
+   }
+   if(panActive){
+     panActive=false;
+     suppressSwipeUntil=Date.now()+180;
+     return;
+   }
+   if(Date.now()<suppressSwipeUntil||!doc||zoom>1.05||!e.changedTouches.length)return;
    const t=e.changedTouches[0];
    const dx=t.clientX-touchStartX;
    const dy=t.clientY-touchStartY;
    const dt=Date.now()-touchStartAt;
    if(dt>1200)return;
-   const ax=Math.abs(dx), ay=Math.abs(dy);
-   if(ay>=50 && ay>ax*1.15){
+   const ax=Math.abs(dx),ay=Math.abs(dy);
+   if(ay>=50&&ay>ax*1.15){
      go(dy<0?current+1:current-1);
      return;
    }
-   if(ax>=55 && ax>ay*1.15){
-     go(dx<0?current+1:current-1);
-   }
+   if(ax>=55&&ax>ay*1.15)go(dx<0?current+1:current-1);
+ },{passive:false});
+
+ stage.addEventListener('touchcancel',()=>{
+   pinchActive=false;
+   panActive=false;
+   shell.style.transform='';
+   shell.style.transformOrigin='';
  },{passive:true});
 
  document.addEventListener('contextmenu',e=>e.preventDefault());
