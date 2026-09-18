@@ -123,7 +123,12 @@ function renderSearchResults(scroll=true){
   renderMarketCoverage();
   if(result.length){const cards=[...box.querySelectorAll('.offer-card')];cards.forEach((card,i)=>watchControl(card,result[i],isTracked(result[i]),false));}
   try{if(typeof wireImageFallbacks==='function')wireImageFallbacks(box);}catch(e){}
-  if(scroll)summary?.scrollIntoView({behavior:'smooth',block:'start'});
+  if(scroll){
+    requestAnimationFrame(()=>{
+      const target=result.length?(box.querySelector('.offer-card')||box):box;
+      target?.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  }
 }
 function renderOffersWorkspace(){
   const tracked=currentTracked(),trackedBox=$('#trackedOffers'),trackedEmpty=$('#trackedOffersEmpty');
