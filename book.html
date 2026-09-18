@@ -56,7 +56,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 </head>
 <body>
 <nav class="toolbar" aria-label="Nawigacja Księgi">
-  <a class="back" href="index.html?v=55#book">← PSKL</a>
+  <a class="back" href="index.html?v=56#book">← PSKL</a>
   <div class="title"><strong id="bookTitle">Księga Założycielska - Wydanie I</strong><small id="bookMeta">PSKL · SZCZECIN · 2026 · PDF</small></div>
   <div class="lang" aria-label="Language"><button type="button" data-lang="pl">PL</button><button type="button" data-lang="en">EN</button></div>
   <button class="ctrl" id="prev" type="button" aria-label="Poprzednia strona">‹</button>
@@ -101,7 +101,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=55',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=56',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -147,7 +147,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      if(lang==='en'){
        const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
          const name='en'+String(i).padStart(2,'0')+'.b64';
-         const response=await fetch(PDFS.enBase+name+'?v=55',{cache:'force-cache'});
+         const response=await fetch(PDFS.enBase+name+'?v=56',{cache:'force-cache'});
          if(!response.ok)throw new Error('Missing English PDF data: '+name);
          return (await response.text()).trim();
        }));
@@ -171,7 +171,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    }
  }
 
- async function renderPage(){
+ async function renderPage(options={}){
    if(!doc)return;
    const seq=++renderSeq;
    loading.hidden=false;
@@ -186,6 +186,10 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    const viewport=page.getViewport({scale:cssScale*dpr});
    const cssWidth=viewport.width/dpr;
    const cssHeight=viewport.height/dpr;
+   if(options.clearPreviewOnResize){
+     shell.style.transform='';
+     shell.style.transformOrigin='';
+   }
    canvas.width=Math.ceil(viewport.width);
    canvas.height=Math.ceil(viewport.height);
    canvas.style.width=cssWidth+'px';
@@ -217,6 +221,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 
  let touchStartX=0,touchStartY=0,touchStartAt=0;
  let pinchActive=false,pinchStartDistance=0,pinchStartZoom=1,pinchZoom=1;
+ let pinchFocusX=0,pinchFocusY=0,pinchStartScrollLeft=0,pinchStartScrollTop=0;
  let panActive=false,panStartX=0,panStartY=0,panScrollLeft=0,panScrollTop=0;
  let suppressSwipeUntil=0;
 
@@ -234,6 +239,11 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      pinchStartDistance=Math.max(1,touchDistance(e.touches));
      pinchStartZoom=zoom;
      pinchZoom=zoom;
+     const stageRect=stage.getBoundingClientRect();
+     pinchFocusX=(e.touches[0].clientX+e.touches[1].clientX)/2-stageRect.left;
+     pinchFocusY=(e.touches[0].clientY+e.touches[1].clientY)/2-stageRect.top;
+     pinchStartScrollLeft=stage.scrollLeft;
+     pinchStartScrollTop=stage.scrollTop;
      suppressSwipeUntil=Date.now()+350;
      return;
    }
@@ -258,7 +268,10 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      const ratio=touchDistance(e.touches)/pinchStartDistance;
      pinchZoom=Math.max(.6,Math.min(4,pinchStartZoom*ratio));
      const preview=pinchZoom/Math.max(.001,pinchStartZoom);
-     shell.style.transformOrigin='50% 50%';
+     const shellRect=shell.getBoundingClientRect();
+     const centerX=(e.touches[0].clientX+e.touches[1].clientX)/2-shellRect.left;
+     const centerY=(e.touches[0].clientY+e.touches[1].clientY)/2-shellRect.top;
+     shell.style.transformOrigin=centerX+'px '+centerY+'px';
      shell.style.transform='scale('+preview+')';
      return;
    }
@@ -274,16 +287,17 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    if(pinchActive&&e.touches.length<2){
      e.preventDefault();
      pinchActive=false;
+     const ratio=pinchZoom/Math.max(.001,pinchStartZoom);
      zoom=pinchZoom;
-     shell.style.transform='';
-     shell.style.transformOrigin='';
      suppressSwipeUntil=Date.now()+350;
-     renderPage().then(()=>{
+     renderPage({clearPreviewOnResize:true}).then(()=>{
        requestAnimationFrame(()=>{
+         const targetX=(pinchStartScrollLeft+pinchFocusX)*ratio-pinchFocusX;
+         const targetY=(pinchStartScrollTop+pinchFocusY)*ratio-pinchFocusY;
          const maxX=Math.max(0,stage.scrollWidth-stage.clientWidth);
          const maxY=Math.max(0,stage.scrollHeight-stage.clientHeight);
-         stage.scrollLeft=Math.min(maxX,Math.max(0,stage.scrollLeft));
-         stage.scrollTop=Math.min(maxY,Math.max(0,stage.scrollTop));
+         stage.scrollLeft=Math.min(maxX,Math.max(0,targetX));
+         stage.scrollTop=Math.min(maxY,Math.max(0,targetY));
        });
      });
      return;
