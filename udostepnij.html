@@ -4,6 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#061b2b">
+  <script>document.documentElement.classList.add('pskl-loading');</script>
+  <style>
+    html.pskl-loading body{visibility:hidden}
+    html.pskl-ready body{visibility:visible}
+  </style>
   <title>PSKL</title>
   <meta name="description" content="Chronimy dziedzictwo. Budujemy tradycję. Inspirujemy przyszłość.">
   <meta property="og:type" content="website">
@@ -19,10 +24,10 @@
   <link rel="manifest" href="manifest.webmanifest?v=tabliczka-5">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/branding/pskl-tabliczka-icon-192.png">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/branding/pskl-tabliczka-apple-180.png">
-  <link rel="stylesheet" href="assets/css/share.css?v=metal-6">
+  <link rel="stylesheet" href="assets/css/share.css?v=metal-7">
   <script src="assets/js/i18n-data.js?v=2" defer></script>
   <script src="assets/js/i18n.js?v=7" defer></script>
-  <script src="assets/js/share.js?v=metal-11" defer></script>
+  <script src="assets/js/share.js?v=metal-12" defer></script>
   <script src="assets/js/security.js?v=1" defer></script>
 </head>
 <body>
@@ -30,7 +35,7 @@
     <header class="share-topbar"><a href="./?v=61#association" aria-label="Wróć do katalogu PSKL">← PSKL</a><div class="lang-switch" aria-label="Language"><button type="button" data-lang="pl">PL</button><button type="button" data-lang="en">EN</button></div></header>
     <section class="masthead" aria-label="Tabliczka i opcje PSKL">
       <a class="logo-link" href="./?v=61#association" aria-label="Otwórz katalog PSKL">
-        <img src="assets/branding/pskl-tabliczka.webp?v=63" width="1659" height="948" alt="Metalowa tabliczka PSKL">
+        <img src="assets/branding/pskl-tabliczka.webp" width="1659" height="948" alt="Metalowa tabliczka PSKL">
       </a>
       <div class="actions">
         <button id="shareLink" class="primary" type="button">Udostępnij</button>
@@ -41,5 +46,13 @@
     </section>
     <footer><span>Chronimy dziedzictwo. Budujemy tradycję. Inspirujemy przyszłość.</span> <span>© 2026 PSKL MK.</span></footer>
   </main>
+<script>
+    (function(){
+      function show(){document.documentElement.classList.remove('pskl-loading');document.documentElement.classList.add('pskl-ready');}
+      if(document.readyState==='complete') show();
+      else window.addEventListener('load',show,{once:true});
+      setTimeout(show,2500);
+    })();
+  </script>
 </body>
 </html>
