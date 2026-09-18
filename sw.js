@@ -3,6 +3,7 @@ const SHELL=[
   './',
   './index.html',
   './book.html',
+  './assets/book/ksiega-zalozycielska.pdf',
   './udostepnij.html',
   './manifest.webmanifest',
   './assets/js/i18n-data.js',
