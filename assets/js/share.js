@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const site='https://klinowskimichal-maker.github.io/michal.project/udostepnij.html?v=61';
+const site='https://klinowskimichal-maker.github.io/michal.project/udostepnij.html?v=63';
 const status=document.getElementById('status');
 const isEN=window.PSKL_LANG==='en';
 const tr=(pl,en)=>isEN?en:pl;
