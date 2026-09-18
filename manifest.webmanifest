@@ -4,17 +4,41 @@
   "short_name": "PSKL",
   "description": "Katalog klasycznych łodzi i rynek ofert PSKL.",
   "lang": "pl",
-  "start_url": "./?pskl-app=tabliczka-4#association",
-  "scope": "./",
+  "start_url": "./index.html?pskl-app=tabliczka-4#association",
+  "scope": "./index.html",
+  "handle_links": "not-preferred",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "background_color": "#061b2b",
   "theme_color": "#061b2b",
   "prefer_related_applications": false,
   "icons": [
-    {"src": "assets/branding/pskl-tabliczka-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "assets/branding/pskl-tabliczka-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "assets/branding/pskl-tabliczka-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
-    {"src": "assets/branding/pskl-tabliczka-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "assets/branding/pskl-tabliczka-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/branding/pskl-tabliczka-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/branding/pskl-tabliczka-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/branding/pskl-tabliczka-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
