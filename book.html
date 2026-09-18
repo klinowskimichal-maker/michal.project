@@ -26,7 +26,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 .pagebox{display:flex;align-items:center;gap:5px;color:#d4a06e;font-weight:700;font-size:12px;white-space:nowrap}
 .pagebox input{width:48px;border:1px solid rgba(212,160,110,.55);border-radius:7px;background:#041a28;color:#fff;padding:7px 5px;text-align:center;font-weight:700}
 .stage{position:relative;display:block;height:calc(100dvh - 58px);min-height:0;padding:18px 10px 70px;overflow:auto;overflow-anchor:none;touch-action:none;overscroll-behavior:contain;background:radial-gradient(circle at 50% -10%,#123f58 0,#061b2b 44%,#03131f 100%)}
-.page-shell{position:relative;flex:none;margin:0 auto;container-type:inline-size;overflow-anchor:none;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(212,160,110,.5);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.zoom-surface{position:relative;margin:0 auto;overflow:visible;overflow-anchor:none}.page-shell{position:absolute;left:0;top:0;container-type:inline-size;overflow-anchor:none;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(212,160,110,.5);overflow:hidden;touch-action:none;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 #pdfCanvas{display:block;background:#fff;pointer-events:none;image-rendering:auto}
 .watermark{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
 .watermark span{position:absolute;color:rgba(6,27,43,.105);font:800 clamp(19px,3vw,42px)/1 Arial,Helvetica,sans-serif;letter-spacing:.13em;transform:rotate(-31deg);white-space:nowrap}
@@ -56,7 +56,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 </head>
 <body>
 <nav class="toolbar" aria-label="Nawigacja Księgi">
-  <a class="back" href="index.html?v=57#book">← PSKL</a>
+  <a class="back" href="index.html?v=58#book">← PSKL</a>
   <div class="title"><strong id="bookTitle">Księga Założycielska - Wydanie I</strong><small id="bookMeta">PSKL · SZCZECIN · 2026 · PDF</small></div>
   <div class="lang" aria-label="Language"><button type="button" data-lang="pl">PL</button><button type="button" data-lang="en">EN</button></div>
   <button class="ctrl" id="prev" type="button" aria-label="Poprzednia strona">‹</button>
@@ -66,6 +66,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
   <button class="ctrl" id="zoomIn" type="button" aria-label="Powiększ">+</button>
 </nav>
 <main class="stage" id="stage">
+  <div class="zoom-surface" id="zoomSurface">
   <div class="page-shell" id="pageShell">
     <canvas id="pdfCanvas" aria-label="Strona Księgi"></canvas>
     <div class="page-repair" id="pageRepair" aria-hidden="true">
@@ -95,13 +96,14 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
     <div class="watermark" aria-hidden="true"><span>PSKL MK</span><span>PSKL MK</span><span>PSKL MK</span><span>PSKL MK</span></div>
     <div class="loading" id="loading">Ładowanie PDF...</div>
   </div>
+  </div>
 </main>
 <script src="assets/js/security.js?v=1"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=57',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=58',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -109,6 +111,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  const canvas=document.getElementById('pdfCanvas');
  const ctx=canvas.getContext('2d',{alpha:false});
  const shell=document.getElementById('pageShell');
+ const zoomSurface=document.getElementById('zoomSurface');
  const stage=document.getElementById('stage');
  const input=document.getElementById('pageInput');
  const total=document.getElementById('pageTotal');
@@ -117,7 +120,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  const title=document.getElementById('bookTitle');
  const meta=document.getElementById('bookMeta');
  let lang=localStorage.getItem('pskl-language')==='en'?'en':'pl';
- let doc=null,current=1,zoom=1,renderTask=null,renderSeq=0;
+ let doc=null,current=1,zoom=1,renderTask=null,renderSeq=0,baseCssWidth=0,baseCssHeight=0,zoomAnim=0;
 
  function setLanguageUI(){
    document.documentElement.lang=lang;
@@ -147,7 +150,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      if(lang==='en'){
        const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
          const name='en'+String(i).padStart(2,'0')+'.b64';
-         const response=await fetch(PDFS.enBase+name+'?v=57',{cache:'force-cache'});
+         const response=await fetch(PDFS.enBase+name+'?v=58',{cache:'force-cache'});
          if(!response.ok)throw new Error('Missing English PDF data: '+name);
          return (await response.text()).trim();
        }));
@@ -171,7 +174,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    }
  }
 
- async function renderPage(options={}){
+ async function renderPage(){
    if(!doc)return;
    const seq=++renderSeq;
    loading.hidden=false;
@@ -181,38 +184,21 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    const base=page.getViewport({scale:1});
    const maxCssWidth=Math.max(260,Math.min(1200,window.innerWidth-16));
    const fit=maxCssWidth/base.width;
-   const cssScale=Math.max(.45,fit*zoom);
+   const cssScale=Math.max(.45,fit);
    const dpr=Math.min(Math.max(window.devicePixelRatio||1,2),4);
    const viewport=page.getViewport({scale:cssScale*dpr});
-   const cssWidth=viewport.width/dpr;
-   const cssHeight=viewport.height/dpr;
-
-   if(options.clearPreviewOnResize){
-     shell.style.transform='';
-     shell.style.transformOrigin='';
-   }
+   baseCssWidth=viewport.width/dpr;
+   baseCssHeight=viewport.height/dpr;
 
    canvas.width=Math.ceil(viewport.width);
    canvas.height=Math.ceil(viewport.height);
-   canvas.style.width=cssWidth+'px';
-   canvas.style.height=cssHeight+'px';
-   shell.style.width=cssWidth+'px';
-   shell.style.height=cssHeight+'px';
-
-   if(options.focus){
-     // Force layout before restoring the exact point the user was reading.
-     void shell.offsetWidth;
-     const fx=options.focus;
-     const targetX=shell.offsetLeft+(fx.normX*shell.offsetWidth)-fx.viewX;
-     const targetY=shell.offsetTop+(fx.normY*shell.offsetHeight)-fx.viewY;
-     const maxX=Math.max(0,stage.scrollWidth-stage.clientWidth);
-     const maxY=Math.max(0,stage.scrollHeight-stage.clientHeight);
-     stage.scrollLeft=Math.min(maxX,Math.max(0,targetX));
-     stage.scrollTop=Math.min(maxY,Math.max(0,targetY));
-   }
-
+   canvas.style.width=baseCssWidth+'px';
+   canvas.style.height=baseCssHeight+'px';
+   shell.style.width=baseCssWidth+'px';
+   shell.style.height=baseCssHeight+'px';
    input.value=current;
    pageRepair.classList.toggle('active',lang==='en'&&current===15);
+   applyZoomLayout(zoom);
    renderTask=page.render({canvasContext:ctx,viewport,background:'rgb(255,255,255)'});
    try{await renderTask.promise}catch(e){if(e&&e.name!=='RenderingCancelledException')throw e}
    if(seq===renderSeq)loading.hidden=true;
@@ -230,14 +216,66 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  document.getElementById('next').onclick=()=>go(current+1);
  input.onchange=()=>go(input.value);
  input.onkeydown=e=>{if(e.key==='Enter')go(input.value)};
- document.getElementById('zoomIn').onclick=()=>{zoom=Math.min(3,zoom+.2);renderPage()};
- document.getElementById('zoomOut').onclick=()=>{zoom=Math.max(.6,zoom-.2);renderPage()};
- window.addEventListener('resize',()=>{clearTimeout(window.__psklResize);window.__psklResize=setTimeout(renderPage,120)});
+ document.getElementById('zoomIn').onclick=()=>animateZoom(Math.min(4,zoom+.25));
+ document.getElementById('zoomOut').onclick=()=>animateZoom(Math.max(.6,zoom-.25));
+ window.addEventListener('resize',()=>{clearTimeout(window.__psklResize);window.__psklResize=setTimeout(renderPage,160)});
+
+ function applyZoomLayout(nextZoom){
+   zoom=nextZoom;
+   if(!baseCssWidth||!baseCssHeight)return;
+   const w=baseCssWidth*zoom;
+   const h=baseCssHeight*zoom;
+   zoomSurface.style.width=w+'px';
+   zoomSurface.style.height=h+'px';
+   shell.style.transform='scale('+zoom+')';
+ }
+
+ function contentPointAt(viewX,viewY,currentZoom=zoom){
+   const ox=zoomSurface.offsetLeft;
+   const oy=zoomSurface.offsetTop;
+   return {
+     x:(stage.scrollLeft+viewX-ox)/Math.max(.001,currentZoom),
+     y:(stage.scrollTop+viewY-oy)/Math.max(.001,currentZoom)
+   };
+ }
+
+ function setZoomAt(nextZoom,viewX,viewY,contentPoint){
+   nextZoom=Math.max(.6,Math.min(4,nextZoom));
+   applyZoomLayout(nextZoom);
+   // Force layout once, then keep the exact content point under the fingers.
+   void zoomSurface.offsetWidth;
+   const ox=zoomSurface.offsetLeft;
+   const oy=zoomSurface.offsetTop;
+   const maxX=Math.max(0,stage.scrollWidth-stage.clientWidth);
+   const maxY=Math.max(0,stage.scrollHeight-stage.clientHeight);
+   const targetX=ox+contentPoint.x*zoom-viewX;
+   const targetY=oy+contentPoint.y*zoom-viewY;
+   stage.scrollLeft=Math.min(maxX,Math.max(0,targetX));
+   stage.scrollTop=Math.min(maxY,Math.max(0,targetY));
+ }
+
+ function animateZoom(targetZoom){
+   cancelAnimationFrame(zoomAnim);
+   const startZoom=zoom;
+   const rect=stage.getBoundingClientRect();
+   const viewX=stage.clientWidth/2;
+   const viewY=Math.min(stage.clientHeight/2,Math.max(80,rect.height/2));
+   const point=contentPointAt(viewX,viewY,startZoom);
+   const start=performance.now();
+   const duration=190;
+   const step=now=>{
+     const t=Math.min(1,(now-start)/duration);
+     const eased=1-Math.pow(1-t,3);
+     setZoomAt(startZoom+(targetZoom-startZoom)*eased,viewX,viewY,point);
+     if(t<1) zoomAnim=requestAnimationFrame(step);
+   };
+   zoomAnim=requestAnimationFrame(step);
+ }
 
  let touchStartX=0,touchStartY=0,touchStartAt=0;
- let pinchActive=false,pinchStartDistance=0,pinchStartZoom=1,pinchZoom=1;
- let pinchViewX=0,pinchViewY=0,pinchNormX=.5,pinchNormY=.5,pinchOriginX=0,pinchOriginY=0;
+ let pinchActive=false,pinchStartDistance=0,pinchStartZoom=1,pinchPoint=null;
  let panActive=false,panStartX=0,panStartY=0,panScrollLeft=0,panScrollTop=0;
+ let pendingPinchZoom=1,pendingViewX=0,pendingViewY=0,pinchRaf=0;
  let suppressSwipeUntil=0;
 
  const touchDistance=touches=>{
@@ -247,25 +285,19 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  };
 
  stage.addEventListener('touchstart',e=>{
+   cancelAnimationFrame(zoomAnim);
    if(e.touches.length===2){
      e.preventDefault();
      pinchActive=true;
      panActive=false;
      pinchStartDistance=Math.max(1,touchDistance(e.touches));
      pinchStartZoom=zoom;
-     pinchZoom=zoom;
      const stageRect=stage.getBoundingClientRect();
-     const shellRect=shell.getBoundingClientRect();
-     const midX=(e.touches[0].clientX+e.touches[1].clientX)/2;
-     const midY=(e.touches[0].clientY+e.touches[1].clientY)/2;
-     pinchViewX=midX-stageRect.left;
-     pinchViewY=midY-stageRect.top;
-     pinchNormX=Math.max(0,Math.min(1,(midX-shellRect.left)/Math.max(1,shellRect.width)));
-     pinchNormY=Math.max(0,Math.min(1,(midY-shellRect.top)/Math.max(1,shellRect.height)));
-     pinchOriginX=pinchNormX*shell.offsetWidth;
-     pinchOriginY=pinchNormY*shell.offsetHeight;
-     shell.style.transformOrigin=pinchOriginX+'px '+pinchOriginY+'px';
-     suppressSwipeUntil=Date.now()+350;
+     pendingViewX=(e.touches[0].clientX+e.touches[1].clientX)/2-stageRect.left;
+     pendingViewY=(e.touches[0].clientY+e.touches[1].clientY)/2-stageRect.top;
+     pinchPoint=contentPointAt(pendingViewX,pendingViewY,zoom);
+     pendingPinchZoom=zoom;
+     suppressSwipeUntil=Date.now()+300;
      return;
    }
    if(e.touches.length!==1||pinchActive)return;
@@ -286,10 +318,16 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  stage.addEventListener('touchmove',e=>{
    if(pinchActive&&e.touches.length===2){
      e.preventDefault();
-     const ratio=touchDistance(e.touches)/pinchStartDistance;
-     pinchZoom=Math.max(.6,Math.min(4,pinchStartZoom*ratio));
-     const preview=pinchZoom/Math.max(.001,pinchStartZoom);
-     shell.style.transform='scale('+preview+')';
+     const stageRect=stage.getBoundingClientRect();
+     pendingViewX=(e.touches[0].clientX+e.touches[1].clientX)/2-stageRect.left;
+     pendingViewY=(e.touches[0].clientY+e.touches[1].clientY)/2-stageRect.top;
+     pendingPinchZoom=Math.max(.6,Math.min(4,pinchStartZoom*(touchDistance(e.touches)/pinchStartDistance)));
+     if(!pinchRaf){
+       pinchRaf=requestAnimationFrame(()=>{
+         pinchRaf=0;
+         if(pinchActive&&pinchPoint)setZoomAt(pendingPinchZoom,pendingViewX,pendingViewY,pinchPoint);
+       });
+     }
      return;
    }
    if(panActive&&zoom>1.05&&e.touches.length===1){
@@ -303,18 +341,19 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  stage.addEventListener('touchend',e=>{
    if(pinchActive&&e.touches.length<2){
      e.preventDefault();
+     if(pinchRaf){
+       cancelAnimationFrame(pinchRaf);
+       pinchRaf=0;
+     }
+     if(pinchPoint)setZoomAt(pendingPinchZoom,pendingViewX,pendingViewY,pinchPoint);
      pinchActive=false;
-     zoom=pinchZoom;
-     suppressSwipeUntil=Date.now()+350;
-     renderPage({
-       clearPreviewOnResize:true,
-       focus:{normX:pinchNormX,normY:pinchNormY,viewX:pinchViewX,viewY:pinchViewY}
-     });
+     pinchPoint=null;
+     suppressSwipeUntil=Date.now()+250;
      return;
    }
    if(panActive){
      panActive=false;
-     suppressSwipeUntil=Date.now()+180;
+     suppressSwipeUntil=Date.now()+150;
      return;
    }
    if(Date.now()<suppressSwipeUntil||!doc||zoom>1.05||!e.changedTouches.length)return;
@@ -332,10 +371,10 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  },{passive:false});
 
  stage.addEventListener('touchcancel',()=>{
+   if(pinchRaf){cancelAnimationFrame(pinchRaf);pinchRaf=0}
    pinchActive=false;
+   pinchPoint=null;
    panActive=false;
-   shell.style.transform='';
-   shell.style.transformOrigin='';
  },{passive:true});
 
  document.addEventListener('contextmenu',e=>e.preventDefault());
