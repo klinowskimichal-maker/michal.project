@@ -1,8 +1,7 @@
-const CACHE='pskl-shell-v29';
+const CACHE='pskl-shell-v30';
 const SHELL=[
   './',
   './index.html',
-  './udostepnij.html',
   './manifest.webmanifest',
   './assets/js/i18n-data.js',
   './assets/js/i18n.js',
@@ -24,7 +23,7 @@ self.addEventListener('activate',event=>{
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET')return;
   const url=new URL(event.request.url);
-  if(url.origin===self.location.origin&&(url.pathname.endsWith('/book.html')||url.pathname.includes('/assets/book/')||url.pathname.includes('/assets/book-en/'))){
+  if(url.origin===self.location.origin&&(url.pathname.endsWith('/udostepnij.html')||url.pathname.endsWith('/logo-link.html')||url.pathname.endsWith('/book.html')||url.pathname.includes('/assets/book/')||url.pathname.includes('/assets/book-en/'))){
     event.respondWith(fetch(event.request,{cache:'no-store'}));
     return;
   }
