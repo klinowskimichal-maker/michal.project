@@ -71,7 +71,8 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 (()=>{
  const PDFS={
    pl:'assets/book/ksiega-zalozycielska.pdf?v=50',
-   en:'assets/book-en/PSKL-Founding-Book-EN.pdf?v=50'
+   enParts:35,
+   enBase:'assets/book-en/pdf-data/'
  };
  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
  const canvas=document.getElementById('pdfCanvas');
@@ -113,7 +114,23 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    try{
      if(renderTask){try{renderTask.cancel()}catch(e){}}
      if(doc){try{await doc.destroy()}catch(e){}}
-     doc=await pdfjsLib.getDocument({url:PDFS[lang],disableFontFace:false,useSystemFonts:true}).promise;
+     let source;
+     if(lang==='en'){
+       const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
+         const name='en'+String(i).padStart(2,'0')+'.b64';
+         const response=await fetch(PDFS.enBase+name+'?v=50',{cache:'force-cache'});
+         if(!response.ok)throw new Error('Missing English PDF data: '+name);
+         return (await response.text()).trim();
+       }));
+       const b64=parts.join('').replace(/\s+/g,'');
+       const raw=atob(b64);
+       const bytes=new Uint8Array(raw.length);
+       for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+       source={data:bytes};
+     }else{
+       source={url:PDFS.pl};
+     }
+     doc=await pdfjsLib.getDocument({...source,disableFontFace:false,useSystemFonts:true}).promise;
      current=Math.max(1,Math.min(current,doc.numPages));
      input.max=doc.numPages;
      total.textContent='/ '+doc.numPages;
