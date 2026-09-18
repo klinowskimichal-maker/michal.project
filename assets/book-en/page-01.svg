@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2382" height="3372" viewBox="0 0 2382 3372">
+  <image href="../book/page-01.png?v=40" x="0" y="0" width="2382" height="3372" preserveAspectRatio="none"/>
+  <rect x="250" y="1870" width="1882" height="620" fill="#ffffff"/>
+  <text x="1191" y="2070" text-anchor="middle" fill="#011c43" font-family="Georgia, Times New Roman, serif" font-size="112" font-weight="700">FOUNDING BOOK</text>
+  <text x="1191" y="2195" text-anchor="middle" fill="#bf6219" font-family="Georgia, Times New Roman, serif" font-size="54" font-style="italic">FIRST EDITION</text>
+  <text x="1191" y="2325" text-anchor="middle" fill="#011c43" font-family="Georgia, Times New Roman, serif" font-size="58" font-weight="700">SZCZECIN • 2026</text>
+  <text x="1191" y="2408" text-anchor="middle" fill="#bf6219" font-family="Georgia, Times New Roman, serif" font-size="42" font-style="italic">We protect heritage. We build tradition. We inspire the future.</text>
+  <g fill="#061b2b" opacity="0.075" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="700" letter-spacing="8">
+    <text x="700" y="1680" transform="rotate(-31 700 1680)">PSKL MK</text>
+    <text x="760" y="2740" transform="rotate(-31 760 2740)">PSKL MK</text>
+  </g>
+</svg>
