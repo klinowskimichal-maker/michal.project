@@ -70,7 +70,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=50',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=51',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -150,10 +150,10 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    const page=await doc.getPage(current);
    if(seq!==renderSeq)return;
    const base=page.getViewport({scale:1});
-   const maxCssWidth=Math.max(260,Math.min(920,window.innerWidth-16));
+   const maxCssWidth=Math.max(260,Math.min(1200,window.innerWidth-16));
    const fit=maxCssWidth/base.width;
    const cssScale=Math.max(.45,fit*zoom);
-   const dpr=Math.min(window.devicePixelRatio||1,2.5);
+   const dpr=Math.min(Math.max(window.devicePixelRatio||1,2),4);
    const viewport=page.getViewport({scale:cssScale*dpr});
    const cssWidth=viewport.width/dpr;
    const cssHeight=viewport.height/dpr;
