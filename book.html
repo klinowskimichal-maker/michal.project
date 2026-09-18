@@ -56,7 +56,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 </head>
 <body>
 <nav class="toolbar" aria-label="Nawigacja Księgi">
-  <a class="back" href="index.html?v=58#book">← PSKL</a>
+  <a class="back" href="index.html?v=59#book">← PSKL</a>
   <div class="title"><strong id="bookTitle">Księga Założycielska - Wydanie I</strong><small id="bookMeta">PSKL · SZCZECIN · 2026 · PDF</small></div>
   <div class="lang" aria-label="Language"><button type="button" data-lang="pl">PL</button><button type="button" data-lang="en">EN</button></div>
   <button class="ctrl" id="prev" type="button" aria-label="Poprzednia strona">‹</button>
@@ -103,7 +103,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=58',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=59',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -150,7 +150,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      if(lang==='en'){
        const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
          const name='en'+String(i).padStart(2,'0')+'.b64';
-         const response=await fetch(PDFS.enBase+name+'?v=58',{cache:'force-cache'});
+         const response=await fetch(PDFS.enBase+name+'?v=59',{cache:'force-cache'});
          if(!response.ok)throw new Error('Missing English PDF data: '+name);
          return (await response.text()).trim();
        }));
@@ -217,7 +217,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  input.onchange=()=>go(input.value);
  input.onkeydown=e=>{if(e.key==='Enter')go(input.value)};
  document.getElementById('zoomIn').onclick=()=>animateZoom(Math.min(4,zoom+.25));
- document.getElementById('zoomOut').onclick=()=>animateZoom(Math.max(.6,zoom-.25));
+ document.getElementById('zoomOut').onclick=()=>animateZoom(Math.max(1,zoom-.25));
  window.addEventListener('resize',()=>{clearTimeout(window.__psklResize);window.__psklResize=setTimeout(renderPage,160)});
 
  function applyZoomLayout(nextZoom){
@@ -240,7 +240,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  }
 
  function setZoomAt(nextZoom,viewX,viewY,contentPoint){
-   nextZoom=Math.max(.6,Math.min(4,nextZoom));
+   nextZoom=Math.max(1,Math.min(4,nextZoom));
    applyZoomLayout(nextZoom);
    // Force layout once, then keep the exact content point under the fingers.
    void zoomSurface.offsetWidth;
@@ -321,7 +321,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      const stageRect=stage.getBoundingClientRect();
      pendingViewX=(e.touches[0].clientX+e.touches[1].clientX)/2-stageRect.left;
      pendingViewY=(e.touches[0].clientY+e.touches[1].clientY)/2-stageRect.top;
-     pendingPinchZoom=Math.max(.6,Math.min(4,pinchStartZoom*(touchDistance(e.touches)/pinchStartDistance)));
+     pendingPinchZoom=Math.max(1,Math.min(4,pinchStartZoom*(touchDistance(e.touches)/pinchStartDistance)));
      if(!pinchRaf){
        pinchRaf=requestAnimationFrame(()=>{
          pinchRaf=0;
