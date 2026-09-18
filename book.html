@@ -25,8 +25,8 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 .lang{display:flex;gap:4px}.lang button{border:1px solid rgba(212,160,110,.72);background:#071f30;color:#f3d3aa;border-radius:7px;padding:7px 8px;font-weight:700;cursor:pointer}.lang button.active{background:#d4a06e;color:#061b2b}
 .pagebox{display:flex;align-items:center;gap:5px;color:#d4a06e;font-weight:700;font-size:12px;white-space:nowrap}
 .pagebox input{width:48px;border:1px solid rgba(212,160,110,.55);border-radius:7px;background:#041a28;color:#fff;padding:7px 5px;text-align:center;font-weight:700}
-.stage{display:block;min-height:calc(100vh - 90px);padding:18px 10px 70px;overflow:auto;touch-action:none;overscroll-behavior:contain;background:radial-gradient(circle at 50% -10%,#123f58 0,#061b2b 44%,#03131f 100%)}
-.page-shell{position:relative;flex:none;margin:0 auto;container-type:inline-size;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(212,160,110,.5);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.stage{position:relative;display:block;height:calc(100dvh - 58px);min-height:0;padding:18px 10px 70px;overflow:auto;overflow-anchor:none;touch-action:none;overscroll-behavior:contain;background:radial-gradient(circle at 50% -10%,#123f58 0,#061b2b 44%,#03131f 100%)}
+.page-shell{position:relative;flex:none;margin:0 auto;container-type:inline-size;overflow-anchor:none;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(212,160,110,.5);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 #pdfCanvas{display:block;background:#fff;pointer-events:none;image-rendering:auto}
 .watermark{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
 .watermark span{position:absolute;color:rgba(6,27,43,.105);font:800 clamp(19px,3vw,42px)/1 Arial,Helvetica,sans-serif;letter-spacing:.13em;transform:rotate(-31deg);white-space:nowrap}
@@ -49,14 +49,14 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
  .ctrl{padding:8px 9px}
  .title strong{font-size:12px}.title small{display:none}
  .pagebox{font-size:10px}.pagebox input{width:39px;padding:6px 2px}
- .stage{padding:10px 4px 60px}
+ .stage{height:calc(100dvh - 54px);padding:10px 4px 60px}
 }
 @media print{body{display:none!important}}
 </style>
 </head>
 <body>
 <nav class="toolbar" aria-label="Nawigacja Księgi">
-  <a class="back" href="index.html?v=56#book">← PSKL</a>
+  <a class="back" href="index.html?v=57#book">← PSKL</a>
   <div class="title"><strong id="bookTitle">Księga Założycielska - Wydanie I</strong><small id="bookMeta">PSKL · SZCZECIN · 2026 · PDF</small></div>
   <div class="lang" aria-label="Language"><button type="button" data-lang="pl">PL</button><button type="button" data-lang="en">EN</button></div>
   <button class="ctrl" id="prev" type="button" aria-label="Poprzednia strona">‹</button>
@@ -101,7 +101,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=56',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=57',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -147,7 +147,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      if(lang==='en'){
        const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
          const name='en'+String(i).padStart(2,'0')+'.b64';
-         const response=await fetch(PDFS.enBase+name+'?v=56',{cache:'force-cache'});
+         const response=await fetch(PDFS.enBase+name+'?v=57',{cache:'force-cache'});
          if(!response.ok)throw new Error('Missing English PDF data: '+name);
          return (await response.text()).trim();
        }));
@@ -186,16 +186,31 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    const viewport=page.getViewport({scale:cssScale*dpr});
    const cssWidth=viewport.width/dpr;
    const cssHeight=viewport.height/dpr;
+
    if(options.clearPreviewOnResize){
      shell.style.transform='';
      shell.style.transformOrigin='';
    }
+
    canvas.width=Math.ceil(viewport.width);
    canvas.height=Math.ceil(viewport.height);
    canvas.style.width=cssWidth+'px';
    canvas.style.height=cssHeight+'px';
    shell.style.width=cssWidth+'px';
    shell.style.height=cssHeight+'px';
+
+   if(options.focus){
+     // Force layout before restoring the exact point the user was reading.
+     void shell.offsetWidth;
+     const fx=options.focus;
+     const targetX=shell.offsetLeft+(fx.normX*shell.offsetWidth)-fx.viewX;
+     const targetY=shell.offsetTop+(fx.normY*shell.offsetHeight)-fx.viewY;
+     const maxX=Math.max(0,stage.scrollWidth-stage.clientWidth);
+     const maxY=Math.max(0,stage.scrollHeight-stage.clientHeight);
+     stage.scrollLeft=Math.min(maxX,Math.max(0,targetX));
+     stage.scrollTop=Math.min(maxY,Math.max(0,targetY));
+   }
+
    input.value=current;
    pageRepair.classList.toggle('active',lang==='en'&&current===15);
    renderTask=page.render({canvasContext:ctx,viewport,background:'rgb(255,255,255)'});
@@ -221,7 +236,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 
  let touchStartX=0,touchStartY=0,touchStartAt=0;
  let pinchActive=false,pinchStartDistance=0,pinchStartZoom=1,pinchZoom=1;
- let pinchFocusX=0,pinchFocusY=0,pinchStartScrollLeft=0,pinchStartScrollTop=0;
+ let pinchViewX=0,pinchViewY=0,pinchNormX=.5,pinchNormY=.5,pinchOriginX=0,pinchOriginY=0;
  let panActive=false,panStartX=0,panStartY=0,panScrollLeft=0,panScrollTop=0;
  let suppressSwipeUntil=0;
 
@@ -240,10 +255,16 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      pinchStartZoom=zoom;
      pinchZoom=zoom;
      const stageRect=stage.getBoundingClientRect();
-     pinchFocusX=(e.touches[0].clientX+e.touches[1].clientX)/2-stageRect.left;
-     pinchFocusY=(e.touches[0].clientY+e.touches[1].clientY)/2-stageRect.top;
-     pinchStartScrollLeft=stage.scrollLeft;
-     pinchStartScrollTop=stage.scrollTop;
+     const shellRect=shell.getBoundingClientRect();
+     const midX=(e.touches[0].clientX+e.touches[1].clientX)/2;
+     const midY=(e.touches[0].clientY+e.touches[1].clientY)/2;
+     pinchViewX=midX-stageRect.left;
+     pinchViewY=midY-stageRect.top;
+     pinchNormX=Math.max(0,Math.min(1,(midX-shellRect.left)/Math.max(1,shellRect.width)));
+     pinchNormY=Math.max(0,Math.min(1,(midY-shellRect.top)/Math.max(1,shellRect.height)));
+     pinchOriginX=pinchNormX*shell.offsetWidth;
+     pinchOriginY=pinchNormY*shell.offsetHeight;
+     shell.style.transformOrigin=pinchOriginX+'px '+pinchOriginY+'px';
      suppressSwipeUntil=Date.now()+350;
      return;
    }
@@ -268,10 +289,6 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      const ratio=touchDistance(e.touches)/pinchStartDistance;
      pinchZoom=Math.max(.6,Math.min(4,pinchStartZoom*ratio));
      const preview=pinchZoom/Math.max(.001,pinchStartZoom);
-     const shellRect=shell.getBoundingClientRect();
-     const centerX=(e.touches[0].clientX+e.touches[1].clientX)/2-shellRect.left;
-     const centerY=(e.touches[0].clientY+e.touches[1].clientY)/2-shellRect.top;
-     shell.style.transformOrigin=centerX+'px '+centerY+'px';
      shell.style.transform='scale('+preview+')';
      return;
    }
@@ -287,18 +304,11 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    if(pinchActive&&e.touches.length<2){
      e.preventDefault();
      pinchActive=false;
-     const ratio=pinchZoom/Math.max(.001,pinchStartZoom);
      zoom=pinchZoom;
      suppressSwipeUntil=Date.now()+350;
-     renderPage({clearPreviewOnResize:true}).then(()=>{
-       requestAnimationFrame(()=>{
-         const targetX=(pinchStartScrollLeft+pinchFocusX)*ratio-pinchFocusX;
-         const targetY=(pinchStartScrollTop+pinchFocusY)*ratio-pinchFocusY;
-         const maxX=Math.max(0,stage.scrollWidth-stage.clientWidth);
-         const maxY=Math.max(0,stage.scrollHeight-stage.clientHeight);
-         stage.scrollLeft=Math.min(maxX,Math.max(0,targetX));
-         stage.scrollTop=Math.min(maxY,Math.max(0,targetY));
-       });
+     renderPage({
+       clearPreviewOnResize:true,
+       focus:{normX:pinchNormX,normY:pinchNormY,viewX:pinchViewX,viewY:pinchViewY}
      });
      return;
    }
