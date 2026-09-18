@@ -25,7 +25,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 .lang{display:flex;gap:4px}.lang button{border:1px solid rgba(212,160,110,.72);background:#071f30;color:#f3d3aa;border-radius:7px;padding:7px 8px;font-weight:700;cursor:pointer}.lang button.active{background:#d4a06e;color:#061b2b}
 .pagebox{display:flex;align-items:center;gap:5px;color:#d4a06e;font-weight:700;font-size:12px;white-space:nowrap}
 .pagebox input{width:48px;border:1px solid rgba(212,160,110,.55);border-radius:7px;background:#041a28;color:#fff;padding:7px 5px;text-align:center;font-weight:700}
-.stage{display:flex;justify-content:center;align-items:flex-start;min-height:calc(100vh - 90px);padding:18px 10px 70px;overflow:auto;background:radial-gradient(circle at 50% -10%,#123f58 0,#061b2b 44%,#03131f 100%)}
+.stage{display:flex;justify-content:center;align-items:flex-start;min-height:calc(100vh - 90px);padding:18px 10px 70px;overflow:auto;touch-action:pan-x pan-y;overscroll-behavior-y:contain;background:radial-gradient(circle at 50% -10%,#123f58 0,#061b2b 44%,#03131f 100%)}
 .page-shell{position:relative;flex:none;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(212,160,110,.5);overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 #pdfCanvas{display:block;background:#fff;pointer-events:none;image-rendering:auto}
 .watermark{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
@@ -67,7 +67,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
 <script>
 (()=>{
  const PDFS={
-   pl:'assets/book/ksiega-zalozycielska.pdf?v=52',
+   pl:'assets/book/ksiega-zalozycielska.pdf?v=53',
    enParts:35,
    enBase:'assets/book-en/pdf-data/'
  };
@@ -112,7 +112,7 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
      if(lang==='en'){
        const parts=await Promise.all(Array.from({length:PDFS.enParts},async(_,i)=>{
          const name='en'+String(i).padStart(2,'0')+'.b64';
-         const response=await fetch(PDFS.enBase+name+'?v=52',{cache:'force-cache'});
+         const response=await fetch(PDFS.enBase+name+'?v=53',{cache:'force-cache'});
          if(!response.ok)throw new Error('Missing English PDF data: '+name);
          return (await response.text()).trim();
        }));
@@ -193,8 +193,15 @@ body{color:#fff;font-family:Arial,Helvetica,sans-serif;overflow-x:hidden}
    const dx=t.clientX-touchStartX;
    const dy=t.clientY-touchStartY;
    const dt=Date.now()-touchStartAt;
-   if(dt>900||Math.abs(dx)<55||Math.abs(dx)<=Math.abs(dy)*1.2)return;
-   go(dx<0?current+1:current-1);
+   if(dt>1200)return;
+   const ax=Math.abs(dx), ay=Math.abs(dy);
+   if(ay>=50 && ay>ax*1.15){
+     go(dy<0?current+1:current-1);
+     return;
+   }
+   if(ax>=55 && ax>ay*1.15){
+     go(dx<0?current+1:current-1);
+   }
  },{passive:true});
 
  document.addEventListener('contextmenu',e=>e.preventDefault());
