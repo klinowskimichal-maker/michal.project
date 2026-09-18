@@ -1,4 +1,4 @@
-const CACHE='pskl-shell-v23';
+const CACHE='pskl-shell-v24';
 const SHELL=[
   './',
   './index.html',
